@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — Supplier Portal</title>
+  <link rel="stylesheet" href="../theme.css">
+  <link rel="stylesheet" href="../design-system.css">
+  <link rel="stylesheet" href="../admin/admin.css">
+</head>
+
+<body class="bf-admin-body">
+
+  <div class="bf-admin-shell">
+
+    <aside class="bf-admin-sidebar">
+      <div class="bf-admin-sidebar-brand">
+        <img src="../bestify-logo.jpeg" alt="Bestify" class="bf-admin-logo-img">
+        <span class="bf-admin-brand-text">Supplier Portal</span>
+      </div>
+
+      <nav class="bf-admin-nav">
+        <button class="bf-admin-nav-item bf-admin-nav-active" onclick="location.href='dashboard.html'">📊<span>Dashboard</span></button>
+        <button class="bf-admin-nav-item" onclick="location.href='products.html'">📦<span>My Products</span></button>
+        <button class="bf-admin-nav-item" onclick="location.href='orders.html'">🧾<span>My Orders</span></button>
+        <button class="bf-admin-nav-item" onclick="location.href='earnings.html'">🧮<span>Earnings</span></button>
+        <button class="bf-admin-nav-item" onclick="location.href='withdraw.html'">💸<span>Withdraw</span></button>
+        <button class="bf-admin-nav-item" onclick="location.href='profile.html'">🏪<span>Shop Profile</span></button>
+      </nav>
+    </aside>
+
+    <div class="bf-admin-main-col">
+
+      <header class="bf-admin-header">
+        <div class="bf-admin-header-title">
+          <span class="bf-admin-header-brand">Bestify</span>
+          <span class="bf-admin-header-label">Supplier Dashboard</span>
+        </div>
+        <button type="button" id="logoutBtn" class="bf-btn bf-btn-ghost bf-btn-sm">🚪 Logout</button>
+      </header>
+
+      <main class="bf-admin-content">
+
+        <section class="bf-admin-welcome">
+          <h1 id="shopNameLabel">Dashboard</h1>
+          <p class="bf-admin-welcome-sub">Overview of your shop on Bestify.</p>
+        </section>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:16px;margin-bottom:20px;">
+
+          <div class="bf-card" style="padding:18px;">
+            <div style="font-size:12px;opacity:.65;">My Products</div>
+            <div id="statProducts" style="font-size:26px;font-weight:700;margin-top:4px;">—</div>
+          </div>
+
+          <div class="bf-card" style="padding:18px;">
+            <div style="font-size:12px;opacity:.65;">Pending Orders</div>
+            <div id="statPendingOrders" style="font-size:26px;font-weight:700;margin-top:4px;">—</div>
+          </div>
+
+          <div class="bf-card" style="padding:18px;">
+            <div style="font-size:12px;opacity:.65;">Total Earnings</div>
+            <div id="statEarnings" style="font-size:26px;font-weight:700;margin-top:4px;">—</div>
+          </div>
+
+          <div class="bf-card" style="padding:18px;">
+            <div style="font-size:12px;opacity:.65;">Wallet Balance</div>
+            <div id="statWalletBalance" style="font-size:26px;font-weight:700;margin-top:4px;color:#2F7A4F;">—</div>
+          </div>
+
+          <div class="bf-card" style="padding:18px;">
+            <div style="font-size:12px;opacity:.65;">Commission Rate</div>
+            <div id="statCommissionRate" style="font-size:26px;font-weight:700;margin-top:4px;">—</div>
+          </div>
+
+        </div>
+
+        <div class="bf-card" style="padding:18px;">
+          <h3 style="margin-top:0;">Quick Actions</h3>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <button class="bf-btn bf-btn-primary" onclick="location.href='products.html'">➕ Add a Product</button>
+            <button class="bf-btn bf-btn-ghost" onclick="location.href='orders.html'">🧾 View Orders</button>
+            <button class="bf-btn bf-btn-ghost" onclick="location.href='earnings.html'">🧮 View Earnings</button>
+          </div>
+        </div>
+
+      </main>
+
+    </div>
+
+  </div>
+
+  <script type="module" src="dashboard.js"></script>
+
+</body>
+</html>

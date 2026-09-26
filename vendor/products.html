@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Products — Supplier Portal</title>
+  <link rel="stylesheet" href="../theme.css">
+  <link rel="stylesheet" href="../design-system.css">
+  <link rel="stylesheet" href="../admin/admin.css">
+</head>
+
+<body class="bf-admin-body">
+
+  <div class="bf-admin-shell">
+
+    <aside class="bf-admin-sidebar">
+      <div class="bf-admin-sidebar-brand">
+        <img src="../bestify-logo.jpeg" alt="Bestify" class="bf-admin-logo-img">
+        <span class="bf-admin-brand-text">Supplier Portal</span>
+      </div>
+
+      <nav class="bf-admin-nav">
+        <button class="bf-admin-nav-item" onclick="location.href='dashboard.html'">📊<span>Dashboard</span></button>
+        <button class="bf-admin-nav-item bf-admin-nav-active" onclick="location.href='products.html'">📦<span>My Products</span></button>
+        <button class="bf-admin-nav-item" onclick="location.href='orders.html'">🧾<span>My Orders</span></button>
+        <button class="bf-admin-nav-item" onclick="location.href='earnings.html'">🧮<span>Earnings</span></button>
+        <button class="bf-admin-nav-item" onclick="location.href='withdraw.html'">💸<span>Withdraw</span></button>
+        <button class="bf-admin-nav-item" onclick="location.href='profile.html'">🏪<span>Shop Profile</span></button>
+      </nav>
+    </aside>
+
+    <div class="bf-admin-main-col">
+
+      <header class="bf-admin-header">
+        <div class="bf-admin-header-title">
+          <span class="bf-admin-header-brand">Bestify</span>
+          <span class="bf-admin-header-label">My Products</span>
+        </div>
+        <button type="button" id="logoutBtn" class="bf-btn bf-btn-ghost bf-btn-sm">🚪 Logout</button>
+      </header>
+
+      <main class="bf-admin-content">
+
+        <section class="bf-admin-welcome">
+          <h1>My Products</h1>
+          <p class="bf-admin-welcome-sub">Add and manage the products you sell on Bestify.</p>
+        </section>
+
+        <div style="margin-bottom:20px;">
+          <button type="button" id="addProductBtn" class="bf-btn bf-btn-primary">+ Add Product</button>
+        </div>
+
+        <div style="margin-bottom:20px; display:flex; gap:10px; flex-wrap:wrap;">
+          <input type="search" id="productSearch" class="bf-input" placeholder="Search your products..." style="flex:1; min-width:220px; max-width:500px;">
+          <select id="productStatusFilter" class="bf-select" style="max-width:170px;">
+            <option value="All">All Status</option>
+            <option value="Active">Active</option>
+            <option value="Inactive">Inactive</option>
+          </select>
+        </div>
+
+        <div id="productCount" style="margin-bottom:15px;font-weight:600;">Loading products...</div>
+
+        <div id="productsList" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;">
+          <div class="bf-card" style="padding:20px;">Loading products...</div>
+        </div>
+
+      </main>
+
+    </div>
+
+  </div>
+
+  <!-- Add / Edit Product Modal -->
+  <div id="productFormModal" class="bf-modal-overlay">
+    <div class="bf-modal">
+      <button type="button" class="bf-modal-close" id="productFormCloseBtn" aria-label="Close">✕</button>
+      <h2 class="bf-modal-title" id="productFormTitle">Add Product</h2>
+
+      <form id="productForm">
+
+        <div class="bf-field">
+          <label class="bf-label">Product Images (first one is main image) — <span id="imageCountLabel">0/8</span></label>
+          <input type="file" id="imageFile" accept="image/*" multiple>
+          <div style="font-size:12px;opacity:.65;margin-top:4px;">Tap "Choose Files" again to add more photos, up to 8 total.</div>
+          <div id="previewRow" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;"></div>
+        </div>
+
+        <div class="bf-field">
+          <label class="bf-label">Product Name</label>
+          <input type="text" id="productName" class="bf-input" required>
+        </div>
+
+        <div class="bf-field">
+          <label class="bf-label">Category</label>
+          <input type="text" id="category" class="bf-input" list="categoryList" required>
+          <datalist id="categoryList"></datalist>
+        </div>
+
+        <div class="bf-field">
+          <label class="bf-label">MRP (original price, optional)</label>
+          <input type="number" id="mrp" class="bf-input" min="0">
+        </div>
+
+        <div class="bf-field">
+          <label class="bf-label">Selling Price</label>
+          <input type="number" id="price" class="bf-input" min="0" required>
+        </div>
+
+        <div class="bf-field">
+          <label class="bf-label">Stock Quantity</label>
+          <input type="number" id="stock" class="bf-input" min="0" required>
+        </div>
+
+        <div class="bf-field">
+          <label class="bf-label">Description</label>
+          <textarea id="description" class="bf-textarea" required></textarea>
+        </div>
+
+        <div class="bf-field">
+          <label class="bf-label">Sizes (comma separated, optional)</label>
+          <input type="text" id="sizes" class="bf-input" placeholder="S, M, L">
+        </div>
+
+        <div class="bf-field">
+          <label class="bf-label">Colours (comma separated, optional)</label>
+          <input type="text" id="colours" class="bf-input" placeholder="Red, Blue, Black">
+        </div>
+
+        <div class="bf-field">
+          <label class="bf-label">Return Policy</label>
+          <select id="returnPolicy" class="bf-select">
+            <option value="7 Days Return">7 Days Return</option>
+            <option value="No Return">No Return</option>
+            <option value="Custom">Custom</option>
+          </select>
+          <input type="text" id="returnPolicyCustom" class="bf-input" placeholder="e.g. 3 Days Replacement Only" style="display:none;margin-top:8px;">
+        </div>
+
+        <div class="bf-field">
+          <label class="bf-label">Warranty</label>
+          <select id="warranty" class="bf-select">
+            <option value="6 Month Warranty">6 Month Warranty</option>
+            <option value="No Warranty">No Warranty</option>
+            <option value="Custom">Custom</option>
+          </select>
+          <input type="text" id="warrantyCustom" class="bf-input" placeholder="e.g. 1 Year Brand Warranty" style="display:none;margin-top:8px;">
+        </div>
+
+        <div class="bf-field">
+          <label class="bf-label">Status</label>
+          <select id="status" class="bf-select">
+            <option value="Active">Active</option>
+            <option value="Inactive">Inactive</option>
+          </select>
+        </div>
+
+        <button type="submit" id="productFormSubmitBtn" class="bf-btn bf-btn-primary bf-btn-block">
+          Save Product
+        </button>
+
+      </form>
+    </div>
+  </div>
+
+  <script type="module" src="products.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Withdraw — Supplier Portal</title>
+  <link rel="stylesheet" href="../theme.css">
+  <link rel="stylesheet" href="../design-system.css">
+  <link rel="stylesheet" href="../admin/admin.css">
+</head>
+
+<body class="bf-admin-body">
+
+  <div class="bf-admin-shell">
+
+    <aside class="bf-admin-sidebar">
+      <div class="bf-admin-sidebar-brand">
+        <img src="../bestify-logo.jpeg" alt="Bestify" class="bf-admin-logo-img">
+        <span class="bf-admin-brand-text">Supplier Portal</span>
+      </div>
+
+      <nav class="bf-admin-nav">
+        <button class="bf-admin-nav-item" onclick="location.href='dashboard.html'">📊<span>Dashboard</span></button>
+        <button class="bf-admin-nav-item" onclick="location.href='products.html'">📦<span>My Products</span></button>
+        <button class="bf-admin-nav-item" onclick="location.href='orders.html'">🧾<span>My Orders</span></button>
+        <button class="bf-admin-nav-item" onclick="location.href='earnings.html'">🧮<span>Earnings</span></button>
+        <button class="bf-admin-nav-item bf-admin-nav-active" onclick="location.href='withdraw.html'">💸<span>Withdraw</span></button>
+        <button class="bf-admin-nav-item" onclick="location.href='profile.html'">🏪<span>Shop Profile</span></button>
+      </nav>
+    </aside>
+
+    <div class="bf-admin-main-col">
+
+      <header class="bf-admin-header">
+        <div class="bf-admin-header-title">
+          <span class="bf-admin-header-brand">Bestify</span>
+          <span class="bf-admin-header-label">Withdraw</span>
+        </div>
+        <button type="button" id="logoutBtn" class="bf-btn bf-btn-ghost bf-btn-sm">🚪 Logout</button>
+      </header>
+
+      <main class="bf-admin-content">
+
+        <section class="bf-admin-welcome">
+          <h1>Withdraw Funds 💸</h1>
+          <p class="bf-admin-welcome-sub">Wallet Balance: <b id="currentBalance">₹0</b></p>
+        </section>
+
+        <div class="bf-card" style="padding:20px;max-width:480px;margin-bottom:24px;">
+
+          <form id="withdrawForm">
+
+            <div class="bf-field">
+              <label class="bf-label">Amount (₹)</label>
+              <input type="number" id="wdAmount" class="bf-input" min="1" required>
+            </div>
+
+            <div class="bf-field">
+              <label class="bf-label">Payout Method</label>
+              <select id="wdMethod" class="bf-select">
+                <option value="upi">UPI</option>
+                <option value="bank">Bank Account</option>
+              </select>
+            </div>
+
+            <div id="wdUpiFields" class="bf-field">
+              <label class="bf-label">UPI ID</label>
+              <input type="text" id="wdUpiId" class="bf-input" placeholder="yourname@upi">
+            </div>
+
+            <div id="wdBankFields" style="display:none;">
+              <div class="bf-field">
+                <label class="bf-label">Account Holder Name</label>
+                <input type="text" id="wdBankName" class="bf-input">
+              </div>
+              <div class="bf-field">
+                <label class="bf-label">Account Number</label>
+                <input type="text" id="wdBankAccount" class="bf-input" inputmode="numeric">
+              </div>
+              <div class="bf-field">
+                <label class="bf-label">IFSC Code</label>
+                <input type="text" id="wdBankIFSC" class="bf-input" style="text-transform:uppercase;">
+              </div>
+            </div>
+
+            <button type="submit" id="wdSubmitBtn" class="bf-btn bf-btn-primary bf-btn-block">
+              Request Withdrawal
+            </button>
+
+            <p style="font-size:12px;opacity:.65;text-align:center;margin-top:10px;">
+              Reviewed manually — usually paid out within 1–3 business days.
+            </p>
+
+          </form>
+
+        </div>
+
+        <h3>Request History</h3>
+        <div id="wdHistory" style="display:flex;flex-direction:column;gap:10px;"></div>
+
+      </main>
+
+    </div>
+
+  </div>
+
+  <script type="module" src="withdraw.js"></script>
+
+</body>
+</html>
