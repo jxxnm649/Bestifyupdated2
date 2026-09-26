@@ -1,0 +1,232 @@
+.acc-container{ max-width: 560px; margin: 0 auto; padding: 18px; }
+
+.acc-shop-banner{
+  position: relative;
+  width: 100%;
+  height: 140px;
+  overflow: hidden;
+}
+.acc-shop-photo{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.acc-shop-banner-label{
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  background: linear-gradient(0deg, rgba(20,33,61,.75), transparent);
+  color: #fff;
+  font-weight: 700;
+  font-size: 14px;
+  padding: 24px 16px 10px;
+}
+
+.acc-identity{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.acc-avatar-wrap{
+  position: relative;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+.acc-avatar{
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--paper-dim);
+  border: 2px solid var(--line);
+  display: block;
+}
+.acc-avatar-edit-badge{
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--marigold-deep);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  border: 2px solid var(--paper);
+  text-decoration: none;
+}
+.acc-name{ font-weight: 700; font-size: 16px; }
+.acc-email{ font-size: 12px; color: var(--ink-soft); }
+
+.acc-wallet-card{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(135deg, #4f46e5, #3b82f6);
+  color: #fff;
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  margin-bottom: 16px;
+  text-decoration: none;
+  box-shadow: var(--shadow);
+}
+.acc-wallet-label{ font-size: 12px; opacity: .8; }
+.acc-wallet-amount{ font-size: 22px; font-weight: 700; margin-top: 2px; font-family: var(--font-display); }
+.acc-wallet-arrow{ font-size: 20px; opacity: .8; }
+
+.acc-quick-grid{
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.acc-quick-item{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 12px 6px;
+  text-decoration: none;
+  color: var(--ink);
+  font-size: 11.5px;
+  font-weight: 600;
+  text-align: center;
+}
+.acc-quick-icon{ font-size: 22px; }
+
+.acc-referral-btn{
+  display: block;
+  text-align: center;
+  background: var(--marigold);
+  color: var(--ink);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  font-weight: 700;
+  font-size: 13px;
+  text-decoration: none;
+  margin-bottom: 18px;
+}
+
+.acc-rate-card{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--leaf-bg);
+  border: 1px solid var(--leaf);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  margin-bottom: 18px;
+  text-decoration: none;
+  color: var(--ink);
+}
+.acc-rate-card img{ width: 44px; height: 44px; border-radius: 8px; object-fit: cover; flex-shrink: 0; }
+.acc-rate-card .acc-rate-title{ font-size: 13px; font-weight: 700; }
+.acc-rate-card .acc-rate-sub{ font-size: 12px; color: var(--ink-soft); }
+
+.acc-section-title{ font-size: 14px; margin: 0 0 10px; color: var(--ink-soft); font-weight: 700; text-transform: uppercase; letter-spacing: .03em; }
+
+.acc-rv-strip{
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 6px;
+  margin-bottom: 18px;
+}
+.acc-rv-item{
+  flex: 0 0 auto;
+  width: 96px;
+  text-decoration: none;
+  color: var(--ink);
+}
+.acc-rv-item img{
+  width: 96px;
+  height: 96px;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+}
+.acc-rv-item .acc-rv-name{
+  font-size: 11px;
+  margin-top: 4px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.acc-settings-list{
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+.acc-settings-row{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--line);
+  text-decoration: none;
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 500;
+  background: none;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  font-family: var(--font-body);
+}
+.acc-settings-row:last-child{ border-bottom: none; }
+.acc-chevron{ margin-left: auto; opacity: .4; }
+.acc-logout-row{ color: #c62828; font-weight: 700; }
+
+.acc-social-row{
+  display: flex;
+  justify-content: center;
+  gap: 22px;
+  padding: 10px 0 20px;
+  font-size: 22px;
+}
+.acc-social-row a{ color: var(--ink-soft); }
+.acc-social-row a:hover{ color: var(--marigold-deep); }
+
+/* ---------- Fullscreen avatar viewer ---------- */
+.acc-img-viewer{
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.9);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+}
+.acc-img-viewer.show{ display: flex; }
+.acc-img-viewer img{
+  max-width: 90%;
+  max-height: 80%;
+  border-radius: 12px;
+}
+.acc-img-viewer-close{
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  border: none;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+}

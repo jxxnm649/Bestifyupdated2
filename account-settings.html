@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Account Settings</title>
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="design-system.css">
+  <link rel="stylesheet" href="static-page.css">
+</head>
+<body class="bf-has-nav">
+
+  <div class="container sp-container">
+
+    <a href="profile.html" class="sp-back">← Back to Account</a>
+    <h1>Account Settings ⚙️</h1>
+
+    <div class="bf-card" style="padding:18px;margin-bottom:16px;">
+      <h3 style="margin-top:0;">Change Password</h3>
+      <form id="passwordForm">
+        <div class="bf-field">
+          <label class="bf-label">Current Password</label>
+          <input type="password" id="currentPassword" class="bf-input" required>
+        </div>
+        <div class="bf-field">
+          <label class="bf-label">New Password</label>
+          <input type="password" id="newPassword" class="bf-input" minlength="6" required>
+        </div>
+        <button type="submit" id="passwordSubmitBtn" class="bf-btn bf-btn-primary bf-btn-block">Update Password</button>
+      </form>
+    </div>
+
+    <div class="bf-card" style="padding:18px;">
+      <h3 style="margin-top:0;color:#c62828;">Danger Zone</h3>
+      <p style="font-size:13px;color:var(--ink-soft);">Need your account deleted? Contact our support team and we'll process it for you.</p>
+      <a href="tel:+919110690727" style="text-decoration:none;">
+        <button type="button" class="bf-btn bf-btn-ghost bf-btn-block" style="color:#c62828;">📞 Contact Support</button>
+      </a>
+    </div>
+
+  </div>
+
+  <nav class="bottom-nav">
+    <a href="home.html"><span>🏠</span><p>Home</p></a>
+    <a href="wishlist.html"><span>😊</span><p>Liked</p></a>
+    <a href="orders.html"><span>📦</span><p>Orders</p></a>
+    <a href="profile.html"><span>🏪</span><p>My Account</p></a>
+  </nav>
+
+  <script type="module" src="account-settings.js"></script>
+  <script type="module" src="profile-menu.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,55 @@
+/* ============================================================
+   Shared bottom navigation bar
+   Used on: home.html, wishlist.html, orders.html, profile.html
+   Keep this file as the single source of truth for the nav —
+   edit here once, all four pages update.
+   ============================================================ */
+
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 62px;
+  background-color: #ffffff;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-top: 1px solid #f0e6da;
+  box-shadow: 0 -3px 12px rgba(0, 0, 0, 0.04);
+  z-index: 1000;
+}
+
+.bottom-nav .nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: #71717a;
+  font-size: 11px;
+  font-weight: 500;
+  width: 25%;
+  height: 100%;
+  transition: all 0.2s ease-in-out;
+}
+
+.bottom-nav .nav-item i {
+  font-size: 18px;
+  margin-bottom: 4px;
+  transition: transform 0.2s ease;
+}
+
+.bottom-nav .nav-item span {
+  font-size: 11px;
+  line-height: 1.2;
+}
+
+.bottom-nav .nav-item.active {
+  color: #ea580c;
+  font-weight: 600;
+}
+
+.bottom-nav .nav-item.active i {
+  transform: translateY(-2px);
+}
