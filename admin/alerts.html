@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Orders — Bestify Admin</title>
+  <title>Activity — Bestify Admin</title>
 
   <link rel="stylesheet" href="../theme.css">
   <link rel="stylesheet" href="../design-system.css">
@@ -53,7 +53,8 @@
         </button>
 
         <button
-          class="bf-admin-nav-item bf-admin-nav-active">
+          class="bf-admin-nav-item"
+          onclick="location.href='orders.html'">
           🧾
           <span>Orders</span>
         </button>
@@ -111,14 +112,14 @@
         </button>
 
         <button
-          class="bf-admin-nav-item" onclick="location.href='feedback.html'">
+          class="bf-admin-nav-item"
+          onclick="location.href='feedback.html'">
           💬
           <span>Feedback</span>
         </button>
 
         <button
-          class="bf-admin-nav-item"
-          onclick="location.href='alerts.html'">
+          class="bf-admin-nav-item bf-admin-nav-active">
           🔴
           <span>Activity</span>
         </button>
@@ -197,7 +198,7 @@
           </span>
 
           <span class="bf-admin-header-label">
-            Orders
+            Activity
           </span>
 
         </div>
@@ -211,64 +212,32 @@
         <section class="bf-admin-welcome">
 
           <h1>
-            Orders
+            Live Activity
           </h1>
 
           <p class="bf-admin-welcome-sub">
-            Track and update every order placed on Bestify.
+            Real-time feed of signups, likes, orders, and cancellations.
           </p>
 
         </section>
 
+        <div id="alertsSummary" style="display:flex; gap:16px; flex-wrap:wrap; margin-bottom:20px;"></div>
 
-        <!-- Search + filter -->
-        <div style="margin-bottom:20px; display:flex; gap:10px; flex-wrap:wrap;">
-
-          <input
-            type="search"
-            id="orderSearch"
-            class="bf-input"
-            placeholder="Search by customer name, mobile, or order ID..."
-            style="flex:1; min-width:220px; max-width:500px;">
-
-          <select id="orderStatusFilter" class="bf-select" style="max-width:180px;">
-            <option value="All Status">All Status</option>
-            <option value="Pending">Pending</option>
-            <option value="Confirmed">Confirmed</option>
-            <option value="Packed">Packed</option>
-            <option value="Shipped">Shipped</option>
-            <option value="Out for Delivery">Out for Delivery</option>
-            <option value="Delivered">Delivered</option>
-            <option value="Cancelled">Cancelled</option>
+        <div style="display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap;">
+          <select id="alertsTypeFilter" class="bf-select" style="max-width:180px;">
+            <option value="All">All Types</option>
+            <option value="signup">🆕 Signups</option>
+            <option value="like">❤️ Likes</option>
+            <option value="order">🛒 Orders</option>
+            <option value="order_cancel">❌ Cancellations</option>
           </select>
-
+          <button type="button" id="markAllReadBtn" class="bf-btn bf-btn-ghost bf-btn-sm">✓ Mark All Read</button>
         </div>
 
+        <div id="alertsCount" style="margin-bottom:15px;font-weight:600;">Loading activity...</div>
 
-        <!-- Order count -->
-        <div
-          id="orderCount"
-          style="margin-bottom:15px;font-weight:600;">
-          Loading orders...
-        </div>
-
-        <!-- Bulk actions bar -->
-        <div id="bulkBar" style="display:none; align-items:center; gap:10px; margin-bottom:15px; background:var(--paper-dim); padding:10px 14px; border-radius:var(--radius-sm);">
-          <span id="bulkCount" style="font-weight:600; font-size:13px;"></span>
-          <button type="button" id="bulkLabelsBtn" class="bf-btn bf-btn-primary bf-btn-sm">🏷️ Download Labels</button>
-          <button type="button" id="bulkClearBtn" class="bf-btn bf-btn-ghost bf-btn-sm">Clear</button>
-        </div>
-
-
-        <!-- Orders -->
-        <div
-          id="ordersList"
-          style="display:flex; flex-direction:column; gap:14px;">
-
-          <div class="bf-card" style="padding:20px;">
-            Loading orders...
-          </div>
-
+        <div id="alertsList" style="display:flex; flex-direction:column; gap:10px;">
+          <div class="bf-card" style="padding:20px;">Loading activity...</div>
         </div>
 
       </main>
@@ -278,28 +247,7 @@
   </div>
 
 
-  <!-- Order Details Modal -->
-  <div id="orderDetailsModal" class="bf-modal-overlay">
-    <div class="bf-modal">
-      <button
-        type="button"
-        class="bf-modal-close"
-        id="orderDetailsCloseBtn"
-        aria-label="Close">
-        ✕
-      </button>
-
-      <h2 class="bf-modal-title">Order Details</h2>
-
-      <div id="orderDetailsContent">
-        Loading...
-      </div>
-
-    </div>
-  </div>
-
-
-  <script type="module" src="orders.js"></script>
+  <script type="module" src="alerts.js"></script>
 
 </body>
 </html>

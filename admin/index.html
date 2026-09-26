@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel — Bestify Mobile</title>
+
+<link rel="stylesheet" href="../theme.css">
+<link rel="stylesheet" href="../design-system.css">
+<link rel="stylesheet" href="admin.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="home-orders.css">
+</head>
+
+<body class="bf-admin-body">
+
+  <!-- ============ AUTHENTICATION REQUIRED STATE ============ -->
+  <div id="authRequiredState" class="bf-admin-fullstate bf-hidden">
+    <div class="bf-state">
+      <div class="bf-state-icon">🔒</div>
+      <p class="bf-state-title">Authentication Required</p>
+      <p class="bf-state-text">
+        Please log in to access the admin panel.
+      </p>
+      <a href="../login.html" class="bf-btn bf-btn-primary">
+        Go to Login
+      </a>
+    </div>
+  </div>
+
+
+  <!-- ============ ACCESS DENIED STATE ============ -->
+  <div id="accessDeniedState" class="bf-admin-fullstate bf-hidden">
+    <div class="bf-state bf-state-error">
+      <div class="bf-state-icon">⛔</div>
+
+      <p class="bf-state-title">
+        Access Denied
+      </p>
+
+      <p class="bf-state-text">
+        Your account does not have permission to view the admin panel.
+      </p>
+
+      <a href="../home.html" class="bf-btn bf-btn-ghost">
+        Back to Store
+      </a>
+    </div>
+  </div>
+
+
+  <!-- ============ INITIAL LOADING STATE ============ -->
+  <div id="initialLoadingState" class="bf-admin-fullstate">
+
+    <div class="bf-state">
+
+      <span
+        class="bf-skeleton bf-skeleton-circle"
+        style="margin:0 auto 16px;">
+      </span>
+
+      <p class="bf-state-title">
+        Loading admin panel…
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <!-- ============ SOMETHING WENT WRONG STATE ============ -->
+  <div id="errorState" class="bf-admin-fullstate bf-hidden">
+
+    <div class="bf-state bf-state-error">
+
+      <div class="bf-state-icon">
+        ⚠️
+      </div>
+
+      <p class="bf-state-title">
+        Something Went Wrong
+      </p>
+
+      <p
+        class="bf-state-text"
+        id="errorStateText">
+        Please try again.
+      </p>
+
+      <button
+        type="button"
+        class="bf-btn bf-btn-ghost"
+        id="errorRetryBtn">
+        Retry
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- ============ ADMIN SHELL ============ -->
+  <div id="adminShell" class="bf-admin-shell bf-hidden">
+
+
+    <!-- Drawer overlay -->
+    <div
+      id="drawerOverlay"
+      class="bf-admin-drawer-overlay">
+    </div>
+
+
+    <!-- Sidebar -->
+    <aside
+      id="adminSidebar"
+      class="bf-admin-sidebar">
+
+      <div class="bf-admin-sidebar-brand">
+
+        <img
+          src="../bestify-logo.jpeg"
+          alt="Bestify Mobile"
+          class="bf-admin-logo-img">
+
+        <span class="bf-admin-brand-text">
+          Bestify
+        </span>
+
+      </div>
+
+
+      <!-- Navigation -->
+      <nav
+        class="bf-admin-nav"
+        id="adminNav"
+        aria-label="Admin navigation">
+
+        <!-- Populated by admin.js -->
+
+      </nav>
+
+    </aside>
+
+
+    <!-- Main column -->
+    <div class="bf-admin-main-col">
+
+
+      <!-- ============ HEADER ============ -->
+      <header class="bf-admin-header">
+
+
+        <!-- Mobile menu -->
+        <button
+          type="button"
+          id="hamburgerBtn"
+          class="bf-admin-hamburger"
+          aria-label="Toggle menu"
+          aria-expanded="false">
+
+          <span></span>
+          <span></span>
+          <span></span>
+
+        </button>
+
+
+        <!-- Header title -->
+        <div class="bf-admin-header-title">
+
+          <span class="bf-admin-header-brand">
+            Bestify Mobile
+          </span>
+
+          <span class="bf-admin-header-label">
+            Admin Panel
+          </span>
+
+        </div>
+
+
+        <!-- Header actions -->
+        <div class="bf-admin-header-actions">
+
+
+          <!-- Notifications -->
+          <button
+            type="button"
+            class="bf-admin-icon-btn"
+            id="notifBtn"
+            aria-label="Notifications">
+
+            🔔
+
+          </button>
+
+
+          <!-- Profile -->
+          <div
+            class="bf-admin-profile"
+            id="profileMenuWrap">
+
+
+            <button
+              type="button"
+              class="bf-admin-profile-btn"
+              id="profileBtn"
+              aria-haspopup="true"
+              aria-expanded="false">
+
+
+              <span
+                class="bf-admin-avatar"
+                id="userAvatar">
+
+                A
+
+              </span>
+
+
+              <span class="bf-admin-user-info">
+
+                <span
+                  class="bf-admin-user-name"
+                  id="userName">
+
+                  —
+
+                </span>
+
+
+                <span
+                  class="bf-admin-user-email"
+                  id="userEmail">
+
+                  —
+
+                </span>
+
+              </span>
+
+
+            </button>
+
+
+            <!-- Profile menu -->
+            <div
+              class="bf-admin-profile-menu bf-hidden"
+              id="profileMenu">
+
+
+              <button
+                type="button"
+                class="bf-admin-logout-btn"
+                id="logoutBtn">
+
+                🚪 Logout
+
+              </button>
+
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </header>
+
+
+      <!-- ============ MAIN CONTENT ============ -->
+      <main
+        class="bf-admin-content"
+        id="adminContent">
+
+
+        <!-- Welcome -->
+        <section class="bf-admin-welcome">
+
+          <h1>
+            Welcome to Bestify Admin
+          </h1>
+
+          <p class="bf-admin-welcome-sub">
+            Here's a quick snapshot of your store.
+          </p>
+
+        </section>
+
+
+        <!-- ============ METRICS ============ -->
+        <section
+          class="bf-admin-metrics"
+          aria-label="Store metrics overview">
+
+
+          <!-- USERS -->
+          <div class="bf-card bf-admin-metric-card">
+
+            <span class="bf-admin-metric-icon">
+              👥
+            </span>
+
+            <span class="bf-admin-metric-label">
+              Users
+            </span>
+
+            <span
+              class="bf-skeleton bf-skeleton-title bf-admin-metric-value"
+              id="usersCount">
+
+            </span>
+
+          </div>
+
+
+          <!-- VENDORS -->
+          <div class="bf-card bf-admin-metric-card">
+
+            <span class="bf-admin-metric-icon">
+              🏬
+            </span>
+
+            <span class="bf-admin-metric-label">
+              Vendors
+            </span>
+
+            <span
+              class="bf-skeleton bf-skeleton-title bf-admin-metric-value"
+              id="vendorsCount">
+
+            </span>
+
+          </div>
+
+
+          <!-- ORDERS -->
+          <div class="bf-card bf-admin-metric-card">
+
+            <span class="bf-admin-metric-icon">
+              🧾
+            </span>
+
+            <span class="bf-admin-metric-label">
+              Orders
+            </span>
+
+            <span
+              class="bf-skeleton bf-skeleton-title bf-admin-metric-value"
+              id="ordersCount">
+
+            </span>
+
+          </div>
+
+
+          <!-- REVENUE -->
+          <div class="bf-card bf-admin-metric-card">
+
+            <span class="bf-admin-metric-icon">
+              💰
+            </span>
+
+            <span class="bf-admin-metric-label">
+              Revenue
+            </span>
+
+            <span
+              class="bf-skeleton bf-skeleton-title bf-admin-metric-value"
+              id="revenueTotal">
+
+            </span>
+
+          </div>
+
+
+          <!-- PENDING ORDERS -->
+          <div class="bf-card bf-admin-metric-card" style="cursor:pointer;" onclick="location.href='orders.html'">
+
+            <span class="bf-admin-metric-icon">
+              ⏳
+            </span>
+
+            <span class="bf-admin-metric-label">
+              Pending Orders
+            </span>
+
+            <span
+              class="bf-skeleton bf-skeleton-title bf-admin-metric-value"
+              id="pendingOrdersCount">
+
+            </span>
+
+          </div>
+
+
+          <!-- PENDING VENDOR PRODUCTS -->
+          <div class="bf-card bf-admin-metric-card" style="cursor:pointer;" onclick="location.href='pending-products.html'">
+
+            <span class="bf-admin-metric-icon">
+              🕓
+            </span>
+
+            <span class="bf-admin-metric-label">
+              Pending Products
+            </span>
+
+            <span
+              class="bf-skeleton bf-skeleton-title bf-admin-metric-value"
+              id="pendingProductsCount">
+
+            </span>
+
+          </div>
+
+
+        </section>
+
+
+        <!-- ============ ORDERS PANEL ============ -->
+        <section class="bf-card hop-panel" style="padding:16px;margin-top:20px;">
+
+          <h3 style="margin:0 0 12px;">🧾 Orders</h3>
+
+          <!-- Status filter tabs -->
+          <div class="hop-tabs" id="hopTabs"></div>
+
+          <!-- Search -->
+          <div class="hop-search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="hopSearch" class="hop-search-input"
+                   placeholder="Search order no, customer, phone or item...">
+          </div>
+
+          <!-- Bulk controls -->
+          <div class="hop-bulk-bar">
+            <label class="hop-select-all">
+              <input type="checkbox" id="hopSelectAll">
+              Select All (<span id="hopSelectedCount">0</span>)
+            </label>
+            <div class="hop-bulk-actions">
+              <button type="button" class="hop-bulk-btn accept" id="hopBulkAccept">
+                <i class="fa-solid fa-circle-check"></i> Accept Selected
+              </button>
+              <button type="button" class="hop-bulk-btn" id="hopBulkWhatsapp">
+                <i class="fa-brands fa-whatsapp"></i> WhatsApp
+              </button>
+            </div>
+          </div>
+
+          <!-- Order cards -->
+          <div class="hop-list" id="hopList">Loading orders…</div>
+
+        </section>
+
+
+        <!-- Update Order modal -->
+        <div id="hopUpdateModal" class="hop-modal-overlay">
+          <div class="hop-modal-card">
+            <div class="hop-modal-header">
+              <div class="hop-modal-title">Update Order</div>
+              <button type="button" class="hop-close-btn" id="hopModalClose">&times;</button>
+            </div>
+            <form id="hopUpdateForm">
+              <input type="hidden" id="hopModalOrderId">
+              <div class="hop-form-group">
+                <label>Order</label>
+                <input type="text" id="hopModalOrderNo" readonly style="background:#f1f5f9;">
+              </div>
+              <div class="hop-form-group">
+                <label>Customer</label>
+                <input type="text" id="hopModalCustomer" readonly style="background:#f1f5f9;">
+              </div>
+              <div class="hop-form-group">
+                <label>Order Status</label>
+                <select id="hopModalStatus">
+                  <option value="Pending">Pending</option>
+                  <option value="Confirmed">Confirmed</option>
+                  <option value="Packed">Packed</option>
+                  <option value="Shipped">Shipped</option>
+                  <option value="Out for Delivery">Out for Delivery</option>
+                  <option value="Delivered">Delivered</option>
+                  <option value="Cancelled">Cancelled</option>
+                </select>
+              </div>
+              <button type="submit" class="hop-save-btn" id="hopModalSave">Save Changes</button>
+            </form>
+          </div>
+        </div>
+
+
+      </main>
+
+    </div>
+
+  </div>
+
+
+  <!-- Admin JavaScript -->
+  <script
+    type="module"
+    src="admin.js">
+  </script>
+
+  <script
+    type="module"
+    src="home-orders.js">
+  </script>
+
+</body>
+</html>

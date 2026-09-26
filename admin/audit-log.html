@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Audit Log — Bestify Admin</title>
+
+  <link rel="stylesheet" href="../theme.css">
+  <link rel="stylesheet" href="../design-system.css">
+  <link rel="stylesheet" href="admin.css">
+</head>
+
+<body class="bf-admin-body">
+
+  <div class="bf-admin-shell">
+
+    <!-- Sidebar -->
+    <aside class="bf-admin-sidebar">
+
+      <div class="bf-admin-sidebar-brand">
+        <img
+          src="../bestify-logo.jpeg"
+          alt="Bestify Mobile"
+          class="bf-admin-logo-img">
+
+        <span class="bf-admin-brand-text">
+          Bestify
+        </span>
+      </div>
+
+      <nav class="bf-admin-nav">
+
+        <button class="bf-admin-nav-item" onclick="location.href='index.html'">📊<span>Dashboard</span></button>
+        <button class="bf-admin-nav-item" onclick="location.href='users.html'">👥<span>Users</span></button>
+        <button class="bf-admin-nav-item" onclick="location.href='products.html'">📦<span>Products</span></button>
+        <button class="bf-admin-nav-item" onclick="location.href='orders.html'">🧾<span>Orders</span></button>
+                <div class="bf-admin-nav-group">
+          <button type="button" class="bf-admin-nav-item bf-admin-nav-group-toggle" onclick="this.closest('.bf-admin-nav-group').classList.toggle('open')">🏬<span>Vendor</span><span class="bf-admin-nav-caret">▾</span></button>
+          <div class="bf-admin-nav-submenu">
+            <button type="button" class="bf-admin-nav-subitem" onclick="location.href='vendors.html'">📋 <span>Applications &amp; Directory</span></button>
+            <button type="button" class="bf-admin-nav-subitem" onclick="location.href='pending-products.html'">🕓 <span>Pending Products</span></button>
+            <button type="button" class="bf-admin-nav-subitem" onclick="location.href='commissions.html'">🧮 <span>Commissions</span></button>
+          </div>
+        </div>
+        <button class="bf-admin-nav-item" onclick="location.href='payments.html'">💳<span>Payments</span></button>
+        <button class="bf-admin-nav-item" onclick="location.href='wallets.html'">👛<span>Wallets</span></button>
+        <button class="bf-admin-nav-item" onclick="location.href='withdrawals.html'">🏧<span>Withdrawals</span></button>
+        <button class="bf-admin-nav-item" onclick="location.href='feedback.html'">💬<span>Feedback</span></button>
+        <button class="bf-admin-nav-item" onclick="location.href='alerts.html'">🔴<span>Activity</span></button>
+        <button class="bf-admin-nav-item" onclick="location.href='cashback.html'">💸<span>Cashback</span></button>
+        <button class="bf-admin-nav-item" onclick="location.href='referrals.html'">🔗<span>Referrals</span></button>
+        <button class="bf-admin-nav-item" onclick="location.href='repairs.html'">🔧<span>Repairs</span></button>
+        <button class="bf-admin-nav-item" onclick="location.href='chats.html'">💬<span>Chats</span></button>
+        <button class="bf-admin-nav-item" onclick="location.href='notifications.html'">🔔<span>Notifications</span></button>
+        <button class="bf-admin-nav-item" onclick="location.href='reports.html'">📈<span>Reports</span></button>
+
+        <button class="bf-admin-nav-item bf-admin-nav-active">
+          🗂️
+          <span>Audit Log</span>
+        </button>
+
+        <button class="bf-admin-nav-item" onclick="location.href='settings.html'">⚙️<span>Settings</span></button>
+
+      </nav>
+
+    </aside>
+
+
+    <!-- Main -->
+    <div class="bf-admin-main-col">
+
+      <!-- Header -->
+      <header class="bf-admin-header">
+        <div class="bf-admin-header-title">
+          <span class="bf-admin-header-brand">Bestify Mobile</span>
+          <span class="bf-admin-header-label">Audit Log</span>
+        </div>
+      </header>
+
+
+      <!-- Content -->
+      <main class="bf-admin-content">
+
+        <section class="bf-admin-welcome">
+          <h1>Audit Log</h1>
+          <p class="bf-admin-welcome-sub">
+            A read-only trail of admin actions — who changed what, and when.
+          </p>
+        </section>
+
+        <!-- Summary -->
+        <div id="auditSummary" style="display:flex; gap:16px; flex-wrap:wrap; margin-bottom:20px;"></div>
+
+        <!-- Search + filter -->
+        <div style="margin-bottom:20px; display:flex; gap:10px; flex-wrap:wrap;">
+
+          <input
+            type="search"
+            id="auditSearch"
+            class="bf-input"
+            placeholder="Search by action, module, or admin..."
+            style="flex:1; min-width:220px; max-width:500px;">
+
+          <select id="auditModuleFilter" class="bf-select" style="max-width:180px;">
+            <option value="All">All Modules</option>
+          </select>
+
+          <select id="auditRangeFilter" class="bf-select" style="max-width:160px;">
+            <option value="all">All Time</option>
+            <option value="today">Today</option>
+            <option value="7">Last 7 Days</option>
+            <option value="30">Last 30 Days</option>
+          </select>
+
+        </div>
+
+        <div id="auditCount" style="margin-bottom:15px;font-weight:600;">Loading audit log...</div>
+
+        <div id="auditList" style="display:flex; flex-direction:column; gap:10px;">
+          <div class="bf-card" style="padding:20px;">Loading audit log...</div>
+        </div>
+
+      </main>
+
+    </div>
+
+  </div>
+
+
+  <!-- Entry Details Modal -->
+  <div id="auditDetailsModal" class="bf-modal-overlay">
+    <div class="bf-modal">
+      <button type="button" class="bf-modal-close" id="auditDetailsCloseBtn" aria-label="Close">✕</button>
+
+      <h2 class="bf-modal-title">Log Entry Details</h2>
+
+      <div id="auditDetailsContent">
+        Loading...
+      </div>
+
+    </div>
+  </div>
+
+
+  <script type="module" src="audit-log.js"></script>
+
+</body>
+</html>

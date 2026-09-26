@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Orders — Bestify Admin</title>
+  <title>Pending Products — Bestify Admin</title>
 
   <link rel="stylesheet" href="../theme.css">
   <link rel="stylesheet" href="../design-system.css">
@@ -53,15 +53,16 @@
         </button>
 
         <button
-          class="bf-admin-nav-item bf-admin-nav-active">
+          class="bf-admin-nav-item"
+          onclick="location.href='orders.html'">
           🧾
           <span>Orders</span>
         </button>
 
-        <div class="bf-admin-nav-group">
+        <div class="bf-admin-nav-group open">
           <button
             type="button"
-            class="bf-admin-nav-item bf-admin-nav-group-toggle"
+            class="bf-admin-nav-item bf-admin-nav-group-toggle bf-admin-nav-active"
             onclick="this.closest('.bf-admin-nav-group').classList.toggle('open')">
             🏬
             <span>Vendor</span>
@@ -76,7 +77,7 @@
             </button>
             <button
               type="button"
-              class="bf-admin-nav-subitem"
+              class="bf-admin-nav-subitem bf-admin-nav-subitem-active"
               onclick="location.href='pending-products.html'">
               🕓 <span>Pending Products</span>
             </button>
@@ -190,6 +191,14 @@
       <!-- Header -->
       <header class="bf-admin-header">
 
+        <button
+          type="button"
+          class="bf-btn bf-btn-ghost bf-btn-sm"
+          onclick="location.href='index.html'"
+          aria-label="Back">
+          🔙 Back
+        </button>
+
         <div class="bf-admin-header-title">
 
           <span class="bf-admin-header-brand">
@@ -197,7 +206,7 @@
           </span>
 
           <span class="bf-admin-header-label">
-            Orders
+            Pending Products
           </span>
 
         </div>
@@ -209,66 +218,22 @@
       <main class="bf-admin-content">
 
         <section class="bf-admin-welcome">
-
-          <h1>
-            Orders
-          </h1>
-
+          <h1>Pending Vendor Products 🕓</h1>
           <p class="bf-admin-welcome-sub">
-            Track and update every order placed on Bestify.
+            New listings and edits submitted by suppliers — review before they go live on the storefront.
           </p>
-
         </section>
 
-
-        <!-- Search + filter -->
-        <div style="margin-bottom:20px; display:flex; gap:10px; flex-wrap:wrap;">
-
-          <input
-            type="search"
-            id="orderSearch"
-            class="bf-input"
-            placeholder="Search by customer name, mobile, or order ID..."
-            style="flex:1; min-width:220px; max-width:500px;">
-
-          <select id="orderStatusFilter" class="bf-select" style="max-width:180px;">
-            <option value="All Status">All Status</option>
-            <option value="Pending">Pending</option>
-            <option value="Confirmed">Confirmed</option>
-            <option value="Packed">Packed</option>
-            <option value="Shipped">Shipped</option>
-            <option value="Out for Delivery">Out for Delivery</option>
-            <option value="Delivered">Delivered</option>
-            <option value="Cancelled">Cancelled</option>
+        <div style="margin-bottom:16px; display:flex; gap:8px; flex-wrap:wrap;">
+          <select id="pendingVendorFilter" class="bf-select" style="max-width:220px;">
+            <option value="All">All Suppliers</option>
           </select>
-
         </div>
 
+        <div id="pendingCount" style="margin-bottom:15px;font-weight:600;">Loading...</div>
 
-        <!-- Order count -->
-        <div
-          id="orderCount"
-          style="margin-bottom:15px;font-weight:600;">
-          Loading orders...
-        </div>
-
-        <!-- Bulk actions bar -->
-        <div id="bulkBar" style="display:none; align-items:center; gap:10px; margin-bottom:15px; background:var(--paper-dim); padding:10px 14px; border-radius:var(--radius-sm);">
-          <span id="bulkCount" style="font-weight:600; font-size:13px;"></span>
-          <button type="button" id="bulkLabelsBtn" class="bf-btn bf-btn-primary bf-btn-sm">🏷️ Download Labels</button>
-          <button type="button" id="bulkClearBtn" class="bf-btn bf-btn-ghost bf-btn-sm">Clear</button>
-        </div>
-
-
-        <!-- Orders -->
-        <div
-          id="ordersList"
-          style="display:flex; flex-direction:column; gap:14px;">
-
-          <div class="bf-card" style="padding:20px;">
-            Loading orders...
-          </div>
-
+        <div id="pendingList" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;">
+          <div class="bf-card" style="padding:20px;">Loading...</div>
         </div>
 
       </main>
@@ -278,28 +243,26 @@
   </div>
 
 
-  <!-- Order Details Modal -->
-  <div id="orderDetailsModal" class="bf-modal-overlay">
+  <!-- Reject Modal -->
+  <div id="rejectModal" class="bf-modal-overlay">
     <div class="bf-modal">
-      <button
-        type="button"
-        class="bf-modal-close"
-        id="orderDetailsCloseBtn"
-        aria-label="Close">
-        ✕
-      </button>
+      <button type="button" class="bf-modal-close" id="rejectCloseBtn" aria-label="Close">✕</button>
 
-      <h2 class="bf-modal-title">Order Details</h2>
+      <h2 class="bf-modal-title">Reject Product</h2>
+      <p style="font-size:13px;opacity:.7;margin-top:-10px;" id="rejectProductName"></p>
 
-      <div id="orderDetailsContent">
-        Loading...
-      </div>
-
+      <form id="rejectForm">
+        <div class="bf-field">
+          <label class="bf-label">Reason (shown to the supplier)</label>
+          <textarea id="rejectReason" class="bf-textarea" required placeholder="e.g. Product photos are blurry, please re-upload"></textarea>
+        </div>
+        <button type="submit" id="rejectSubmitBtn" class="bf-btn bf-btn-primary bf-btn-block">Reject Product</button>
+      </form>
     </div>
   </div>
 
 
-  <script type="module" src="orders.js"></script>
+  <script type="module" src="pending-products.js"></script>
 
 </body>
 </html>

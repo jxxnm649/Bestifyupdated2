@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Orders — Bestify Admin</title>
+  <title>Cashback — Bestify Admin</title>
 
   <link rel="stylesheet" href="../theme.css">
   <link rel="stylesheet" href="../design-system.css">
@@ -53,7 +53,8 @@
         </button>
 
         <button
-          class="bf-admin-nav-item bf-admin-nav-active">
+          class="bf-admin-nav-item"
+          onclick="location.href='orders.html'">
           🧾
           <span>Orders</span>
         </button>
@@ -124,8 +125,7 @@
         </button>
 
         <button
-          class="bf-admin-nav-item"
-          onclick="location.href='cashback.html'">
+          class="bf-admin-nav-item bf-admin-nav-active">
           💸
           <span>Cashback</span>
         </button>
@@ -197,7 +197,7 @@
           </span>
 
           <span class="bf-admin-header-label">
-            Orders
+            Cashback
           </span>
 
         </div>
@@ -211,14 +211,31 @@
         <section class="bf-admin-welcome">
 
           <h1>
-            Orders
+            Cashback
           </h1>
 
           <p class="bf-admin-welcome-sub">
-            Track and update every order placed on Bestify.
+            Give customers wallet cashback and track what's been credited.
           </p>
 
         </section>
+
+
+        <!-- Summary -->
+        <div
+          id="cashbackSummary"
+          style="display:flex; gap:16px; flex-wrap:wrap; margin-bottom:20px;">
+        </div>
+
+
+        <div style="margin-bottom:20px;">
+          <button
+            type="button"
+            id="addCashbackBtn"
+            class="bf-btn bf-btn-primary">
+            + Add Cashback Entry
+          </button>
+        </div>
 
 
         <!-- Search + filter -->
@@ -226,47 +243,35 @@
 
           <input
             type="search"
-            id="orderSearch"
+            id="cashbackSearch"
             class="bf-input"
-            placeholder="Search by customer name, mobile, or order ID..."
+            placeholder="Search by customer name..."
             style="flex:1; min-width:220px; max-width:500px;">
 
-          <select id="orderStatusFilter" class="bf-select" style="max-width:180px;">
-            <option value="All Status">All Status</option>
+          <select id="cashbackStatusFilter" class="bf-select" style="max-width:170px;">
+            <option value="All">All Status</option>
             <option value="Pending">Pending</option>
-            <option value="Confirmed">Confirmed</option>
-            <option value="Packed">Packed</option>
-            <option value="Shipped">Shipped</option>
-            <option value="Out for Delivery">Out for Delivery</option>
-            <option value="Delivered">Delivered</option>
-            <option value="Cancelled">Cancelled</option>
+            <option value="Credited">Credited</option>
           </select>
 
         </div>
 
 
-        <!-- Order count -->
+        <!-- Cashback count -->
         <div
-          id="orderCount"
+          id="cashbackCount"
           style="margin-bottom:15px;font-weight:600;">
-          Loading orders...
-        </div>
-
-        <!-- Bulk actions bar -->
-        <div id="bulkBar" style="display:none; align-items:center; gap:10px; margin-bottom:15px; background:var(--paper-dim); padding:10px 14px; border-radius:var(--radius-sm);">
-          <span id="bulkCount" style="font-weight:600; font-size:13px;"></span>
-          <button type="button" id="bulkLabelsBtn" class="bf-btn bf-btn-primary bf-btn-sm">🏷️ Download Labels</button>
-          <button type="button" id="bulkClearBtn" class="bf-btn bf-btn-ghost bf-btn-sm">Clear</button>
+          Loading cashback entries...
         </div>
 
 
-        <!-- Orders -->
+        <!-- Cashback list -->
         <div
-          id="ordersList"
-          style="display:flex; flex-direction:column; gap:14px;">
+          id="cashbackList"
+          style="display:flex; flex-direction:column; gap:12px;">
 
           <div class="bf-card" style="padding:20px;">
-            Loading orders...
+            Loading cashback entries...
           </div>
 
         </div>
@@ -278,28 +283,61 @@
   </div>
 
 
-  <!-- Order Details Modal -->
-  <div id="orderDetailsModal" class="bf-modal-overlay">
+  <!-- Add Cashback Modal -->
+  <div id="cashbackFormModal" class="bf-modal-overlay">
     <div class="bf-modal">
       <button
         type="button"
         class="bf-modal-close"
-        id="orderDetailsCloseBtn"
+        id="cashbackFormCloseBtn"
         aria-label="Close">
         ✕
       </button>
 
-      <h2 class="bf-modal-title">Order Details</h2>
+      <h2 class="bf-modal-title">Add Cashback Entry</h2>
 
-      <div id="orderDetailsContent">
-        Loading...
-      </div>
+      <form id="cashbackForm">
 
+        <div class="bf-field">
+          <label class="bf-label">Customer</label>
+          <select id="cashbackUserSelect" class="bf-select" required>
+            <option value="">Select a user...</option>
+          </select>
+        </div>
+
+        <div class="bf-field">
+          <label class="bf-label">Order Amount (₹) — optional, for auto-calc</label>
+          <input type="number" id="cashbackOrderAmount" class="bf-input" min="0" step="0.01">
+        </div>
+
+        <div class="bf-field">
+          <label class="bf-label">Cashback % — optional, for auto-calc</label>
+          <input type="number" id="cashbackPercent" class="bf-input" min="0" max="100" step="0.01" value="5">
+        </div>
+
+        <div class="bf-field">
+          <label class="bf-label">Cashback Amount (₹)</label>
+          <input type="number" id="cashbackAmount" class="bf-input" min="0" step="0.01" value="0.00" required>
+        </div>
+
+        <div class="bf-field">
+          <label class="bf-label">Note (optional)</label>
+          <input type="text" id="cashbackNote" class="bf-input" placeholder="e.g. Festive cashback offer">
+        </div>
+
+        <button
+          type="submit"
+          id="cashbackFormSubmitBtn"
+          class="bf-btn bf-btn-primary bf-btn-block">
+          Save Cashback
+        </button>
+
+      </form>
     </div>
   </div>
 
 
-  <script type="module" src="orders.js"></script>
+  <script type="module" src="cashback.js"></script>
 
 </body>
 </html>

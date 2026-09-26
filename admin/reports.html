@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Reports — Bestify Admin</title>
+
+  <link rel="stylesheet" href="../theme.css">
+  <link rel="stylesheet" href="../design-system.css">
+  <link rel="stylesheet" href="admin.css">
+</head>
+
+<body class="bf-admin-body">
+
+  <div class="bf-admin-shell">
+
+    <aside class="bf-admin-sidebar">
+
+      <div class="bf-admin-sidebar-brand">
+        <img src="../bestify-logo.jpeg" alt="Bestify Mobile" class="bf-admin-logo-img">
+        <span class="bf-admin-brand-text">Bestify</span>
+      </div>
+
+      <nav class="bf-admin-nav">
+
+        <button class="bf-admin-nav-item" onclick="location.href='index.html'">📊<span>Dashboard</span></button>
+        <button class="bf-admin-nav-item" onclick="location.href='users.html'">👥<span>Users</span></button>
+        <button class="bf-admin-nav-item" onclick="location.href='products.html'">📦<span>Products</span></button>
+        <button class="bf-admin-nav-item" onclick="location.href='orders.html'">🧾<span>Orders</span></button>
+                <div class="bf-admin-nav-group">
+          <button type="button" class="bf-admin-nav-item bf-admin-nav-group-toggle" onclick="this.closest('.bf-admin-nav-group').classList.toggle('open')">🏬<span>Vendor</span><span class="bf-admin-nav-caret">▾</span></button>
+          <div class="bf-admin-nav-submenu">
+            <button type="button" class="bf-admin-nav-subitem" onclick="location.href='vendors.html'">📋 <span>Applications &amp; Directory</span></button>
+            <button type="button" class="bf-admin-nav-subitem" onclick="location.href='pending-products.html'">🕓 <span>Pending Products</span></button>
+            <button type="button" class="bf-admin-nav-subitem" onclick="location.href='commissions.html'">🧮 <span>Commissions</span></button>
+          </div>
+        </div>
+        <button class="bf-admin-nav-item" onclick="location.href='payments.html'">💳<span>Payments</span></button>
+        <button class="bf-admin-nav-item" onclick="location.href='wallets.html'">👛<span>Wallets</span></button>
+        <button class="bf-admin-nav-item" onclick="location.href='withdrawals.html'">🏧<span>Withdrawals</span></button>
+        <button class="bf-admin-nav-item" onclick="location.href='feedback.html'">💬<span>Feedback</span></button>
+        <button class="bf-admin-nav-item" onclick="location.href='alerts.html'">🔴<span>Activity</span></button>
+        <button class="bf-admin-nav-item" onclick="location.href='cashback.html'">💸<span>Cashback</span></button>
+        <button class="bf-admin-nav-item" onclick="location.href='referrals.html'">🔗<span>Referrals</span></button>
+        <button class="bf-admin-nav-item" onclick="location.href='repairs.html'">🔧<span>Repairs</span></button>
+        <button class="bf-admin-nav-item" onclick="location.href='chats.html'">💬<span>Chats</span></button>
+        <button class="bf-admin-nav-item" onclick="location.href='notifications.html'">🔔<span>Notifications</span></button>
+
+        <button class="bf-admin-nav-item bf-admin-nav-active">
+          📈
+          <span>Reports</span>
+        </button>
+
+        <button class="bf-admin-nav-item" onclick="location.href='audit-log.html'">🗂️<span>Audit Log</span></button>
+        <button class="bf-admin-nav-item" onclick="location.href='settings.html'">⚙️<span>Settings</span></button>
+
+      </nav>
+
+    </aside>
+
+
+    <div class="bf-admin-main-col">
+
+      <header class="bf-admin-header">
+        <div class="bf-admin-header-title">
+          <span class="bf-admin-header-brand">Bestify Mobile</span>
+          <span class="bf-admin-header-label">Reports</span>
+        </div>
+      </header>
+
+
+      <main class="bf-admin-content">
+
+        <section class="bf-admin-welcome">
+          <h1>Reports</h1>
+          <p class="bf-admin-welcome-sub">
+            A snapshot of sales, orders and customer growth, computed from your live data.
+          </p>
+        </section>
+
+        <!-- Date range -->
+        <div style="margin-bottom:20px; display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+          <select id="reportRange" class="bf-select" style="max-width:190px;">
+            <option value="7">Last 7 days</option>
+            <option value="30" selected>Last 30 days</option>
+            <option value="90">Last 90 days</option>
+            <option value="365">Last 12 months</option>
+            <option value="all">All time</option>
+          </select>
+          <button type="button" id="exportCsvBtn" class="bf-btn bf-btn-ghost bf-btn-sm">⬇ Export Orders CSV</button>
+        </div>
+
+        <!-- KPI cards -->
+        <div id="reportKpis" style="display:flex; gap:16px; flex-wrap:wrap; margin-bottom:24px;"></div>
+
+        <!-- Order status breakdown -->
+        <div class="bf-card" style="padding:20px; margin-bottom:20px;">
+          <h3 style="margin:0 0 14px;">Orders by Status</h3>
+          <div id="statusBreakdown" style="display:flex; flex-direction:column; gap:10px;"></div>
+        </div>
+
+        <!-- Top products -->
+        <div class="bf-card" style="padding:20px; margin-bottom:20px;">
+          <h3 style="margin:0 0 14px;">Top Selling Products</h3>
+          <div id="topProducts" style="display:flex; flex-direction:column; gap:10px;"></div>
+        </div>
+
+        <!-- New users -->
+        <div class="bf-card" style="padding:20px;">
+          <h3 style="margin:0 0 14px;">New Users (Selected Range)</h3>
+          <div id="newUsersStat" style="font-size:22px; font-weight:700;">—</div>
+        </div>
+
+      </main>
+
+    </div>
+
+  </div>
+
+
+  <script type="module" src="reports.js"></script>
+
+</body>
+</html>

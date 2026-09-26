@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Settings — Bestify Admin</title>
+
+  <link rel="stylesheet" href="../theme.css">
+  <link rel="stylesheet" href="../design-system.css">
+  <link rel="stylesheet" href="admin.css">
+</head>
+
+<body class="bf-admin-body">
+
+  <div class="bf-admin-shell">
+
+    <!-- Sidebar -->
+    <aside class="bf-admin-sidebar">
+
+      <div class="bf-admin-sidebar-brand">
+        <img
+          src="../bestify-logo.jpeg"
+          alt="Bestify Mobile"
+          class="bf-admin-logo-img">
+
+        <span class="bf-admin-brand-text">
+          Bestify
+        </span>
+      </div>
+
+      <nav class="bf-admin-nav">
+
+        <button class="bf-admin-nav-item" onclick="location.href='index.html'">📊<span>Dashboard</span></button>
+        <button class="bf-admin-nav-item" onclick="location.href='users.html'">👥<span>Users</span></button>
+        <button class="bf-admin-nav-item" onclick="location.href='products.html'">📦<span>Products</span></button>
+        <button class="bf-admin-nav-item" onclick="location.href='orders.html'">🧾<span>Orders</span></button>
+                <div class="bf-admin-nav-group">
+          <button type="button" class="bf-admin-nav-item bf-admin-nav-group-toggle" onclick="this.closest('.bf-admin-nav-group').classList.toggle('open')">🏬<span>Vendor</span><span class="bf-admin-nav-caret">▾</span></button>
+          <div class="bf-admin-nav-submenu">
+            <button type="button" class="bf-admin-nav-subitem" onclick="location.href='vendors.html'">📋 <span>Applications &amp; Directory</span></button>
+            <button type="button" class="bf-admin-nav-subitem" onclick="location.href='pending-products.html'">🕓 <span>Pending Products</span></button>
+            <button type="button" class="bf-admin-nav-subitem" onclick="location.href='commissions.html'">🧮 <span>Commissions</span></button>
+          </div>
+        </div>
+        <button class="bf-admin-nav-item" onclick="location.href='payments.html'">💳<span>Payments</span></button>
+        <button class="bf-admin-nav-item" onclick="location.href='wallets.html'">👛<span>Wallets</span></button>
+        <button class="bf-admin-nav-item" onclick="location.href='withdrawals.html'">🏧<span>Withdrawals</span></button>
+        <button class="bf-admin-nav-item" onclick="location.href='feedback.html'">💬<span>Feedback</span></button>
+        <button class="bf-admin-nav-item" onclick="location.href='alerts.html'">🔴<span>Activity</span></button>
+        <button class="bf-admin-nav-item" onclick="location.href='cashback.html'">💸<span>Cashback</span></button>
+        <button class="bf-admin-nav-item" onclick="location.href='referrals.html'">🔗<span>Referrals</span></button>
+        <button class="bf-admin-nav-item" onclick="location.href='repairs.html'">🔧<span>Repairs</span></button>
+        <button class="bf-admin-nav-item" onclick="location.href='chats.html'">💬<span>Chats</span></button>
+        <button class="bf-admin-nav-item" onclick="location.href='notifications.html'">🔔<span>Notifications</span></button>
+        <button class="bf-admin-nav-item" onclick="location.href='reports.html'">📈<span>Reports</span></button>
+        <button class="bf-admin-nav-item" onclick="location.href='audit-log.html'">🗂️<span>Audit Log</span></button>
+
+        <button class="bf-admin-nav-item bf-admin-nav-active">
+          ⚙️
+          <span>Settings</span>
+        </button>
+
+      </nav>
+
+    </aside>
+
+
+    <!-- Main -->
+    <div class="bf-admin-main-col">
+
+      <!-- Header -->
+      <header class="bf-admin-header">
+        <div class="bf-admin-header-title">
+          <span class="bf-admin-header-brand">Bestify Mobile</span>
+          <span class="bf-admin-header-label">Settings</span>
+        </div>
+      </header>
+
+
+      <!-- Content -->
+      <main class="bf-admin-content">
+
+        <section class="bf-admin-welcome">
+          <h1>Store Settings</h1>
+          <p class="bf-admin-welcome-sub">
+            Configure store details, shipping, tax, and checkout behaviour.
+          </p>
+        </section>
+
+        <div id="settingsLoading" class="bf-card" style="padding:20px; margin-bottom:20px;">
+          Loading settings...
+        </div>
+
+        <form id="settingsForm" class="bf-hidden" style="display:flex; flex-direction:column; gap:20px; max-width:640px;">
+
+          <!-- Store Details -->
+          <div class="bf-card" style="padding:20px;">
+
+            <h2 style="font-size:16px; margin:0 0 14px;">Store Details</h2>
+
+            <div class="bf-field">
+              <label class="bf-label">Store Name</label>
+              <input type="text" id="storeName" class="bf-input" required>
+            </div>
+
+            <div class="bf-field">
+              <label class="bf-label">Support Email</label>
+              <input type="email" id="supportEmail" class="bf-input">
+            </div>
+
+            <div class="bf-field">
+              <label class="bf-label">Support Phone</label>
+              <input type="tel" id="supportPhone" class="bf-input">
+            </div>
+
+            <div class="bf-field">
+              <label class="bf-label">Store Address</label>
+              <textarea id="storeAddress" class="bf-textarea" rows="2"></textarea>
+            </div>
+
+          </div>
+
+
+          <!-- Home Page Banners (multi-image carousel) -->
+          <div class="bf-card" style="padding:20px;">
+
+            <h2 style="font-size:16px; margin:0 0 14px;">Home Page Banners</h2>
+            <div style="font-size:12px;opacity:.65;margin-bottom:12px;">Auto-scrolling carousel at the top of the home page (changes every 3 seconds). Add as many as you like. Landscape photos work best (21:9).</div>
+
+            <div id="bannerListWrap" style="display:flex; flex-direction:column; gap:10px; margin-bottom:16px;"></div>
+
+            <div class="bf-field">
+              <label class="bf-label">Add New Banner(s) — select multiple to upload at once</label>
+              <input type="file" id="bannerFile" accept="image/*" multiple>
+            </div>
+
+            <button type="button" id="uploadBannerBtn" class="bf-btn bf-btn-primary" style="width:auto;">+ Add Banner(s)</button>
+            <span id="bannerUploadStatus" style="font-size:12px; margin-left:10px;"></span>
+
+          </div>
+
+
+          <!-- Shop Photos (Visit Us section, auto-scrolling carousel) -->
+          <div class="bf-card" style="padding:20px;">
+
+            <h2 style="font-size:16px; margin:0 0 14px;">Shop Photos (Visit Us section)</h2>
+            <div style="font-size:12px;opacity:.65;margin-bottom:12px;">Auto-scrolling photo strip in the "Visit Us / Connect" section near the bottom of the home page (changes every 3 seconds).</div>
+
+            <div id="shopPhotoListWrap" style="display:flex; flex-direction:column; gap:10px; margin-bottom:16px;"></div>
+
+            <div class="bf-field">
+              <label class="bf-label">Add New Photo(s) — select multiple to upload at once</label>
+              <input type="file" id="shopPhotoFile" accept="image/*" multiple>
+            </div>
+
+            <button type="button" id="uploadShopPhotoBtn" class="bf-btn bf-btn-primary" style="width:auto;">+ Add Photo(s)</button>
+            <span id="shopPhotoUploadStatus" style="font-size:12px; margin-left:10px;"></span>
+
+          </div>
+
+
+          <!-- Shipping & Tax -->
+          <div class="bf-card" style="padding:20px;">
+
+            <h2 style="font-size:16px; margin:0 0 14px;">Shipping &amp; Tax</h2>
+
+            <div class="bf-field">
+              <label class="bf-label">Standard Shipping Fee (₹)</label>
+              <input type="number" id="shippingFee" class="bf-input" min="0" step="0.01">
+            </div>
+
+            <div class="bf-field">
+              <label class="bf-label">Free Shipping Threshold (₹)</label>
+              <input type="number" id="freeShippingThreshold" class="bf-input" min="0" step="0.01">
+              <div style="font-size:12px; opacity:.65; margin-top:4px;">
+                Orders at or above this amount ship free. Leave 0 to disable.
+              </div>
+            </div>
+
+            <div class="bf-field">
+              <label class="bf-label">Tax Rate (%)</label>
+              <input type="number" id="taxRate" class="bf-input" min="0" max="100" step="0.01">
+            </div>
+
+          </div>
+
+
+          <!-- Cashback Rewards section removed — rewards (cash or
+               coupon) are now given manually per order by the admin,
+               from the order's detail view in Orders, not a global
+               rate. See admin/orders.js. -->
+
+
+          <!-- Checkout Options -->
+          <div class="bf-card" style="padding:20px;">
+
+            <h2 style="font-size:16px; margin:0 0 14px;">Checkout Options</h2>
+
+            <label style="display:flex; align-items:center; gap:10px; margin-bottom:12px; cursor:pointer;">
+              <input type="checkbox" id="codEnabled" style="width:18px; height:18px;">
+              <span>Cash on Delivery (COD) enabled</span>
+            </label>
+
+            <label style="display:flex; align-items:center; gap:10px; margin-bottom:12px; cursor:pointer;">
+              <input type="checkbox" id="onlinePaymentsEnabled" style="width:18px; height:18px;">
+              <span>Online payments enabled</span>
+            </label>
+
+            <label style="display:flex; align-items:center; gap:10px; cursor:pointer;">
+              <input type="checkbox" id="maintenanceMode" style="width:18px; height:18px;">
+              <span>Maintenance mode (storefront shows a "closed" notice)</span>
+            </label>
+
+          </div>
+
+
+          <button type="submit" id="saveSettingsBtn" class="bf-btn bf-btn-primary" style="align-self:flex-start;">
+            Save Settings
+          </button>
+
+          <div id="settingsMeta" style="font-size:12px; opacity:.6;"></div>
+
+        </form>
+
+      </main>
+
+    </div>
+
+  </div>
+
+
+  <script type="module" src="settings.js"></script>
+
+</body>
+</html>

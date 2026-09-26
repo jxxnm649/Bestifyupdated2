@@ -1,0 +1,350 @@
+/* ============================================================
+   Admin home — orders panel.
+   All classes prefixed "hop-" (home orders panel) so nothing here
+   can collide with admin.css or design-system.css.
+   ============================================================ */
+
+/* ---------- filter tabs ---------- */
+.hop-tabs {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  margin-bottom: 12px;
+  scrollbar-width: none;
+}
+.hop-tabs::-webkit-scrollbar { display: none; }
+
+.hop-tab-btn {
+  white-space: nowrap;
+  width: auto;
+  margin: 0;
+  padding: 6px 12px;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 20px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #475569;
+  cursor: pointer;
+  transition: all .2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  flex-shrink: 0;
+}
+.hop-tab-btn .hop-badge {
+  background: #e2e8f0;
+  color: #334155;
+  padding: 1px 6px;
+  border-radius: 10px;
+  font-size: 11px;
+}
+.hop-tab-btn.active {
+  background: #2563eb;
+  color: #ffffff;
+  border-color: #2563eb;
+}
+.hop-tab-btn.active .hop-badge {
+  background: #ffffff;
+  color: #2563eb;
+}
+
+/* ---------- search ---------- */
+.hop-search { position: relative; margin-bottom: 12px; }
+.hop-search i {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+  font-size: 13px;
+}
+.hop-search-input {
+  width: 100%;
+  padding: 9px 12px 9px 34px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 13.5px;
+  outline: none;
+}
+
+/* ---------- bulk bar ---------- */
+.hop-bulk-bar {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 6px;
+  padding: 8px 10px;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.hop-select-all {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #1e40af;
+  cursor: pointer;
+}
+.hop-select-all input { width: auto; margin: 0; }
+
+.hop-bulk-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+.hop-bulk-btn {
+  width: auto;
+  margin: 0;
+  background: #ffffff;
+  border: 1px solid #93c5fd;
+  color: #1e40af;
+  padding: 5px 9px;
+  border-radius: 4px;
+  font-size: 11.5px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.hop-bulk-btn.accept {
+  background: #16a34a;
+  color: #fff;
+  border-color: #16a34a;
+}
+
+/* ---------- order cards ---------- */
+.hop-list { display: flex; flex-direction: column; gap: 14px; }
+
+.hop-empty {
+  text-align: center;
+  padding: 36px 20px;
+  color: #64748b;
+  font-weight: 600;
+  background: #f8fafc;
+  border: 1px dashed #cbd5e1;
+  border-radius: 8px;
+}
+
+.hop-card {
+  border: 1.5px solid #cbd5e1;
+  border-radius: 8px;
+  background: #ffffff;
+  overflow: hidden;
+}
+.hop-card.accepted { border-color: #22c55e; box-shadow: 0 0 0 1px #22c55e; }
+
+.hop-card-top {
+  padding: 8px 12px;
+  background: #f8fafc;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #334155;
+}
+.hop-card-top-left { display: flex; align-items: center; gap: 8px; }
+.hop-card-top-left input { width: auto; margin: 0; }
+
+.hop-accept-switch {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  padding: 3px 9px;
+  border-radius: 12px;
+  font-size: 11.5px;
+  color: #15803d;
+  cursor: pointer;
+  user-select: none;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.hop-accept-switch input { width: auto; margin: 0; accent-color: #16a34a; }
+.hop-accept-switch.done { background: #dcfce7; }
+
+.hop-card-user {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-bottom: 1px dashed #e2e8f0;
+}
+.hop-user-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: #475569;
+  flex-shrink: 0;
+}
+.hop-user-name { font-weight: 700; font-size: 13.5px; color: #0f172a; }
+
+.hop-card-body { padding: 12px; display: flex; gap: 12px; }
+.hop-product-img {
+  width: 76px;
+  height: 76px;
+  border-radius: 6px;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+.hop-product-details {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-size: 12.5px;
+  color: #334155;
+  flex: 1;
+  min-width: 0;
+}
+.hop-product-title { font-weight: 700; font-size: 13.5px; color: #0f172a; }
+.hop-price-line { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.hop-selling-price { font-weight: 800; color: #16a34a; font-size: 14px; }
+
+.hop-pay-badge {
+  display: inline-block;
+  padding: 1px 6px;
+  background: #fef3c7;
+  color: #d97706;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+}
+.hop-pay-badge.paid { background: #dcfce7; color: #15803d; }
+
+.hop-status-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-left: 4px;
+}
+.hop-st-pending { background: #fef3c7; color: #b45309; }
+.hop-st-confirmed { background: #dcfce7; color: #15803d; }
+.hop-st-packed { background: #e0f2fe; color: #0369a1; }
+.hop-st-shipped { background: #e0e7ff; color: #4338ca; }
+.hop-st-outfordelivery { background: #ffedd5; color: #c2410c; }
+.hop-st-delivered { background: #d1fae5; color: #047857; }
+.hop-st-cancelled { background: #fee2e2; color: #b91c1c; }
+
+/* ---------- card footer ---------- */
+.hop-card-footer {
+  border-top: 1px solid #e2e8f0;
+  padding: 8px 12px;
+  background: #fafafa;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.hop-phone { font-size: 12.5px; font-weight: 700; color: #475569; }
+.hop-icons { display: flex; gap: 6px; }
+
+.hop-icon-btn {
+  width: 32px;
+  height: 32px;
+  margin: 0;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 13px;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+.hop-icon-btn.sms { color: #9333ea; }
+.hop-icon-btn.phone { color: #0284c7; }
+.hop-icon-btn.whatsapp { color: #25d366; }
+.hop-icon-btn.update {
+  color: #ea580c;
+  border-color: #fdba74;
+  background: #fff7ed;
+}
+
+/* ---------- modal ---------- */
+.hop-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, .5);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 16px;
+}
+.hop-modal-overlay.open { display: flex; }
+
+.hop-modal-card {
+  background: #ffffff;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 420px;
+  padding: 20px;
+  box-shadow: 0 10px 25px rgba(0,0,0,.2);
+  animation: hopFadeIn .2s ease-in-out;
+}
+@keyframes hopFadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hop-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 8px;
+}
+.hop-modal-title { font-size: 17px; font-weight: 800; color: #0f172a; }
+.hop-close-btn {
+  width: auto;
+  margin: 0;
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #64748b;
+  cursor: pointer;
+}
+
+.hop-form-group { margin-bottom: 12px; display: flex; flex-direction: column; gap: 4px; }
+.hop-form-group label { font-size: 12.5px; font-weight: 700; color: #475569; }
+.hop-form-group select,
+.hop-form-group input {
+  padding: 8px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 13.5px;
+  outline: none;
+}
+
+.hop-save-btn {
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  border-radius: 6px;
+  width: 100%;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 8px;
+}

@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Products — Bestify Admin</title>
+
+  <link rel="stylesheet" href="../theme.css">
+  <link rel="stylesheet" href="../design-system.css">
+  <link rel="stylesheet" href="admin.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="bf-admin-body">
+
+  <div class="bf-admin-shell">
+
+    <!-- Sidebar -->
+    <aside class="bf-admin-sidebar">
+
+      <div class="bf-admin-sidebar-brand">
+        <img
+          src="../bestify-logo.jpeg"
+          alt="Bestify Mobile"
+          class="bf-admin-logo-img">
+
+        <span class="bf-admin-brand-text">
+          Bestify
+        </span>
+      </div>
+
+      <nav class="bf-admin-nav">
+
+        <button
+          class="bf-admin-nav-item"
+          onclick="location.href='index.html'">
+          📊
+          <span>Dashboard</span>
+        </button>
+
+        <button
+          class="bf-admin-nav-item"
+          onclick="location.href='users.html'">
+          👥
+          <span>Users</span>
+        </button>
+
+        <button
+          class="bf-admin-nav-item bf-admin-nav-active">
+          📦
+          <span>Products</span>
+        </button>
+
+        <button
+          class="bf-admin-nav-item"
+          onclick="location.href='orders.html'">
+          🧾
+          <span>Orders</span>
+        </button>
+
+        <div class="bf-admin-nav-group">
+          <button
+            type="button"
+            class="bf-admin-nav-item bf-admin-nav-group-toggle"
+            onclick="this.closest('.bf-admin-nav-group').classList.toggle('open')">
+            🏬
+            <span>Vendor</span>
+            <span class="bf-admin-nav-caret">▾</span>
+          </button>
+          <div class="bf-admin-nav-submenu">
+            <button
+              type="button"
+              class="bf-admin-nav-subitem"
+              onclick="location.href='vendors.html'">
+              📋 <span>Applications &amp; Directory</span>
+            </button>
+            <button
+              type="button"
+              class="bf-admin-nav-subitem"
+              onclick="location.href='pending-products.html'">
+              🕓 <span>Pending Products</span>
+            </button>
+            <button
+              type="button"
+              class="bf-admin-nav-subitem"
+              onclick="location.href='commissions.html'">
+              🧮 <span>Commissions</span>
+            </button>
+          </div>
+        </div>
+
+        <button
+          class="bf-admin-nav-item"
+          onclick="location.href='payments.html'">
+          💳
+          <span>Payments</span>
+        </button>
+
+        <button
+          class="bf-admin-nav-item"
+          onclick="location.href='wallets.html'">
+          👛
+          <span>Wallets</span>
+        </button>
+
+        <button
+          class="bf-admin-nav-item"
+          onclick="location.href='withdrawals.html'">
+          🏧
+          <span>Withdrawals</span>
+        </button>
+
+        <button
+          class="bf-admin-nav-item" onclick="location.href='feedback.html'">
+          💬
+          <span>Feedback</span>
+        </button>
+
+        <button
+          class="bf-admin-nav-item"
+          onclick="location.href='alerts.html'">
+          🔴
+          <span>Activity</span>
+        </button>
+
+        <button
+          class="bf-admin-nav-item"
+          onclick="location.href='cashback.html'">
+          💸
+          <span>Cashback</span>
+        </button>
+
+        <button
+          class="bf-admin-nav-item"
+          onclick="location.href='referrals.html'">
+          🔗
+          <span>Referrals</span>
+        </button>
+
+        <button
+          class="bf-admin-nav-item"
+          onclick="location.href='repairs.html'">
+          🔧
+          <span>Repairs</span>
+        </button>
+
+        <button
+          class="bf-admin-nav-item"
+          onclick="location.href='chats.html'">
+          💬
+          <span>Chats</span>
+        </button>
+
+        <button
+          class="bf-admin-nav-item"
+          onclick="location.href='notifications.html'">
+          🔔
+          <span>Notifications</span>
+        </button>
+
+        <button
+          class="bf-admin-nav-item"
+          onclick="location.href='reports.html'">
+          📈
+          <span>Reports</span>
+        </button>
+
+        <button
+          class="bf-admin-nav-item"
+          onclick="location.href='audit-log.html'">
+          🗂️
+          <span>Audit Log</span>
+        </button>
+
+        <button
+          class="bf-admin-nav-item"
+          onclick="location.href='settings.html'">
+          ⚙️
+          <span>Settings</span>
+        </button>
+
+      </nav>
+
+    </aside>
+
+
+    <!-- Main -->
+    <div class="bf-admin-main-col">
+
+      <!-- Header -->
+      <header class="bf-admin-header">
+
+        <button
+          type="button"
+          class="bf-btn bf-btn-ghost bf-btn-sm"
+          onclick="location.href='index.html'"
+          aria-label="Back">
+          🔙 Back
+        </button>
+
+        <div class="bf-admin-header-title">
+
+          <span class="bf-admin-header-brand">
+            Bestify Mobile
+          </span>
+
+          <span class="bf-admin-header-label">
+            Products
+          </span>
+
+        </div>
+
+      </header>
+
+
+      <!-- Content -->
+      <main class="bf-admin-content">
+
+        <div class="flex items-center justify-between flex-wrap gap-3 mb-5">
+          <div>
+            <h1 class="text-2xl font-bold text-slate-900">Inventory Management</h1>
+            <p class="text-xs text-slate-500 mt-0.5">Manage products with per-color-variant photos, pricing, and stock.</p>
+          </div>
+          <div class="flex gap-2">
+            <button type="button" id="tabInventoryBtn" class="px-4 py-2 rounded-xl text-sm font-semibold bg-slate-900 text-white">Inventory</button>
+            <button type="button" id="tabUploadBtn" class="px-4 py-2 rounded-xl text-sm font-semibold bg-slate-100 text-slate-600">+ Add Product</button>
+          </div>
+        </div>
+
+        <!-- ============ INVENTORY VIEW ============ -->
+        <section id="view-inventory">
+
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-3.5 mb-4 flex flex-col md:flex-row gap-3 justify-between items-center">
+            <div class="relative w-full md:w-96">
+              <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+              <input type="text" id="inventory-search" placeholder="Search title, color, SKU..."
+                class="w-full pl-9 pr-3 py-2 rounded-xl border border-slate-300 focus:ring-2 focus:ring-brand-500 text-xs">
+            </div>
+            <div class="flex items-center gap-2 w-full md:w-auto overflow-x-auto pb-1 md:pb-0">
+              <select id="filter-category" class="px-3 py-1.5 rounded-xl border border-slate-300 text-xs bg-white font-medium text-slate-700">
+                <option value="ALL">All Categories</option>
+              </select>
+              <select id="filter-status" class="px-3 py-1.5 rounded-xl border border-slate-300 text-xs bg-white font-medium text-slate-700">
+                <option value="ALL">All Status</option>
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="inventory-list-container" class="space-y-3">
+            <div class="text-center py-10 text-slate-400 text-sm">Loading products…</div>
+          </div>
+
+          <div id="empty-state" class="hidden text-center py-12 bg-white rounded-2xl border border-dashed border-slate-300">
+            <i class="fa-solid fa-box-open text-4xl text-slate-300 mb-2"></i>
+            <h3 class="text-base font-semibold text-slate-700">No Inventory Items Found</h3>
+            <p class="text-xs text-slate-400 max-w-md mx-auto mt-0.5 mb-3">No products match your current search or filter.</p>
+          </div>
+
+        </section>
+
+        <!-- ============ ADD PRODUCT VIEW ============ -->
+        <section id="view-upload" class="hidden">
+          <form id="product-form" class="space-y-6">
+
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-6">
+
+              <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-4">
+                <i class="fa-solid fa-box text-brand-600"></i> Base Product Information
+              </h3>
+
+              <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="space-y-5">
+                  <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-2">Category *</label>
+                    <input type="text" id="form-category" required list="categoryList" placeholder="e.g. Mobile Accessories"
+                      class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-brand-500 text-sm">
+                    <datalist id="categoryList"></datalist>
+                  </div>
+
+                  <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-2">Product Title *</label>
+                    <input type="text" id="form-title" required placeholder="e.g. Wireless Neckband"
+                      class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-brand-500 text-sm">
+                  </div>
+
+                  <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-1">Main Base Images (up to 4)</label>
+                    <p class="text-xs text-slate-400 mb-2.5">Used as fallback if a color variant has no photo of its own.</p>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3" id="base-image-slots"></div>
+                  </div>
+                </div>
+
+                <div class="space-y-5">
+                  <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-2">Description</label>
+                    <textarea id="form-description" rows="2" placeholder="Product overview..."
+                      class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-brand-500 text-sm resize-none"></textarea>
+                  </div>
+                  <div class="grid grid-cols-2 gap-4">
+                    <div>
+                      <label class="block text-sm font-semibold text-slate-700 mb-2">Warranty</label>
+                      <input type="text" id="form-warranty" placeholder="e.g. 6 Month Warranty"
+                        class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-brand-500 text-sm">
+                    </div>
+                    <div>
+                      <label class="block text-sm font-semibold text-slate-700 mb-2">Return Policy</label>
+                      <input type="text" id="form-return-policy" placeholder="e.g. 7 Days Return"
+                        class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-brand-500 text-sm">
+                    </div>
+                  </div>
+                  <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-2">Size / Weight</label>
+                    <input type="text" id="form-sizeweight" placeholder="e.g. Free Size"
+                      class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-brand-500 text-sm">
+                  </div>
+                  <div class="grid grid-cols-2 gap-4">
+                    <div>
+                      <label class="block text-sm font-semibold text-slate-700 mb-2">Manufacturer</label>
+                      <input type="text" id="form-manufacturer" placeholder="e.g. Bestify"
+                        class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-brand-500 text-sm">
+                    </div>
+                    <div>
+                      <label class="block text-sm font-semibold text-slate-700 mb-2">Details / Specs</label>
+                      <input type="text" id="form-details" placeholder="e.g. Bluetooth 5.3"
+                        class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-brand-500 text-sm">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="pt-6 border-t border-slate-100">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                  <div>
+                    <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                      <i class="fa-solid fa-palette text-brand-600"></i> Color Variants &amp; Separate Rates
+                    </h3>
+                    <p class="text-xs text-slate-500 mt-0.5">Each color has its own photo, price, MRP, and stock count.</p>
+                  </div>
+                  <button type="button" id="addVariantBtn"
+                    class="px-5 py-2.5 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-xs font-bold shadow-md flex items-center gap-2">
+                    <i class="fa-solid fa-plus text-sm"></i> Add Color Variant
+                  </button>
+                </div>
+
+                <div id="variant-rows-container" class="space-y-4"></div>
+
+                <div id="no-variants-notice" class="text-center py-8 px-4 bg-slate-50 rounded-2xl border-2 border-dashed border-slate-200">
+                  <i class="fa-solid fa-layer-group text-3xl text-slate-300 mb-2 block"></i>
+                  <p class="text-sm font-semibold text-slate-600">No Color Variants Added Yet</p>
+                  <p class="text-xs text-slate-400 mt-1 max-w-sm mx-auto">Click <b>"Add Color Variant"</b> above — at least one is required so the product has a price and stock count.</p>
+                </div>
+              </div>
+
+              <div class="pt-6 border-t border-slate-100 flex items-center justify-end gap-4">
+                <button type="button" id="resetFormBtn" class="px-6 py-3 rounded-xl border border-slate-300 text-slate-600 hover:bg-slate-100 font-semibold text-sm">Reset Form</button>
+                <button type="submit" id="submitProductBtn" class="px-8 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-semibold text-sm shadow-lg flex items-center gap-2">
+                  <span>Save Product &amp; Variants</span> <i class="fa-solid fa-arrow-right"></i>
+                </button>
+              </div>
+
+            </div>
+          </form>
+        </section>
+
+      </main>
+
+    </div>
+
+  </div>
+
+
+  <!-- Sales Metrics Modal -->
+  <div id="sales-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-100">
+      <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+        <h3 class="font-bold text-slate-900 text-lg flex items-center gap-2"><i class="fa-solid fa-chart-line text-emerald-600"></i> Sales Metrics</h3>
+        <button type="button" id="closeSalesModalBtn" class="text-slate-400 hover:text-slate-600 text-xl font-bold">&times;</button>
+      </div>
+      <div class="py-6 space-y-4">
+        <div class="flex items-center gap-4 bg-slate-50 p-3 rounded-xl border border-slate-100">
+          <img id="sales-modal-img" class="w-16 h-16 rounded-lg object-cover border" src="" alt="">
+          <div>
+            <h4 id="sales-modal-title" class="font-bold text-slate-800 text-base leading-tight"></h4>
+            <span id="sales-modal-variant-info" class="text-xs text-brand-600 font-semibold block mt-0.5"></span>
+            <span id="sales-modal-sku" class="text-[11px] text-slate-400 font-mono"></span>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div class="bg-emerald-50 border border-emerald-100 p-4 rounded-xl text-center">
+            <span class="text-xs text-emerald-600 font-semibold block uppercase tracking-wider">Units Sold</span>
+            <span id="sales-modal-units" class="text-2xl font-black text-emerald-700 mt-1 block">0</span>
+          </div>
+          <div class="bg-brand-50 border border-brand-100 p-4 rounded-xl text-center">
+            <span class="text-xs text-brand-600 font-semibold block uppercase tracking-wider">Total Revenue</span>
+            <span id="sales-modal-revenue" class="text-2xl font-black text-brand-700 mt-1 block">₹0</span>
+          </div>
+        </div>
+        <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 text-xs text-slate-500 space-y-1">
+          <div class="flex justify-between"><span>Variant Selling Price:</span> <span id="sales-modal-price" class="font-semibold text-slate-700">₹0</span></div>
+          <div class="flex justify-between"><span>Stock Remaining:</span> <span id="sales-modal-stock" class="font-semibold text-slate-700">0 units</span></div>
+        </div>
+        <p class="text-[11px] text-slate-400">Counted from delivered orders only.</p>
+      </div>
+      <button type="button" id="closeSalesModalBtn2" class="w-full py-2.5 bg-slate-800 text-white font-semibold rounded-xl hover:bg-slate-700 text-sm">Close</button>
+    </div>
+  </div>
+
+  <!-- Edit Modal -->
+  <div id="edit-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-xl w-full p-6 shadow-2xl border border-slate-100 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+        <h3 class="font-bold text-slate-900 text-lg flex items-center gap-2"><i class="fa-solid fa-pen-to-square text-brand-600"></i> Edit Product &amp; Variant</h3>
+        <button type="button" id="closeEditModalBtn" class="text-slate-400 hover:text-slate-600 text-xl font-bold">&times;</button>
+      </div>
+
+      <form id="edit-form" class="py-4 space-y-4">
+        <input type="hidden" id="edit-product-id">
+        <input type="hidden" id="edit-variant-index">
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Product Title</label>
+            <input type="text" id="edit-title" required class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Status</label>
+            <select id="edit-status" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm">
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
+          <h4 id="edit-variant-header-title" class="text-xs font-bold text-brand-600 uppercase tracking-wider">Editing Variant</h4>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div>
+              <label class="block text-[11px] font-semibold text-slate-600 mb-1">Color Name</label>
+              <input type="text" id="edit-var-color" required class="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 text-xs">
+            </div>
+            <div>
+              <label class="block text-[11px] font-semibold text-slate-600 mb-1">Price (₹)</label>
+              <input type="number" step="0.01" id="edit-var-price" required class="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 text-xs">
+            </div>
+            <div>
+              <label class="block text-[11px] font-semibold text-slate-600 mb-1">MRP (₹)</label>
+              <input type="number" step="0.01" id="edit-var-mrp" required class="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 text-xs">
+            </div>
+            <div>
+              <label class="block text-[11px] font-semibold text-slate-600 mb-1">Stock</label>
+              <input type="number" id="edit-var-stock" min="0" required class="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 text-xs font-bold text-brand-600">
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-4 border-t border-slate-100 flex gap-3 justify-end">
+          <button type="button" id="cancelEditBtn" class="px-4 py-2 rounded-xl border border-slate-300 text-slate-600 text-sm font-semibold">Cancel</button>
+          <button type="submit" class="px-6 py-2 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold shadow-md">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <script type="module" src="products.js"></script>
+
+</body>
+</html>

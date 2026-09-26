@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Orders — Bestify Admin</title>
+  <title>Payments & Refunds — Bestify Admin</title>
 
   <link rel="stylesheet" href="../theme.css">
   <link rel="stylesheet" href="../design-system.css">
@@ -53,7 +53,8 @@
         </button>
 
         <button
-          class="bf-admin-nav-item bf-admin-nav-active">
+          class="bf-admin-nav-item"
+          onclick="location.href='orders.html'">
           🧾
           <span>Orders</span>
         </button>
@@ -90,8 +91,7 @@
         </div>
 
         <button
-          class="bf-admin-nav-item"
-          onclick="location.href='payments.html'">
+          class="bf-admin-nav-item bf-admin-nav-active">
           💳
           <span>Payments</span>
         </button>
@@ -197,7 +197,7 @@
           </span>
 
           <span class="bf-admin-header-label">
-            Orders
+            Payments &amp; Refunds
           </span>
 
         </div>
@@ -211,62 +211,94 @@
         <section class="bf-admin-welcome">
 
           <h1>
-            Orders
+            Payments &amp; Refunds
           </h1>
 
           <p class="bf-admin-welcome-sub">
-            Track and update every order placed on Bestify.
+            Track order payments and manage refunds.
           </p>
 
         </section>
 
 
-        <!-- Search + filter -->
-        <div style="margin-bottom:20px; display:flex; gap:10px; flex-wrap:wrap;">
-
-          <input
-            type="search"
-            id="orderSearch"
-            class="bf-input"
-            placeholder="Search by customer name, mobile, or order ID..."
-            style="flex:1; min-width:220px; max-width:500px;">
-
-          <select id="orderStatusFilter" class="bf-select" style="max-width:180px;">
-            <option value="All Status">All Status</option>
-            <option value="Pending">Pending</option>
-            <option value="Confirmed">Confirmed</option>
-            <option value="Packed">Packed</option>
-            <option value="Shipped">Shipped</option>
-            <option value="Out for Delivery">Out for Delivery</option>
-            <option value="Delivered">Delivered</option>
-            <option value="Cancelled">Cancelled</option>
-          </select>
-
-        </div>
-
-
-        <!-- Order count -->
+        <!-- Summary cards -->
         <div
-          id="orderCount"
-          style="margin-bottom:15px;font-weight:600;">
-          Loading orders...
-        </div>
-
-        <!-- Bulk actions bar -->
-        <div id="bulkBar" style="display:none; align-items:center; gap:10px; margin-bottom:15px; background:var(--paper-dim); padding:10px 14px; border-radius:var(--radius-sm);">
-          <span id="bulkCount" style="font-weight:600; font-size:13px;"></span>
-          <button type="button" id="bulkLabelsBtn" class="bf-btn bf-btn-primary bf-btn-sm">🏷️ Download Labels</button>
-          <button type="button" id="bulkClearBtn" class="bf-btn bf-btn-ghost bf-btn-sm">Clear</button>
+          id="paymentsSummary"
+          style="display:flex; gap:16px; flex-wrap:wrap; margin-bottom:20px;">
         </div>
 
 
-        <!-- Orders -->
-        <div
-          id="ordersList"
-          style="display:flex; flex-direction:column; gap:14px;">
+        <!-- Tabs -->
+        <div style="display:flex; gap:8px; margin-bottom:20px;">
+          <button type="button" id="paymentsTabBtn" class="bf-btn bf-btn-primary bf-btn-sm">Payments</button>
+          <button type="button" id="refundsTabBtn" class="bf-btn bf-btn-ghost bf-btn-sm">Refunds</button>
+        </div>
 
-          <div class="bf-card" style="padding:20px;">
-            Loading orders...
+
+        <!-- Payments panel -->
+        <div id="paymentsPanel">
+
+          <div style="margin-bottom:20px; display:flex; gap:10px; flex-wrap:wrap;">
+
+            <input
+              type="search"
+              id="paymentSearch"
+              class="bf-input"
+              placeholder="Search by customer, mobile, or order ID..."
+              style="flex:1; min-width:220px; max-width:500px;">
+
+            <select id="paymentMethodFilter" class="bf-select" style="max-width:160px;">
+              <option value="All">All Methods</option>
+              <option value="cod">Cash on Delivery</option>
+              <option value="online">Paid Online</option>
+            </select>
+
+            <select id="paymentStatusFilter" class="bf-select" style="max-width:160px;">
+              <option value="All">All Status</option>
+              <option value="Pending">Pending</option>
+              <option value="Paid">Paid</option>
+              <option value="Failed">Failed</option>
+              <option value="Refunded">Refunded</option>
+            </select>
+
+          </div>
+
+          <div
+            id="paymentsCount"
+            style="margin-bottom:15px;font-weight:600;">
+            Loading payments...
+          </div>
+
+          <div
+            id="paymentsList"
+            style="display:flex; flex-direction:column; gap:12px;">
+
+            <div class="bf-card" style="padding:20px;">
+              Loading payments...
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- Refunds panel -->
+        <div id="refundsPanel" style="display:none;">
+
+          <div
+            id="refundsCount"
+            style="margin-bottom:15px;font-weight:600;">
+            Loading refunds...
+          </div>
+
+          <div
+            id="refundsList"
+            style="display:flex; flex-direction:column; gap:12px;">
+
+            <div class="bf-card" style="padding:20px;">
+              Loading refunds...
+            </div>
+
           </div>
 
         </div>
@@ -278,28 +310,49 @@
   </div>
 
 
-  <!-- Order Details Modal -->
-  <div id="orderDetailsModal" class="bf-modal-overlay">
+  <!-- Refund Modal -->
+  <div id="refundFormModal" class="bf-modal-overlay">
     <div class="bf-modal">
       <button
         type="button"
         class="bf-modal-close"
-        id="orderDetailsCloseBtn"
+        id="refundFormCloseBtn"
         aria-label="Close">
         ✕
       </button>
 
-      <h2 class="bf-modal-title">Order Details</h2>
+      <h2 class="bf-modal-title">Process Refund</h2>
 
-      <div id="orderDetailsContent">
-        Loading...
-      </div>
+      <form id="refundForm">
 
+        <div class="bf-field">
+          <label class="bf-label">Order</label>
+          <input type="text" id="refundOrderLabel" class="bf-input" disabled>
+        </div>
+
+        <div class="bf-field">
+          <label class="bf-label">Refund Amount (₹)</label>
+          <input type="number" id="refundAmount" class="bf-input" min="0" required>
+        </div>
+
+        <div class="bf-field">
+          <label class="bf-label">Reason</label>
+          <textarea id="refundReason" class="bf-textarea" required></textarea>
+        </div>
+
+        <button
+          type="submit"
+          id="refundFormSubmitBtn"
+          class="bf-btn bf-btn-primary bf-btn-block">
+          Confirm Refund
+        </button>
+
+      </form>
     </div>
   </div>
 
 
-  <script type="module" src="orders.js"></script>
+  <script type="module" src="payments.js"></script>
 
 </body>
 </html>
