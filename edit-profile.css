@@ -1,0 +1,57 @@
+.profile-completion-card{
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  margin-bottom: 14px;
+}
+.profile-completion-row{
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--ink-soft);
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+.profile-completion-bar{
+  height: 8px;
+  border-radius: 999px;
+  background: var(--paper-dim);
+  overflow: hidden;
+}
+.profile-completion-fill{
+  height: 100%;
+  background: linear-gradient(90deg, var(--marigold), var(--leaf));
+  border-radius: 999px;
+  transition: width .3s ease;
+}
+
+.profile-pic-wrap{
+  position: relative;
+  width: 92px;
+  height: 92px;
+  margin: 0 auto 18px;
+}
+.profile-pic-img{
+  width: 92px;
+  height: 92px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--paper-dim);
+  border: 2px solid var(--line);
+}
+.profile-pic-edit{
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--marigold-deep);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 14px;
+  border: 2px solid var(--card);
+}

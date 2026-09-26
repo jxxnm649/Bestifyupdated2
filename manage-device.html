@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Device</title>
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="design-system.css">
+  <link rel="stylesheet" href="static-page.css">
+</head>
+<body class="bf-has-nav">
+
+  <div class="container sp-container">
+
+    <a href="profile.html" class="sp-back">← Back to Account</a>
+    <h1>Manage Device 📱</h1>
+    <p style="font-size:13px;color:var(--ink-soft);margin-bottom:16px;">Devices where you're currently logged in to Bestify.</p>
+
+    <div id="deviceList" style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px;">
+      <div class="bf-card" style="padding:16px;">Loading...</div>
+    </div>
+
+    <button type="button" id="logoutAllBtn" class="bf-btn bf-btn-ghost bf-btn-block" style="color:#c62828;">
+      🚪 Logout of All Devices
+    </button>
+    <p style="font-size:11px;color:var(--ink-soft);text-align:center;margin-top:8px;">
+      This signs you out everywhere, including this device.
+    </p>
+
+  </div>
+
+  <nav class="bottom-nav">
+    <a href="home.html"><span>🏠</span><p>Home</p></a>
+    <a href="wishlist.html"><span>😊</span><p>Liked</p></a>
+    <a href="orders.html"><span>📦</span><p>Orders</p></a>
+    <a href="profile.html"><span>🏪</span><p>My Account</p></a>
+  </nav>
+
+  <script type="module" src="manage-device.js"></script>
+
+</body>
+</html>

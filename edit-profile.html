@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Profile</title>
+
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="profile.css">
+</head>
+<body class="bf-has-nav">
+
+<div class="container profile-container">
+
+<a href="profile.html" style="text-decoration:none;color:var(--ink-soft);font-size:14px;display:inline-block;margin-bottom:10px;">← Back to Account</a>
+
+<h1>Edit Profile 👤</h1>
+
+<!-- Completion -->
+<div class="profile-completion-card">
+  <div class="profile-completion-row">
+    <span>Profile Completion</span>
+    <span id="completionPercent">0%</span>
+  </div>
+  <div class="profile-completion-bar">
+    <div id="completionFill" class="profile-completion-fill" style="width:0%;"></div>
+  </div>
+</div>
+
+<!-- Profile picture -->
+<div class="profile-pic-wrap">
+  <img id="profilePicPreview" src="" alt="Profile picture" class="profile-pic-img">
+  <label for="profilePicInput" class="profile-pic-edit">📷</label>
+  <button type="button" id="profilePicDeleteBtn" class="profile-pic-delete" title="Remove photo">🗑️</button>
+  <input type="file" id="profilePicInput" accept="image/*" style="display:none;">
+</div>
+
+<form id="profileForm" class="checkout-form">
+
+  <label for="name">Full Name</label>
+  <input type="text" id="name" placeholder="Your full name" required>
+
+  <label for="email">Email</label>
+  <input type="email" id="email" disabled>
+
+  <label for="mobile">Mobile Number</label>
+  <input type="text" id="mobile" placeholder="10-digit mobile number">
+
+  <label for="secondaryPhone">Secondary Phone Number</label>
+  <input type="text" id="secondaryPhone" placeholder="Alternate contact number">
+
+  <label for="gender">Gender</label>
+  <select id="gender">
+    <option value="">Select</option>
+    <option value="Male">Male</option>
+    <option value="Female">Female</option>
+    <option value="Other">Other</option>
+    <option value="Prefer not to say">Prefer not to say</option>
+  </select>
+
+  <label for="dob">Date of Birth</label>
+  <input type="date" id="dob">
+
+  <label for="work">Work / Occupation</label>
+  <input type="text" id="work" placeholder="e.g. Student, Engineer, Business">
+
+  <label for="address">Address</label>
+  <textarea id="address" placeholder="House no, street, area"></textarea>
+
+  <label for="district">District</label>
+  <input type="text" id="district" placeholder="District">
+
+  <label for="city">City</label>
+  <input type="text" id="city" placeholder="City">
+
+  <label for="state">State</label>
+  <input type="text" id="state" placeholder="State">
+
+  <label for="country">Country</label>
+  <input type="text" id="country" placeholder="Country" value="India">
+
+  <label for="pincode">Pin Code</label>
+  <input type="text" id="pincode" placeholder="6-digit pin code" inputmode="numeric" maxlength="6">
+
+  <button type="submit" id="profileSaveBtn">
+    Save Profile
+  </button>
+
+</form>
+
+</div>
+
+<nav class="bottom-nav">
+  <a href="home.html"><span>🏠</span><p>Home</p></a>
+  <a href="wishlist.html"><span>😊</span><p>Liked</p></a>
+  <a href="orders.html"><span>📦</span><p>Orders</p></a>
+  <a href="profile.html" class="active"><span>🏪</span><p>My Account</p></a>
+</nav>
+
+<script type="module" src="edit-profile.js"></script>
+<script type="module" src="profile-menu.js"></script>
+
+</body>
+</html>

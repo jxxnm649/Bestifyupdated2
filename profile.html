@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Account</title>
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="account.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="bottom-nav.css">
+</head>
+<body class="bf-has-nav">
+
+  <div class="acc-shop-banner" style="position:relative;">
+    <img src="shop-front.jpg" alt="Bestify Mobile Kolavi" class="acc-shop-photo">
+    <div class="acc-shop-banner-label">🏪 Bestify Mobile Kolavi</div>
+    <a href="cart.html" aria-label="Cart" style="position:absolute;top:14px;right:14px;width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,0.9);display:flex;align-items:center;justify-content:center;color:#1e293b;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,0.15);">
+      <i class="fa-solid fa-cart-shopping"></i>
+    </a>
+  </div>
+
+  <div class="container acc-container">
+
+    <!-- Identity -->
+    <div class="acc-identity">
+      <div class="acc-avatar-wrap" id="accAvatarWrap">
+        <img id="accAvatar" class="acc-avatar" src="" alt="Profile picture">
+        <a href="edit-profile.html" class="acc-avatar-edit-badge" aria-label="Change profile picture" onclick="event.stopPropagation();">✏️</a>
+      </div>
+      <div>
+        <div class="acc-name" id="accName">—</div>
+        <div class="acc-email" id="accEmail">—</div>
+      </div>
+    </div>
+
+    <!-- Wallet -->
+    <a href="transactions.html" class="acc-wallet-card">
+      <div>
+        <div class="acc-wallet-label">Wallet Balance</div>
+        <div class="acc-wallet-amount" id="accWalletBalance">₹0</div>
+      </div>
+      <div class="acc-wallet-arrow">→</div>
+    </a>
+
+    <!-- Quick icons (Flipkart style) -->
+    <div class="acc-quick-grid">
+      <a href="orders.html" class="acc-quick-item">
+        <span class="acc-quick-icon">📦</span>
+        <span>Orders</span>
+      </a>
+      <a href="wishlist.html" class="acc-quick-item">
+        <span class="acc-quick-icon">😊</span>
+        <span>Liked</span>
+      </a>
+      <a href="cashback.html" class="acc-quick-item">
+        <span class="acc-quick-icon">🎟️</span>
+        <span>Rewards</span>
+      </a>
+      <a href="tel:+919110690727" class="acc-quick-item">
+        <span class="acc-quick-icon">📞</span>
+        <span>Help</span>
+      </a>
+    </div>
+
+    <!-- Referral -->
+    <a href="refer-earn.html" class="acc-referral-btn">
+      🎁 Refer & Earn — Invite friends to Bestify
+    </a>
+
+    <!-- Rate recent order suggestion -->
+    <div id="rateSuggestion" style="display:none;"></div>
+
+    <!-- Recently viewed -->
+    <div id="recentlyViewedSection" style="display:none;">
+      <h2 class="acc-section-title">Recently Viewed</h2>
+      <div id="recentlyViewedStrip" class="acc-rv-strip"></div>
+    </div>
+
+    <!-- Settings list -->
+    <h2 class="acc-section-title">Quick Links</h2>
+    <div class="acc-settings-list">
+      <a href="withdraw.html" class="acc-settings-row">💸 <span>Withdraw Funds</span> <span class="acc-chevron">›</span></a>
+      <a href="payout-methods.html" class="acc-settings-row">🏦 <span>Bank &amp; UPI Details</span> <span class="acc-chevron">›</span></a>
+      <a href="chat.html" class="acc-settings-row">💬 <span>Chat with Us</span> <span class="acc-chevron">›</span></a>
+      <a href="#" id="vendorLinkRow" class="acc-settings-row" style="display:none;">🏬 <span id="vendorLinkText">Supplier Dashboard</span> <span class="acc-chevron">›</span></a>
+    </div>
+
+    <h2 class="acc-section-title">Account Settings</h2>
+    <div class="acc-settings-list">
+      <a href="account-settings.html" class="acc-settings-row">⚙️ <span>Account Settings</span> <span class="acc-chevron">›</span></a>
+      <a href="manage-device.html" class="acc-settings-row">📱 <span>Manage Device</span> <span class="acc-chevron">›</span></a>
+      <a href="edit-profile.html" class="acc-settings-row">✏️ <span>Edit Profile</span> <span class="acc-chevron">›</span></a>
+      <a href="saved-address.html" class="acc-settings-row">📍 <span>Saved Address</span> <span class="acc-chevron">›</span></a>
+      <a href="language.html" class="acc-settings-row">🌐 <span>Language</span> <span class="acc-chevron">›</span></a>
+      <a href="notification-settings.html" class="acc-settings-row">🔔 <span>Notifications</span> <span class="acc-chevron">›</span></a>
+      <a href="privacy-policy.html" class="acc-settings-row">🔒 <span>Privacy Policy</span> <span class="acc-chevron">›</span></a>
+      <a href="feedback.html" class="acc-settings-row">💬 <span>Feedback</span> <span class="acc-chevron">›</span></a>
+      <a href="faqs.html" class="acc-settings-row">❓ <span>Browse FAQs</span> <span class="acc-chevron">›</span></a>
+      <a href="terms.html" class="acc-settings-row">📄 <span>Terms and Conditions</span> <span class="acc-chevron">›</span></a>
+      <button type="button" id="logoutBtn" class="acc-settings-row acc-logout-row">🚪 <span>Logout</span></button>
+    </div>
+
+    <div class="acc-social-row">
+      <a href="https://chat.whatsapp.com/Cks7jxkxJJKGBnepHs8U5j" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+      <a href="https://www.instagram.com/bestify_mobile_kolavi" target="_blank" rel="noopener" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+      <a href="https://youtube.com/@bestifymobilekolavi" target="_blank" rel="noopener" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+    </div>
+
+  </div>
+
+  <div class="acc-img-viewer" id="accImgViewer">
+    <button type="button" class="acc-img-viewer-close" id="accImgViewerClose">✕</button>
+    <img id="accImgViewerImg" src="" alt="">
+  </div>
+
+  <nav class="bottom-nav">
+    <a href="home.html" class="nav-item" id="nav-home">
+      <i class="fa-solid fa-store"></i>
+      <span>Home</span>
+    </a>
+    <a href="wishlist.html" class="nav-item" id="nav-liked">
+      <i class="fa-regular fa-thumbs-up"></i>
+      <span>Liked</span>
+    </a>
+    <a href="orders.html" class="nav-item" id="nav-orders">
+      <i class="fa-solid fa-box"></i>
+      <span>Orders</span>
+    </a>
+    <a href="profile.html" class="nav-item" id="nav-account">
+      <i class="fa-regular fa-file-lines"></i>
+      <span>My Account</span>
+    </a>
+  </nav>
+
+  <script type="module" src="account.js"></script>
+  <script type="module" src="profile-menu.js"></script>
+  <script src="bottom-nav.js"></script>
+
+</body>
+</html>

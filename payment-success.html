@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bestify Mobile - Order Confirmed</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #eef6f2;
+      display: flex;
+      justify-content: center;
+      padding: 20px 10px;
+      overflow-x: hidden;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 450px;
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      position: relative;
+      animation: pageEntrance 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+    @keyframes pageEntrance {
+      0% { opacity: 0; transform: translateY(40px) scale(0.92); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .header { text-align: center; margin-bottom: 20px; }
+    .logo { font-size: 24px; font-weight: 800; color: #0d1b2a; }
+    .logo span { color: #00a651; }
+    .sub-logo { font-size: 10px; color: #666; letter-spacing: 1px; margin-top: 2px; }
+
+    .thank-you-tag {
+      float: right;
+      font-family: 'Comic Sans MS', cursive;
+      color: #00a651;
+      font-size: 14px;
+      transform: rotate(-5deg);
+    }
+
+    .success-icon-container { display: flex; justify-content: center; margin: 20px 0 10px; }
+    .success-circle {
+      width: 70px; height: 70px; background-color: #00a651; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 0 0 10px #e1f5fe; color: white; font-size: 36px;
+      animation: checkPop 0.6s 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) backwards;
+    }
+    @keyframes checkPop { 0% { transform: scale(0); } 100% { transform: scale(1); } }
+
+    .order-title { text-align: center; color: #00a651; font-size: 26px; font-weight: 800; margin-bottom: 5px; }
+    .order-subtitle { text-align: center; color: #666; font-size: 13px; margin-bottom: 15px; }
+    .order-subtitle strong { color: #00a651; }
+
+    .animate-item { animation: slideUpFade 0.6s ease-out backwards; }
+    .delay-1 { animation-delay: 0.2s; }
+    .delay-2 { animation-delay: 0.35s; }
+    .delay-3 { animation-delay: 0.5s; }
+    .delay-4 { animation-delay: 0.65s; }
+    @keyframes slideUpFade { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } }
+
+    .action-row { display: flex; gap: 10px; margin-bottom: 15px; }
+
+    .scratch-btn-card {
+      flex: 1.2;
+      background: linear-gradient(135deg, #ff0055, #ff4e50);
+      border-radius: 12px; padding: 10px 12px; color: white;
+      display: flex; align-items: center; justify-content: space-between;
+      cursor: pointer; border: none;
+      box-shadow: 0 4px 10px rgba(255, 0, 85, 0.2);
+      text-decoration: none;
+      transition: transform 0.2s;
+    }
+    .scratch-btn-card:active { transform: scale(0.97); }
+    .scratch-btn-card .btn-text { text-align: left; }
+    .scratch-btn-card .btn-text h4 { font-size: 13px; font-weight: 700; }
+    .scratch-btn-card .btn-text p { font-size: 10px; opacity: 0.9; }
+
+    .arrow-icon {
+      background: rgba(255, 255, 255, 0.3); border-radius: 50%;
+      width: 22px; height: 22px; display: flex; align-items: center;
+      justify-content: center; font-size: 12px;
+    }
+
+    .my-orders-btn {
+      flex: 1; background: #eefbf4; border: 1px solid #d0f0dd; border-radius: 12px;
+      padding: 10px 12px; display: flex; align-items: center; justify-content: space-between;
+      cursor: pointer; text-decoration: none;
+      transition: transform 0.2s;
+    }
+    .my-orders-btn:active { transform: scale(0.97); }
+    .my-orders-btn .btn-text { text-align: left; }
+    .my-orders-btn .btn-text h4 { font-size: 13px; color: #333; }
+    .my-orders-btn .btn-text p { font-size: 10px; color: #777; }
+
+    .info-card { background: #f8fcf9; border: 1px solid #e1f2e8; border-radius: 12px; padding: 15px; margin-bottom: 15px; }
+    .order-id-header {
+      display: flex; justify-content: space-between; align-items: center;
+      border-bottom: 1px solid #eaeaea; padding-bottom: 10px; margin-bottom: 10px;
+    }
+    .order-id-text h3 { font-size: 18px; color: #222; }
+    .badge-placed {
+      background: #d1f2dd; color: #00a651; font-size: 11px; padding: 4px 8px;
+      border-radius: 12px; font-weight: 600; white-space: nowrap;
+    }
+    .details-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; text-align: left; }
+    .detail-item p { font-size: 10px; color: #888; }
+    .detail-item h5 { font-size: 12px; color: #333; }
+
+    .product-card {
+      display: flex; align-items: center; justify-content: space-between;
+      background: #ffffff; border: 1px solid #eee; border-radius: 12px;
+      padding: 12px; margin-bottom: 10px;
+    }
+    .product-img {
+      width: 50px; height: 50px; background: #f0f0f0; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center; font-size: 24px;
+      object-fit: cover; flex-shrink: 0;
+    }
+    .product-info { flex: 1; margin-left: 12px; min-width: 0; }
+    .product-info h4 { font-size: 14px; color: #222; }
+    .product-info p { font-size: 11px; color: #777; }
+    .product-price { text-align: right; flex-shrink: 0; }
+    .product-price .price { font-size: 16px; font-weight: bold; color: #222; }
+    .product-price .old-price { font-size: 11px; color: #999; text-decoration: line-through; }
+
+    .total-box {
+      background: #eefbf4; border-radius: 12px; padding: 12px 15px;
+      display: flex; justify-content: space-between; align-items: center;
+      font-weight: bold; margin-bottom: 15px; margin-top: 5px;
+    }
+    .total-box .amount { font-size: 20px; color: #00a651; }
+
+    .continue-btn {
+      width: 100%; background: #00a651; color: white; border: none;
+      padding: 14px; border-radius: 25px; font-size: 15px; font-weight: bold;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      gap: 8px; text-decoration: none;
+    }
+
+    .modal-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.6); display: none;
+      justify-content: center; align-items: center; z-index: 1000;
+      animation: modalFade 0.3s ease-out;
+    }
+    @keyframes modalFade { from { opacity: 0; } to { opacity: 1; } }
+
+    .modal-content {
+      background: #fff; padding: 20px; border-radius: 20px; text-align: center;
+      position: relative; width: 310px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      animation: modalZoom 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    @keyframes modalZoom { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+    .close-btn { position: absolute; top: 10px; right: 15px; font-size: 24px; cursor: pointer; color: #888; }
+
+    .scratch-container {
+      position: relative; width: 240px; height: 240px; margin: 15px auto 0;
+      border-radius: 16px; overflow: hidden;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+      perspective: 1000px;
+    }
+
+    .reward-box {
+      position: absolute; width: 100%; height: 100%;
+      background: linear-gradient(135deg, #ffffff, #f0fdf4);
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      border: 2px dashed #00a651; border-radius: 16px; box-sizing: border-box;
+      padding: 15px; text-align: center;
+      transition: transform 0.3s ease;
+    }
+    .reward-box.pending-box { background: linear-gradient(135deg, #fffef7, #fffbeb); border-color: #f59e0b; }
+
+    /* Continuous 360 spin + bounce — only for a real "credited" win */
+    .reward-box.spin-5s { animation: continuousSpin 1.2s infinite linear; }
+    @keyframes continuousSpin {
+      0% { transform: rotateY(0deg) scale(0.95); }
+      50% { transform: rotateY(180deg) scale(1.08); box-shadow: 0 0 20px rgba(0,166,81,0.5); }
+      100% { transform: rotateY(360deg) scale(0.95); }
+    }
+
+    .animated-emoji { font-size: 46px; animation: emojiBounce 0.8s infinite ease-in-out alternate; }
+    @keyframes emojiBounce { 0% { transform: translateY(0) scale(1); } 100% { transform: translateY(-10px) scale(1.2); } }
+
+    canvas { position: absolute; top: 0; left: 0; cursor: pointer; }
+    .confetti-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 10; }
+
+    .claim-btn {
+      width: 100%; color: white; border: none; padding: 12px; border-radius: 25px;
+      font-size: 14px; font-weight: bold; cursor: pointer; margin-top: 15px;
+      display: none; box-shadow: 0 4px 12px rgba(0, 166, 81, 0.3);
+      animation: popIn 0.3s ease-out; text-decoration: none; align-items: center;
+      justify-content: center; gap: 6px;
+    }
+    .claim-btn.ready { background: linear-gradient(135deg, #00a651, #00813f); }
+    @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+    .state-message {
+      max-width: 450px; width: 100%; text-align: center; padding: 60px 20px;
+      color: #666; font-size: 14px; font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container" id="successCard" style="display:none;">
+    <div class="thank-you-tag">Thank you<br><small>for choosing Bestify Mobile</small></div>
+    <div class="header animate-item delay-1">
+      <div class="logo">Bestify <span>Mobile</span></div>
+      <div class="sub-logo">REPAIR | ACCESSORIES | RECHARGE</div>
+    </div>
+
+    <div class="success-icon-container">
+      <div class="success-circle">✓</div>
+    </div>
+    <h1 class="order-title animate-item delay-1">Order Confirmed!</h1>
+    <p class="order-subtitle animate-item delay-1">Your order has been placed successfully.<br>Thank you for shopping with <strong>Bestify Mobile ❤️</strong></p>
+
+    <div class="action-row animate-item delay-2">
+      <button class="scratch-btn-card" id="scratchTriggerBtn" onclick="openScratchPopup()" style="display:none;">
+        <div class="btn-text">
+          <h4>Scratch Card</h4>
+          <p>Reveal Your Cashback</p>
+        </div>
+        <div class="arrow-icon">➔</div>
+      </button>
+
+      <a href="orders.html" class="my-orders-btn" id="myOrdersBtn" style="flex:1;">
+        <div class="btn-text">
+          <h4>My Orders</h4>
+          <p>Track & View</p>
+        </div>
+        <div class="arrow-icon" style="color: #00a651;">➔</div>
+      </a>
+    </div>
+
+    <div class="info-card animate-item delay-3">
+      <div class="order-id-header">
+        <div class="order-id-text">
+          <p style="font-size:11px; color:#777;">Order ID</p>
+          <h3 id="orderIdText">#—</h3>
+        </div>
+        <span class="badge-placed" id="statusBadge">✓ Order Placed</span>
+      </div>
+
+      <div class="details-grid">
+        <div class="detail-item">
+          <p>Delivery</p>
+          <h5>Home Delivery</h5>
+        </div>
+        <div class="detail-item">
+          <p>Payment</p>
+          <h5 id="paymentTypeText">—</h5>
+        </div>
+        <div class="detail-item">
+          <p>Items</p>
+          <h5 id="itemCountText">—</h5>
+        </div>
+      </div>
+    </div>
+
+    <div id="productsWrap" class="animate-item delay-4"></div>
+
+    <div class="total-box animate-item delay-4">
+      <span>Total Amount</span>
+      <span class="amount" id="totalAmountText">₹0</span>
+    </div>
+
+    <a href="home.html" class="continue-btn animate-item delay-4">
+      🏠 Continue Shopping ➔
+    </a>
+  </div>
+
+  <div id="stateMessage" class="state-message">Loading your order…</div>
+
+  <!-- Scratch Card Modal -->
+  <div class="modal-overlay" id="scratchModal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeModal()">&times;</span>
+      <h2 style="color: #333;">Scratch Card</h2>
+      <p style="font-size: 12px; color: #666;" id="scratchHintText">Drag to scratch and reveal your cashback!</p>
+
+      <div class="scratch-container">
+        <div class="reward-box" id="rewardBox">
+          <div class="animated-emoji" id="rewardEmoji">🎁</div>
+          <h3 id="rewardTitleText">You Won ₹0 Cashback!</h3>
+          <p style="font-size: 11px; color: #555;" id="rewardSubText"></p>
+        </div>
+        <canvas id="scratchCanvas" width="240" height="240"></canvas>
+        <canvas id="confettiCanvas" class="confetti-canvas" width="240" height="240"></canvas>
+      </div>
+
+      <a class="claim-btn" id="claimBtn" href="transactions.html">
+        💳 View Wallet
+      </a>
+    </div>
+  </div>
+
+  <script type="module">
+
+    import { auth, db } from "./firebase.js";
+    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+    import { doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
+
+    const params = new URLSearchParams(window.location.search);
+    const orderId = params.get("orderId");
+    const method = params.get("method");
+
+    const stateMessage = document.getElementById("stateMessage");
+    const successCard = document.getElementById("successCard");
+
+    function escapeHtml(str) {
+      return String(str ?? "").replace(/[&<>"']/g, m => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+      })[m]);
+    }
+
+    let currentOrder = null;
+    let scratchAlreadyRevealed = false;
+
+    if (!orderId) {
+
+      stateMessage.textContent = "No order was specified.";
+
+    } else {
+
+      onAuthStateChanged(auth, async (user) => {
+
+        if (!user) {
+          window.location.href = "login.html";
+          return;
+        }
+
+        try {
+
+          const orderSnap = await getDoc(doc(db, "orders", orderId));
+
+          if (!orderSnap.exists()) {
+            stateMessage.textContent = "This order could not be found.";
+            return;
+          }
+
+          const order = orderSnap.data();
+
+          if (order.userId !== user.uid) {
+            stateMessage.textContent = "This order doesn't belong to your account.";
+            return;
+          }
+
+          currentOrder = order;
+          scratchAlreadyRevealed = !!order.scratchRevealed;
+
+          document.getElementById("orderIdText").textContent =
+            "#" + (order.orderNumber || orderId.slice(0, 8).toUpperCase());
+
+          document.getElementById("paymentTypeText").textContent =
+            (order.paymentMethod === "cod" || method === "cod") ? "Cash on Delivery" : "Paid Online";
+
+          const products = order.products || [];
+          document.getElementById("itemCountText").textContent =
+            products.length + (products.length === 1 ? " Item" : " Items");
+
+          const productsWrap = document.getElementById("productsWrap");
+          productsWrap.innerHTML = products.map((p) => {
+
+            const qty = p.qty || 1;
+            const price = Number(p.price) || 0;
+            const mrp = Number(p.mrp) || 0;
+            const itemTotal = price * qty;
+
+            return `
+              <div class="product-card">
+                ${p.image
+                  ? `<img src="${escapeHtml(p.image)}" class="product-img" alt="${escapeHtml(p.productName || "Product")}">`
+                  : `<div class="product-img">📱</div>`}
+                <div class="product-info">
+                  <h4>${escapeHtml(p.productName || "Product")}</h4>
+                  <p>Qty: ${qty}${[p.selectedSize, p.selectedColour].filter(Boolean).length ? " · " + escapeHtml([p.selectedSize, p.selectedColour].filter(Boolean).join(", ")) : ""}</p>
+                </div>
+                <div class="product-price">
+                  <div class="price">₹${itemTotal.toLocaleString("en-IN")}</div>
+                  ${mrp > price ? `<div class="old-price">₹${(mrp * qty).toLocaleString("en-IN")}</div>` : ""}
+                </div>
+              </div>
+            `;
+
+          }).join("");
+
+          document.getElementById("totalAmountText").textContent =
+            "₹" + (order.total ?? 0).toLocaleString("en-IN");
+
+          if (order.status === "Cancelled") {
+            const badge = document.getElementById("statusBadge");
+            badge.textContent = "✕ Cancelled";
+            badge.style.background = "#fee2e2";
+            badge.style.color = "#b91c1c";
+          }
+
+          if (order.cashbackAmount > 0) {
+            document.getElementById("scratchTriggerBtn").style.display = "flex";
+          }
+
+          stateMessage.style.display = "none";
+          successCard.style.display = "block";
+
+          if (order.cashbackAmount > 0) {
+            setTimeout(openScratchPopup, 2500);
+          }
+
+        } catch (error) {
+          console.error(error);
+          stateMessage.textContent = "Something went wrong loading your order.";
+        }
+
+      });
+
+    }
+
+    /* ---------- Scratch card: pending vs credited, real amount, persists ---------- */
+
+    const modal = document.getElementById('scratchModal');
+    const canvas = document.getElementById('scratchCanvas');
+    const ctx = canvas.getContext('2d');
+    const claimBtn = document.getElementById('claimBtn');
+    const rewardBox = document.getElementById('rewardBox');
+    const rewardEmoji = document.getElementById('rewardEmoji');
+    const rewardTitleText = document.getElementById('rewardTitleText');
+    const rewardSubText = document.getElementById('rewardSubText');
+    const scratchHintText = document.getElementById('scratchHintText');
+
+    let popupOpenedOnce = false;
+
+    function isCashbackCredited() {
+      return currentOrder && currentOrder.cashbackStatus === "credited";
+    }
+
+    function fillRewardContent() {
+
+      const amount = currentOrder.cashbackAmount || 0;
+
+      if (isCashbackCredited()) {
+
+        rewardBox.classList.remove("pending-box");
+        rewardEmoji.textContent = "🎉";
+        rewardTitleText.textContent = `You Won ₹${amount} Cashback!`;
+        rewardSubText.textContent = "✓ Already added to your Bestify Wallet";
+
+        claimBtn.style.display = "flex";
+        claimBtn.classList.add("ready");
+        claimBtn.textContent = "💳 View Wallet";
+        claimBtn.href = "transactions.html";
+
+      } else {
+
+        rewardBox.classList.add("pending-box");
+        rewardEmoji.textContent = "⏳";
+        rewardTitleText.textContent = `₹${amount} Cashback — Pending`;
+        rewardSubText.textContent = "Please wait — this will be added to your wallet within 3 days after your order is delivered.";
+        claimBtn.style.display = "none";
+
+      }
+
+    }
+
+    window.openScratchPopup = function () {
+
+      if (!currentOrder || !(currentOrder.cashbackAmount > 0)) return;
+
+      modal.style.display = 'flex';
+      fillRewardContent();
+
+      if (scratchAlreadyRevealed) {
+        canvas.style.display = 'none';
+        scratchHintText.textContent = "Your cashback for this order:";
+        return;
+      }
+
+      canvas.style.display = 'block';
+      canvas.style.opacity = '1';
+      scratchHintText.textContent = "Drag to scratch and reveal your cashback!";
+
+      if (!popupOpenedOnce) {
+        initCanvas();
+        popupOpenedOnce = true;
+      }
+
+    };
+
+    window.closeModal = function () {
+      modal.style.display = 'none';
+    };
+
+    async function markScratchRevealed() {
+      if (scratchAlreadyRevealed || !orderId) return;
+      scratchAlreadyRevealed = true;
+      try {
+        await updateDoc(doc(db, "orders", orderId), { scratchRevealed: true });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    // 5-second confetti shower — only used for a real credited win
+    function triggerConfetti() {
+
+      const cCanvas = document.getElementById('confettiCanvas');
+      const cCtx = cCanvas.getContext('2d');
+      const particles = [];
+      const colors = ['#00a651', '#ff0055', '#ffc107', '#2196f3', '#9c27b0', '#ff5722'];
+
+      for (let i = 0; i < 70; i++) {
+        particles.push({
+          x: cCanvas.width / 2, y: cCanvas.height / 2,
+          vx: (Math.random() - 0.5) * 10, vy: (Math.random() - 0.7) * 10,
+          size: Math.random() * 6 + 3,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          alpha: 1
+        });
+      }
+
+      let startTime = performance.now();
+
+      function renderConfetti(time) {
+        cCtx.clearRect(0, 0, cCanvas.width, cCanvas.height);
+        let alive = false;
+
+        particles.forEach(p => {
+          p.x += p.vx; p.y += p.vy; p.vy += 0.22; p.alpha -= 0.009;
+          if (p.alpha > 0) {
+            alive = true;
+            cCtx.globalAlpha = Math.max(p.alpha, 0);
+            cCtx.fillStyle = p.color;
+            cCtx.beginPath();
+            cCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+            cCtx.fill();
+          }
+        });
+
+        if (alive && (time - startTime) < 5000) {
+          requestAnimationFrame(renderConfetti);
+        } else {
+          cCtx.clearRect(0, 0, cCanvas.width, cCanvas.height);
+        }
+      }
+
+      requestAnimationFrame(renderConfetti);
+
+    }
+
+    function initCanvas() {
+
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.fillStyle = '#c5c5c5';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.font = 'bold 16px Arial';
+      ctx.fillStyle = '#444';
+      ctx.textAlign = 'center';
+      ctx.fillText('Scratch Here!', canvas.width / 2, canvas.height / 2);
+
+      let isScratching = false;
+      let revealed = false;
+
+      function checkScratchPercentage() {
+
+        if (revealed) return;
+
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const pixels = imageData.data;
+        let clearPixels = 0;
+
+        for (let i = 3; i < pixels.length; i += 4) {
+          if (pixels[i] === 0) clearPixels++;
+        }
+
+        const percentageCleared = (clearPixels / (pixels.length / 4)) * 100;
+
+        if (percentageCleared >= 35) {
+
+          revealed = true;
+          canvas.style.pointerEvents = 'none';
+          canvas.style.transition = 'opacity 0.5s ease';
+          canvas.style.opacity = '0';
+
+          setTimeout(() => { canvas.style.display = 'none'; }, 500);
+
+          markScratchRevealed();
+
+          // 5-second spin + confetti celebration on every reveal — the
+          // reward itself is real either way. Only the Claim/View Wallet
+          // button is held back when it's still pending, since there's
+          // nothing in the wallet to go look at yet.
+          rewardBox.classList.add('spin-5s');
+          triggerConfetti();
+
+          setTimeout(() => {
+            rewardBox.classList.remove('spin-5s');
+            if (isCashbackCredited()) {
+              claimBtn.style.display = 'flex';
+              claimBtn.classList.add('ready');
+            }
+          }, 5000);
+
+        }
+
+      }
+
+      function scratch(e) {
+        if (!isScratching) return;
+
+        const rect = canvas.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+
+        const x = clientX - rect.left;
+        const y = clientY - rect.top;
+
+        ctx.globalCompositeOperation = 'destination-out';
+        ctx.beginPath();
+        ctx.arc(x, y, 20, 0, Math.PI * 2);
+        ctx.fill();
+
+        checkScratchPercentage();
+      }
+
+      canvas.addEventListener('mousedown', () => isScratching = true);
+      canvas.addEventListener('mouseup', () => isScratching = false);
+      canvas.addEventListener('mousemove', scratch);
+
+      canvas.addEventListener('touchstart', (e) => { isScratching = true; scratch(e); });
+      canvas.addEventListener('touchend', () => isScratching = false);
+      canvas.addEventListener('touchmove', scratch);
+    }
+
+  </script>
+
+</body>
+</html>

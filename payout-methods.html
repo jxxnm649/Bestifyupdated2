@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bank & UPI Details</title>
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="design-system.css">
+  <link rel="stylesheet" href="static-page.css">
+</head>
+<body class="bf-has-nav">
+
+  <div class="container sp-container">
+
+    <a href="profile.html" class="sp-back">← Back to Account</a>
+    <h1>Bank &amp; UPI Details 🏦</h1>
+    <p style="margin-bottom:16px;font-size:13px;color:var(--ink-soft);">Save these once — we'll pre-fill them next time you request a withdrawal.</p>
+
+    <div class="bf-card" style="padding:18px;">
+
+      <form id="payoutForm">
+
+        <div class="bf-field">
+          <label class="bf-label">UPI ID</label>
+          <input type="text" id="payoutUpiId" class="bf-input" placeholder="yourname@upi">
+        </div>
+
+        <h3 style="font-size:14px;margin:16px 0 10px;">Bank Account (optional)</h3>
+
+        <div class="bf-field">
+          <label class="bf-label">Account Holder Name</label>
+          <input type="text" id="payoutBankName" class="bf-input">
+        </div>
+
+        <div class="bf-field">
+          <label class="bf-label">Account Number</label>
+          <input type="text" id="payoutBankAccount" class="bf-input" inputmode="numeric">
+        </div>
+
+        <div class="bf-field">
+          <label class="bf-label">IFSC Code</label>
+          <input type="text" id="payoutBankIFSC" class="bf-input" style="text-transform:uppercase;">
+        </div>
+
+        <button type="submit" id="payoutSaveBtn" class="bf-btn bf-btn-primary bf-btn-block" style="margin-top:8px;">Save Details</button>
+
+        <button type="button" id="payoutDeleteBtn" class="bf-btn bf-btn-ghost bf-btn-block" style="margin-top:10px;color:#c62828;">🗑️ Remove Saved Details</button>
+
+      </form>
+
+    </div>
+
+  </div>
+
+  <nav class="bottom-nav">
+    <a href="home.html"><span>🏠</span><p>Home</p></a>
+    <a href="wishlist.html"><span>😊</span><p>Liked</p></a>
+    <a href="orders.html"><span>📦</span><p>Orders</p></a>
+    <a href="profile.html"><span>🏪</span><p>My Account</p></a>
+  </nav>
+
+  <script type="module" src="payout-methods.js"></script>
+
+</body>
+</html>

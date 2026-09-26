@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="kn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bestify - Product Page</title>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+      background-color: #f8f9fa;
+      display: flex;
+      justify-content: center;
+      padding: 10px;
+      padding-bottom: 30px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 420px;
+      background: #ffffff;
+      padding: 16px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      padding-bottom: 90px; /* room for the fixed order bar */
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .header-left { display: flex; align-items: center; gap: 12px; }
+
+    .icon-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .brand-title h1 { font-size: 18px; font-weight: 700; color: #000; }
+    .brand-title p { font-size: 11px; color: #666; }
+
+    .header-right { display: flex; align-items: center; gap: 12px; }
+    .action-icon { display: flex; flex-direction: column; align-items: center; font-size: 10px; color: #333; cursor: pointer; background: none; border: none; }
+    .action-icon.liked { color: #e0245e; }
+
+    .avatar-badge {
+      width: 32px; height: 32px; background-color: #581c87; color: white;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-weight: bold; font-size: 12px;
+    }
+
+    /* Selection breadcrumb */
+    .selection-badge { margin: 0 0 16px; padding: 10px 12px; background: #f9f9f9; border-radius: 10px; border: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; font-size: 12px; }
+    .change-btn { color: #6b21a8; font-weight: bold; cursor: pointer; text-decoration: none; }
+
+    /* Image Slider Container */
+    .slider-container {
+      position: relative;
+      width: 100%;
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
+
+    .slider-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(0,0,0,0.45);
+      color: #fff;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 5;
+    }
+    .slider-nav-prev { left: 10px; }
+    .slider-nav-next { right: 10px; }
+
+    .slider-wrapper {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      touch-action: pan-x;
+      border-radius: 16px;
+    }
+
+    .slider-wrapper::-webkit-scrollbar { display: none; }
+
+    .slide {
+      min-width: 100%;
+      scroll-snap-align: start;
+      display: flex;
+      justify-content: center;
+      background: #f0f0f0;
+    }
+
+    .slide img {
+      width: 100%;
+      height: 380px;
+      object-fit: contain;
+      background: #f0f0f0;
+      cursor: pointer;
+    }
+
+    /* Slider Dots Indicator */
+    .slider-dots {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin-bottom: 20px;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      background-color: #cbd5e1;
+      border-radius: 50%;
+      transition: background-color 0.3s;
+    }
+
+    .dot.active {
+      background-color: #6b21a8;
+      width: 20px;
+      border-radius: 4px;
+    }
+
+    /* Color Selector */
+    .section-title { font-size: 16px; font-weight: 700; margin-bottom: 12px; color: #111; }
+
+    .color-options {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+    }
+
+    .color-card {
+      min-width: 68px;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 8px 4px;
+      text-align: center;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .color-card.active { border: 2px solid #6b21a8; }
+    .color-card img { width: 44px; height: 60px; object-fit: cover; border-radius: 6px; margin-bottom: 6px; }
+    .color-card span { display: block; font-size: 11px; font-weight: 600; color: #333; }
+
+    .checkmark {
+      position: absolute; top: -6px; right: -6px; background: #6b21a8;
+      color: white; border-radius: 50%; width: 18px; height: 18px;
+      display: flex; align-items: center; justify-content: center; font-size: 10px;
+    }
+
+    /* Quantity Controls */
+    .quantity-container { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+    .quantity-selector { display: flex; align-items: center; border: 1px solid #6b21a8; border-radius: 8px; overflow: hidden; }
+    .quantity-btn { width: 40px; height: 36px; border: none; background: transparent; font-size: 18px; cursor: pointer; color: #6b21a8; }
+    .quantity-value { width: 40px; text-align: center; font-weight: 600; font-size: 14px; border-left: 1px solid #e2e8f0; border-right: 1px solid #e2e8f0; line-height: 36px; }
+
+    /* Delivery Info */
+    .delivery-info { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #666; margin-bottom: 20px; }
+
+    /* Bottom Action Bar */
+    .action-bar {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      max-width: 420px;
+      margin: 0 auto;
+      right: 0;
+      background: #fff;
+      padding: 12px 16px;
+      box-sizing: border-box;
+      border-top: 1px solid #eee;
+      box-shadow: 0 -4px 14px rgba(0,0,0,0.06);
+      z-index: 50;
+    }
+    .price-box { flex: 1; border: 1px solid #6b21a8; border-radius: 8px; padding: 8px; text-align: center; }
+    .current-price { font-size: 18px; font-weight: 700; color: #000; }
+    .original-price { font-size: 11px; color: #888; text-decoration: line-through; margin-left: 4px; }
+    .buy-btn { flex: 1.5; background-color: #6b21a8; color: white; border: none; border-radius: 8px; padding: 12px; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; }
+    .buy-btn:disabled { opacity: .6; cursor: default; }
+
+    /* More options (other matching products) */
+    .empty-state { text-align: center; padding: 40px 10px; color: #666; font-size: 13px; }
+
+    /* Fullscreen Modal (Lightbox) */
+    .image-modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.9);
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+    }
+
+    .image-modal.show {
+      display: flex;
+    }
+
+    .modal-content {
+      max-width: 90%;
+      max-height: 80%;
+      border-radius: 12px;
+      object-fit: contain;
+    }
+
+    .close-modal {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      color: white;
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-left">
+        <a class="icon-btn" id="backLink" href="#"><i data-lucide="arrow-left" size="18"></i></a>
+        <div class="brand-title">
+          <h1>Bestify</h1>
+          <p>Best Quality | Best Price</p>
+        </div>
+      </div>
+      <div class="header-right">
+        <button class="action-icon" id="likeBtn"><i data-lucide="heart" size="18"></i><span>Like</span></button>
+        <button class="action-icon" id="shareBtn"><i data-lucide="send" size="18"></i><span>Share</span></button>
+        <div class="avatar-badge" id="cartBadge">0</div>
+      </div>
+    </header>
+
+    <div class="selection-badge">
+      <span id="badgeText"></span>
+      <a href="#" id="changeLink" class="change-btn">Change</a>
+    </div>
+
+    <div id="pageBody">
+      <p class="empty-state">Loading products…</p>
+    </div>
+
+  </div>
+
+  <!-- Fullscreen Modal View -->
+  <div class="image-modal" id="imageModal" onclick="if(event.target===this) closeModal()">
+    <button class="close-modal" onclick="closeModal()"><i data-lucide="x" size="24"></i></button>
+    <img class="modal-content" id="modalImg" src="" alt="Full View">
+  </div>
+
+  <script type="module">
+    import { auth, db } from "./firebase.js";
+    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+    import { collection, getDocs } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
+
+    const CATEGORY_KEYWORDS = {
+      "Covers":           ["cover", "case"],
+      "Tempered Glass":   ["tempered", "screen guard", "screen protector"],
+      "Camera Glass":     ["camera glass", "camera lens", "camera protector"],
+      "Unique Products":  ["unique"],
+      "Mobile Battery":   ["battery"],
+      "Customized Cover": ["customized", "custom cover", "customised"]
+    };
+
+    const brand = sessionStorage.getItem("cover_brand");
+    const model = sessionStorage.getItem("cover_model");
+    const category = sessionStorage.getItem("cover_category");
+    const type = sessionStorage.getItem("cover_type"); // only set when category === "Covers"
+
+    // Render whatever static icons exist right away (header back/like/
+    // share/close), independent of whether product data loads OK —
+    // previously these silently stayed blank if loadProducts() ever
+    // errored before its own lucide.createIcons() call.
+    if (window.lucide) lucide.createIcons();
+
+    if (!brand || !model || !category) {
+      window.location.href = "coverbrand.html";
+    } else {
+
+    const backTarget = category === "Covers" ? "covertype.html" : "covercategory.html";
+    document.getElementById("backLink").href = backTarget;
+    document.getElementById("changeLink").href = backTarget;
+
+    const phoneLabel = `${brand} ${model}`;
+    document.getElementById("badgeText").textContent = type ? `${phoneLabel} • ${category} • ${type}` : `${phoneLabel} • ${category}`;
+
+    function escapeHtml(str) {
+      return String(str ?? "").replace(/[&<>"']/g, m => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+      })[m]);
+    }
+
+    let matched = [];
+    let featuredIndex = 0;
+    let qty = 1;
+
+    async function loadProducts() {
+      const body = document.getElementById("pageBody");
+      try {
+
+      let categoryProducts = [];
+      try {
+        const snap = await getDocs(collection(db, "products"));
+        const keywords = CATEGORY_KEYWORDS[category] || [];
+        categoryProducts = snap.docs
+          .map(d => ({ id: d.id, ...d.data() }))
+          .filter(p => {
+            const c = (p.category || "").toLowerCase();
+            return keywords.some(k => c.includes(k));
+          });
+      } catch (error) {
+        console.error(error);
+      }
+
+      matched = categoryProducts;
+
+      if (category === "Covers" && type) {
+        const TYPE_KEYWORDS = { "Flip Cover": "flip", "Bumper Case": "bumper", "Silicone Case": "silicone", "Leather Case": "leather" };
+        const OTHER_KEYWORDS = Object.values(TYPE_KEYWORDS);
+
+        let narrowed;
+        if (TYPE_KEYWORDS[type]) {
+          narrowed = categoryProducts.filter(p => (p.productName || "").toLowerCase().includes(TYPE_KEYWORDS[type]));
+        } else {
+          narrowed = categoryProducts.filter(p => {
+            const name = (p.productName || "").toLowerCase();
+            return !OTHER_KEYWORDS.some(k => name.includes(k));
+          });
+        }
+        if (narrowed.length) matched = narrowed;
+      }
+
+      if (!matched.length) {
+        body.innerHTML = `<p class="empty-state">No products in this category right now — please check back soon.</p>`;
+        return;
+      }
+
+      renderFeatured();
+
+      } catch (error) {
+        console.error("loadProducts error:", error);
+        body.innerHTML = `
+          <p class="empty-state">
+            Something went wrong loading products.<br>
+            <button type="button" id="retryLoadBtn" style="margin-top:10px;background:#6b21a8;color:#fff;border:none;padding:10px 18px;border-radius:8px;font-weight:700;cursor:pointer;">Retry</button>
+          </p>
+        `;
+        const retryBtn = document.getElementById("retryLoadBtn");
+        if (retryBtn) retryBtn.addEventListener("click", loadProducts);
+      }
+    }
+
+    function renderFeatured() {
+      const product = matched[featuredIndex];
+      const images = Array.isArray(product.images) && product.images.length ? product.images : [product.image].filter(Boolean);
+      qty = 1;
+
+      const hasDiscount = product.mrp && Number(product.mrp) > Number(product.price);
+
+      document.getElementById("pageBody").innerHTML = `
+
+        <div class="slider-container">
+          <div class="slider-wrapper" id="slider">
+            ${images.map((img, i) => `
+              <div class="slide"><img data-index="${i}" src="${escapeHtml(img)}" alt="Photo ${i + 1}"></div>
+            `).join("")}
+          </div>
+          ${images.length > 1 ? `
+            <button type="button" class="slider-nav slider-nav-prev" id="sliderPrev" aria-label="Previous photo">&#10094;</button>
+            <button type="button" class="slider-nav slider-nav-next" id="sliderNext" aria-label="Next photo">&#10095;</button>
+          ` : ""}
+        </div>
+
+        <div class="slider-dots" id="sliderDots">
+          ${images.map((_, i) => `<div class="dot ${i === 0 ? "active" : ""}"></div>`).join("")}
+        </div>
+
+        <h2 class="section-title">${escapeHtml(product.productName || "Product")}</h2>
+        <p style="font-size:12px;color:#666;margin:-8px 0 16px;">For ${escapeHtml(phoneLabel)}</p>
+
+        ${matched.length > 1 ? `
+          <h2 class="section-title">Cover Color <span id="selectedColourLabel" style="font-weight:400;color:#888;font-size:13px;">— ${escapeHtml((product.productName || "Option").split(" ").slice(0, 2).join(" "))}</span></h2>
+          <div class="color-options" id="colorOptions">
+            ${matched.map((p, i) => {
+              const shortName = (p.productName || "Option " + (i + 1)).split(" ").slice(0, 2).join(" ");
+              return `
+                <div class="color-card ${i === featuredIndex ? "active" : ""}" data-switch-to="${i}" data-name="${escapeHtml(shortName)}">
+                  ${i === featuredIndex ? `<div class="checkmark">✓</div>` : ""}
+                  <img src="${escapeHtml(p.image || "")}" alt="${escapeHtml(p.productName || "")}">
+                  <span>${escapeHtml(shortName)}</span>
+                </div>
+              `;
+            }).join("")}
+          </div>
+        ` : ""}
+
+        <div class="quantity-container">
+          <span class="section-title" style="margin: 0;">Quantity</span>
+          <div class="quantity-selector">
+            <button class="quantity-btn" id="qtyMinus">&minus;</button>
+            <span class="quantity-value" id="qtyVal">1</span>
+            <button class="quantity-btn" id="qtyPlus">+</button>
+          </div>
+        </div>
+
+        <div class="delivery-info">
+          <i data-lucide="truck" size="16"></i>
+          <span>Estimated delivery: 2-4 business days</span>
+        </div>
+
+        <div class="action-bar">
+          <div class="price-box">
+            <span class="current-price">₹${product.price ?? 0}</span>
+            ${hasDiscount ? `<span class="original-price">₹${product.mrp}</span>` : ""}
+          </div>
+          <button class="buy-btn" id="placeOrderBtn">
+            <i data-lucide="zap" size="16"></i>
+            PLACE ORDER NOW
+          </button>
+        </div>
+      `;
+
+      if (window.lucide) lucide.createIcons();
+      wireInteractions(product, images);
+    }
+
+    function wireInteractions(product, images) {
+
+      const slider = document.getElementById("slider");
+      const dots = document.querySelectorAll("#sliderDots .dot");
+
+      slider.addEventListener("scroll", () => {
+        const index = Math.round(slider.scrollLeft / slider.clientWidth);
+        dots.forEach((dot, i) => dot.classList.toggle("active", i === index));
+      });
+
+      slider.querySelectorAll("img").forEach(img => {
+        img.addEventListener("click", () => openModal(img.src));
+      });
+
+      // Tap-to-navigate arrows — easier than swiping when the page
+      // itself also needs to scroll vertically.
+      const prevBtn = document.getElementById("sliderPrev");
+      const nextBtn = document.getElementById("sliderNext");
+      if (prevBtn && nextBtn) {
+        const goTo = (delta) => {
+          const current = Math.round(slider.scrollLeft / slider.clientWidth);
+          const next = Math.max(0, Math.min(images.length - 1, current + delta));
+          slider.scrollTo({ left: slider.clientWidth * next, behavior: "smooth" });
+        };
+        prevBtn.addEventListener("click", () => goTo(-1));
+        nextBtn.addEventListener("click", () => goTo(1));
+      }
+
+      const colorOptions = document.getElementById("colorOptions");
+      if (colorOptions) {
+        colorOptions.addEventListener("click", (e) => {
+          const card = e.target.closest(".color-card");
+          if (!card || card.dataset.switchTo === undefined) return;
+
+          featuredIndex = Number(card.dataset.switchTo);
+          renderFeatured();
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+      }
+
+      document.getElementById("qtyMinus").addEventListener("click", () => {
+        qty = Math.max(1, qty - 1);
+        document.getElementById("qtyVal").textContent = qty;
+      });
+      document.getElementById("qtyPlus").addEventListener("click", () => {
+        qty = Math.min(10, qty + 1);
+        document.getElementById("qtyVal").textContent = qty;
+      });
+
+      document.getElementById("placeOrderBtn").addEventListener("click", () => {
+        const params = new URLSearchParams({ productId: product.id, qty: String(qty) });
+        window.location.href = `covercheckout.html?${params.toString()}`;
+      });
+
+    }
+
+    window.openModal = function (src) {
+      document.getElementById("modalImg").src = src;
+      document.getElementById("imageModal").classList.add("show");
+    };
+    window.closeModal = function () {
+      document.getElementById("imageModal").classList.remove("show");
+    };
+
+    document.getElementById("likeBtn").addEventListener("click", function () {
+      this.classList.toggle("liked");
+    });
+
+    document.getElementById("shareBtn").addEventListener("click", async () => {
+      const shareData = {
+        title: "Bestify",
+        text: `Check out ${category.toLowerCase()} for ${phoneLabel} on Bestify`,
+        url: window.location.href
+      };
+      try {
+        if (navigator.share) {
+          await navigator.share(shareData);
+        } else {
+          await navigator.clipboard.writeText(shareData.url);
+          alert("Link copied!");
+        }
+      } catch (error) {
+        // cancelled — nothing to do
+      }
+    });
+
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) return;
+      try {
+        const snap = await getDocs(collection(db, "users", user.uid, "cart"));
+        document.getElementById("cartBadge").textContent = snap.size;
+      } catch (error) {
+        console.error(error);
+      }
+    });
+
+    loadProducts();
+
+    } // end of "sessionStorage present" branch
+  </script>
+</body>
+</html>

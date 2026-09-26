@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Become a Supplier — Bestify</title>
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="design-system.css">
+  <link rel="stylesheet" href="vendor-apply.css">
+</head>
+<body class="bf-has-nav">
+
+  <div class="container va-container">
+
+    <h1>Become a Supplier 🏪</h1>
+    <p class="va-sub">Sell your products on Bestify. Fill your shop details below — our team will review and approve your account.</p>
+
+    <!-- Loading -->
+    <div id="loadingState" class="va-state">Checking your account...</div>
+
+    <!-- Already a vendor: status card -->
+    <div id="statusState" class="va-state" style="display:none;">
+      <div class="va-status-card">
+        <div id="statusIcon" class="va-status-icon">⏳</div>
+        <h2 id="statusTitle">Application Pending</h2>
+        <p id="statusMessage">Your application is under review. We'll notify you once approved.</p>
+        <a href="home.html" class="va-btn-link">← Back to Home</a>
+      </div>
+    </div>
+
+    <!-- Application form -->
+    <form id="vendorApplyForm" class="va-form" style="display:none;">
+
+      <div class="bf-field">
+        <label class="bf-label">Shop Name</label>
+        <input type="text" id="shopName" class="bf-input" required>
+      </div>
+
+      <div class="bf-field">
+        <label class="bf-label">Owner Name</label>
+        <input type="text" id="ownerName" class="bf-input" required>
+      </div>
+
+      <div class="bf-field">
+        <label class="bf-label">Phone Number</label>
+        <input type="tel" id="vendorPhone" class="bf-input" required>
+      </div>
+
+      <div class="bf-field">
+        <label class="bf-label">Email</label>
+        <input type="email" id="vendorEmail" class="bf-input" required>
+      </div>
+
+      <div class="bf-field">
+        <label class="bf-label">Category (what you sell)</label>
+        <input type="text" id="vendorCategory" class="bf-input" placeholder="e.g. Mobile Accessories" required>
+      </div>
+
+      <div class="bf-field">
+        <label class="bf-label">Shop Address</label>
+        <textarea id="vendorAddress" class="bf-textarea" required></textarea>
+      </div>
+
+      <button type="submit" id="applySubmitBtn" class="bf-btn bf-btn-primary bf-btn-block">
+        Submit Application
+      </button>
+
+    </form>
+
+  </div>
+
+  <nav class="bottom-nav">
+    <a href="home.html"><span>🏠</span><p>Home</p></a>
+    <a href="wishlist.html"><span>😊</span><p>Liked</p></a>
+    <a href="orders.html"><span>📦</span><p>Orders</p></a>
+    <a href="profile.html"><span>🏪</span><p>My Account</p></a>
+  </nav>
+
+  <script type="module" src="vendor-apply.js"></script>
+  <script type="module" src="profile-menu.js"></script>
+
+</body>
+</html>

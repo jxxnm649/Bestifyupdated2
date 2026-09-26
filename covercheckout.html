@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checkout & Payment</title>
+<style>
+  body { font-family: 'Segoe UI', Roboto, sans-serif; margin: 0; padding: 0; background-color: #f4f6f8; display: flex; justify-content: center; }
+  .app-container { width: 100%; max-width: 414px; background: #ffffff; min-height: 100vh; position: relative; padding-bottom: 90px; }
+  
+  .header { display: flex; align-items: center; padding: 20px; }
+  .header h2 { margin: 0; font-size: 18px; margin-left: 20px; font-weight: 600; }
+
+  .section-box { margin: 0 20px 15px 20px; padding: 15px; background: #fff; border-radius: 12px; border: 1px solid #eee; }
+  .section-box h3 { margin: 0 0 10px 0; font-size: 14px; color: #333; display: flex; justify-content: space-between; align-items: center; }
+  
+  .order-summary { display: flex; gap: 12px; align-items: center; }
+  .order-summary img, .placeholder-img { width: 50px; height: 50px; background: #222; color: #fff; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+  
+  .price-details { font-size: 13px; color: #555; }
+  .price-row-item { display: flex; justify-content: space-between; margin-bottom: 6px; }
+  .total-row { font-weight: bold; color: #111; font-size: 15px; border-top: 1px dashed #ddd; padding-top: 8px; margin-top: 8px; }
+
+  .address-box { font-size: 13px; color: #444; line-height: 1.4; }
+  .change-link { color: #006b44; font-weight: bold; cursor: pointer; font-size: 12px; }
+
+  .payment-option { display: flex; align-items: center; padding: 10px 0; border-bottom: 1px solid #f0f0f0; cursor: pointer; }
+  .payment-option:last-child { border-bottom: none; }
+  .payment-option input { margin-right: 12px; accent-color: #006b44; }
+
+  .summary-row{ display:flex; justify-content:space-between; font-size:13px; color:#555; margin-bottom:6px; }
+  .summary-total{ font-weight:bold; color:#111; font-size:15px; border-top:1px dashed #ddd; padding-top:8px; margin-top:8px; }
+  .no-results{ color:#888; font-size:14px; text-align:center; padding:20px 0; }
+  .bottom-bar { position: fixed; bottom: 0; width: 100%; max-width: 414px; background: #fff; padding: 15px 20px; box-sizing: border-box; border-top: 1px solid #eee; }
+  .btn-place-order { background: #006b44; color: white; border: none; padding: 16px; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; width: 100%; display: flex; justify-content: space-between; align-items: center; }
+  label{ display:block; font-size:12px; font-weight:700; color:#333; margin:12px 0 4px; }
+  input[type="text"], input[type="tel"], textarea{
+    width:100%; padding:12px; border:1px solid #ddd; border-radius:8px; font-size:14px;
+    box-sizing:border-box; font-family:inherit;
+  }
+  textarea{ min-height:70px; resize:vertical; }
+</style>
+</head>
+<body>
+<div class="app-container">
+  <div class="header">
+    <a href="coverproducts.html" style="font-size: 20px;text-decoration:none;color:inherit;">&#8592;</a><h2>Checkout</h2>
+  </div>
+
+  <!-- Order Item Summary (auto-filled with real order data) -->
+  <div class="section-box">
+    <h3 style="margin:0 0 10px;font-size:14px;color:#333;">Your Order</h3>
+    <div id="orderSummary"></div>
+  </div>
+
+  <form id="checkoutForm">
+
+    <!-- Delivery Details -->
+    <div class="section-box">
+      <h3 style="margin:0 0 4px;font-size:14px;color:#333;">Deliver to</h3>
+
+      <label for="customerName">Full Name</label>
+      <input type="text" id="customerName" placeholder="Your full name" required>
+
+      <label for="mobile">Mobile Number</label>
+      <input type="tel" id="mobile" placeholder="10-digit mobile number" required>
+
+      <label for="address">Delivery Address</label>
+      <textarea id="address" placeholder="House no, street, area, city" required></textarea>
+      <label for="pincode" id="pincodeLabel">Pincode</label>
+      <input type="text" id="pincode" inputmode="numeric" maxlength="6" pattern="[0-9]{6}" placeholder="6-digit pincode">
+    </div>
+
+    <!-- Payment Methods -->
+    <div class="section-box">
+      <h3 style="margin:0 0 10px;font-size:14px;color:#333;">Payment Method</h3>
+      <label class="payment-option" style="display:flex;">
+        <input type="radio" name="paymentMethod" value="online" checked>
+        <div><strong>Pay Online (UPI / Card)</strong><div style="font-size:11px; color:#666;">Fast &amp; secure via Razorpay</div></div>
+      </label>
+      <label class="payment-option" style="display:flex;">
+        <input type="radio" name="paymentMethod" value="cod">
+        <div><strong>Cash on Delivery (COD)</strong><div style="font-size:11px; color:#666;">Pay when you receive</div></div>
+      </label>
+    </div>
+
+    <div class="bottom-bar">
+      <button type="submit" id="placeOrderBtn" class="btn-place-order">
+        <span>Place Order</span>
+        <span>&rarr;</span>
+      </button>
+    </div>
+
+  </form>
+</div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script type="module" src="checkout.js"></script>
+
+</body>
+</html>

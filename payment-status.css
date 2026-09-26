@@ -1,0 +1,56 @@
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.status-card{
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 40px 30px;
+    max-width: 380px;
+    width: 100%;
+    text-align: center;
+}
+
+.status-icon{
+    font-size: 48px;
+    margin-bottom: 10px;
+}
+
+.success-card h1{ color: var(--leaf); }
+.fail-card h1{ color: var(--rust); }
+
+.status-card p{
+    color: var(--ink-soft);
+    font-size: 14px;
+    margin: 8px 0 4px;
+}
+
+.order-id{
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--ink);
+    background: var(--paper-dim);
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 999px;
+    margin: 10px 0 6px;
+}
+
+.status-card button{
+    margin-top: 14px;
+}
+
+.status-card button.ghost{
+    background: transparent;
+    border: 1.5px solid var(--line);
+    color: var(--ink);
+}
+.status-card button.ghost:hover{
+    background: var(--paper-dim);
+}

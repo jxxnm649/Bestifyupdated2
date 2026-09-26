@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light only">
+    <title>My Orders</title>
+    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="orders.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="bottom-nav.css">
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+<body class="bf-has-nav">
+
+    <!-- Top Navigation Header -->
+    <div class="top-header">
+        <div class="header-title-container">
+            <a href="home.html" class="back-arrow" aria-label="Back">&lt;</a>
+            <span class="header-title">MY ORDERS</span>
+        </div>
+        <a href="chat.html" class="help-btn">💬 HELP</a>
+    </div>
+
+    <!-- Search & Filter Controls Section -->
+    <div class="search-filter-wrapper">
+        <div class="search-bar-container">
+            <div class="search-input-box">
+                <span>🔍</span>
+                <input type="text" id="searchInput" placeholder="Search by Product Name or Order ID..." onkeyup="filterOrders()">
+            </div>
+            <button class="filter-btn" onclick="openFilterDrawer()">⚙️ Filter</button>
+        </div>
+
+        <div class="filter-tabs-row">
+            <div class="tab-chip active" onclick="switchTab(this, 'all')">All Orders</div>
+            <div class="tab-chip" onclick="switchTab(this, 'cod')">Cash on Delivery</div>
+            <div class="tab-chip" onclick="switchTab(this, 'paid')">Online Paid</div>
+            <div class="tab-chip" onclick="switchTab(this, 'delivered')">Delivered</div>
+        </div>
+    </div>
+
+    <!-- Orders List Container — filled with real orders by orders.js -->
+    <div id="ordersContainer">
+        <div style="text-align:center;padding:40px 16px;color:#888;">Loading your orders…</div>
+    </div>
+
+    <!-- Filter Drawer Popup (Meesho Style) -->
+    <div class="filter-modal-overlay" id="filterModal">
+        <div class="filter-sheet">
+
+            <div class="filter-sheet-header">
+                <span>FILTER BY</span>
+                <span style="cursor: pointer;" onclick="closeFilterDrawer()">&times;</span>
+            </div>
+
+            <div class="filter-sheet-body">
+                <div class="filter-title">Status</div>
+                <div class="filter-options-list" id="statusOptionsList">
+                    <label class="filter-radio-row">
+                        <input type="radio" name="statusFilter" value="All" checked>
+                        <span class="filter-radio-circle"></span>
+                        All
+                    </label>
+                    <label class="filter-radio-row">
+                        <input type="radio" name="statusFilter" value="Pending">
+                        <span class="filter-radio-circle"></span>
+                        Pending
+                    </label>
+                    <label class="filter-radio-row">
+                        <input type="radio" name="statusFilter" value="Shipped">
+                        <span class="filter-radio-circle"></span>
+                        Shipped
+                    </label>
+                    <label class="filter-radio-row">
+                        <input type="radio" name="statusFilter" value="Delivered">
+                        <span class="filter-radio-circle"></span>
+                        Delivered
+                    </label>
+                    <label class="filter-radio-row">
+                        <input type="radio" name="statusFilter" value="Cancelled">
+                        <span class="filter-radio-circle"></span>
+                        Cancelled
+                    </label>
+                </div>
+            </div>
+
+            <div class="filter-actions">
+                <button class="btn-reset-filter" onclick="clearStatusFilter()">Clear</button>
+                <button class="btn-apply-filter" onclick="applyStatusFilter()">Apply</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cashback Modal Popup (real amount + real status) -->
+    <div class="modal-overlay" id="scratchModal">
+        <div class="scratch-card-box">
+            <button class="close-modal-btn" onclick="closeScratchCard()">&times;</button>
+            <h4 style="font-size: 15px; color: #111;">🎁 Delivery Cashback</h4>
+            <p style="font-size: 12px; color: #666; margin-top: 4px;" id="cashbackSubtext"></p>
+
+            <div class="scratch-area" style="height:auto;">
+                <div class="coupon-reward" style="position:static;padding:16px 0;">
+                    <span style="font-size: 11px; color: #16a34a; font-weight: bold;" id="cashbackStatusLabel"></span>
+                    <span class="coupon-code" id="couponCodeDisplay"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="orders.js"></script>
+
+    <script>
+        function toggleDetails(triggerEl) {
+            const cardElement = triggerEl.closest('.order-card-item');
+            const panel = cardElement.querySelector('.full-details-panel');
+            panel.classList.toggle('show');
+            triggerEl.classList.toggle('is-open', panel.classList.contains('show'));
+        }
+
+        function filterOrders() {
+            let input = document.getElementById('searchInput').value.toLowerCase();
+            let cards = document.querySelectorAll('.order-card-item');
+
+            cards.forEach(card => {
+                let text = card.innerText.toLowerCase();
+                card.style.display = text.includes(input) ? "block" : "none";
+            });
+        }
+
+        function switchTab(element, filterType) {
+            document.querySelectorAll('.tab-chip').forEach(chip => chip.classList.remove('active'));
+            element.classList.add('active');
+
+            let cards = document.querySelectorAll('.order-card-item');
+            cards.forEach(card => {
+                let cardType = card.getAttribute('data-type');
+                let cardStatus = card.getAttribute('data-status');
+
+                if (filterType === 'all') {
+                    card.style.display = 'block';
+                } else if (filterType === 'delivered' && cardStatus === 'delivered') {
+                    card.style.display = 'block';
+                } else if (cardType === filterType) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function openFilterDrawer() {
+            document.getElementById('filterModal').classList.add('active');
+        }
+
+        function closeFilterDrawer() {
+            document.getElementById('filterModal').classList.remove('active');
+        }
+
+        /*
+          NOTE: shareOrder, trackOrder, payNow and
+          openScratchCard/closeScratchCard are all defined in
+          orders.js (as real, data-backed versions) instead of here,
+          since they need access to each order's real Firestore data
+          (real cashback amount/status, real order id for tracking,
+          real Razorpay payment for payNow — server-verified via
+          Cloud Functions, only shown for COD orders that haven't
+          shipped yet).
+        */
+    </script>
+
+    <nav class="bottom-nav">
+        <a href="home.html" class="nav-item" id="nav-home">
+            <i class="fa-solid fa-store"></i>
+            <span>Home</span>
+        </a>
+        <a href="wishlist.html" class="nav-item" id="nav-liked">
+            <i class="fa-regular fa-thumbs-up"></i>
+            <span>Liked</span>
+        </a>
+        <a href="orders.html" class="nav-item" id="nav-orders">
+            <i class="fa-solid fa-box"></i>
+            <span>Orders</span>
+        </a>
+        <a href="profile.html" class="nav-item" id="nav-account">
+            <i class="fa-regular fa-file-lines"></i>
+            <span>My Account</span>
+        </a>
+    </nav>
+
+    <script src="bottom-nav.js"></script>
+</body>
+</html>

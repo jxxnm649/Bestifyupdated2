@@ -1,0 +1,79 @@
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+body { background-color: #f4f6f8; color: #333; padding: 0 0 12px; overflow-x: hidden; }
+
+.top-bar {
+    background: #fff;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    margin-bottom: 12px;
+}
+.top-bar a { color: #333; text-decoration: none; font-size: 18px; }
+.top-bar span { font-size: 15px; font-weight: 700; }
+
+.container { max-width: 480px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; padding: 0 12px; }
+
+/* Card Styles */
+.card { background: #ffffff; border-radius: 12px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+
+/* Product Card */
+.product-card { display: flex; gap: 12px; align-items: center; position: relative; }
+.product-img { width: 80px; height: 80px; border-radius: 8px; object-fit: cover; border: 1px solid #eee; background: #f4f4f4; flex-shrink: 0; }
+.product-info { flex: 1; min-width: 0; padding-right: 70px; }
+.product-title { font-size: 15px; font-weight: 600; color: #1a1a1a; margin-bottom: 4px; }
+.product-meta { font-size: 13px; color: #666; margin-bottom: 6px; }
+.product-price { font-size: 16px; font-weight: 700; color: #2e7d32; }
+.share-btn { width: auto; margin: 0; position: absolute; top: 0; right: 0; background: #f0f0f0; border: none; padding: 6px 10px; border-radius: 20px; font-size: 12px; cursor: pointer; color: #555; }
+
+/* Delivery Estimate Box */
+.delivery-estimate {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background-color: #e8f5e9;
+  border: 1px solid #c8e6c9;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+.delivery-estimate.cancelled { background-color: #ffebee; border-color: #ffcdd2; }
+.truck-icon { font-size: 22px; }
+.est-title { font-size: 12px; color: #2e7d32; font-weight: 600; text-transform: uppercase; }
+.est-date { font-size: 15px; color: #1b5e20; font-weight: 700; }
+.delivery-estimate.cancelled .est-title { color: #c62828; }
+.delivery-estimate.cancelled .est-date { color: #b71c1c; }
+
+/* Order Tracker */
+.tracker-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 4px; }
+.status-title { font-size: 14px; font-weight: 600; color: #2e7d32; }
+.order-date { font-size: 12px; color: #777; }
+
+.steps { display: flex; justify-content: space-between; position: relative; margin: 15px 0; }
+.steps::before { content: ''; position: absolute; top: 12px; left: 10%; width: 80%; height: 3px; background: #e0e0e0; z-index: 1; }
+.steps::after { content: ''; position: absolute; top: 12px; left: 10%; width: var(--progress, 0%); height: 3px; background: #2e7d32; z-index: 1; transition: width .3s ease; }
+.step { position: relative; z-index: 2; background: #fff; text-align: center; font-size: 11px; color: #888; width: 25%; }
+.step-icon { width: 26px; height: 26px; border-radius: 50%; background: #e0e0e0; color: #fff; display: flex; align-items: center; justify-content: center; margin: 0 auto 6px; font-weight: bold; font-size: 12px; }
+.step.active .step-icon { background: #2e7d32; }
+.step.active { color: #2e7d32; font-weight: 600; }
+
+.cancel-btn { width: 100%; border: 1px solid #d32f2f; background: transparent; color: #d32f2f; padding: 10px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; margin-top: 10px; }
+.cancel-btn:disabled { opacity: .6; }
+.cancelled-note { background: #ffebee; color: #c62828; padding: 10px 12px; border-radius: 8px; font-size: 13px; font-weight: 600; }
+
+/* Info Sections */
+.section-title { font-size: 13px; color: #777; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px; font-weight: 600; }
+.address-name { font-weight: 600; font-size: 14px; margin-bottom: 2px; }
+.address-text { font-size: 13px; color: #555; line-height: 1.4; }
+
+/* Price Details */
+.price-row { display: flex; justify-content: space-between; font-size: 13px; color: #555; margin-bottom: 8px; }
+.price-row.total { border-top: 1px dashed #ddd; padding-top: 10px; font-size: 15px; font-weight: 700; color: #1a1a1a; margin-bottom: 0; }
+.badge-cod { background: #e8f5e9; color: #2e7d32; padding: 2px 6px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+.badge-paid { background: #e3f2fd; color: #1565c0; padding: 2px 6px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+
+.no-results { text-align: center; padding: 30px 10px; color: #777; }

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Select Model</title>
+<style>
+  /* ಮೊದಲಿನ ಪೇಜ್‌ನ ಸ್ಟೈಲ್‌ಗಳನ್ನು ಹಾಗೇ ಉಳಿಸಿಕೊಳ್ಳಲಾಗಿದೆ */
+  body { font-family: 'Segoe UI', Roboto, sans-serif; margin: 0; padding: 0; background-color: #f4f6f8; display: flex; justify-content: center; }
+  .app-container { width: 100%; max-width: 414px; background: #ffffff; min-height: 100vh; position: relative; padding-bottom: 80px; }
+  
+  .header { display: flex; align-items: center; padding: 20px; }
+  .header h2 { margin: 0; font-size: 18px; margin-left: 20px; font-weight: 600; }
+  .progress-bar { display: flex; justify-content: space-between; padding: 10px 20px 20px 20px; font-size: 12px; color: #888; }
+  .step { display: flex; flex-direction: column; align-items: center; }
+  .step .circle { width: 24px; height: 24px; border-radius: 50%; background: #f0f0f0; display: flex; align-items: center; justify-content: center; margin-bottom: 5px; font-weight: bold; }
+  .step.completed .circle { background: #006b44; color: white; }
+  .step.completed { color: #006b44; font-weight: bold; }
+  .step.active .circle { background: white; border: 2px solid #006b44; color: #006b44; }
+  .step.active { color: #006b44; font-weight: bold; }
+
+  .selection-box { margin: 0 20px; padding: 15px; border-radius: 10px; border: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+  .selection-box .brand-info { display: flex; align-items: center; gap: 10px; font-weight: bold; color: #111; font-size: 14px;}
+  .brand-icon { width: 30px; height: 30px; background: #1428a0; color: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 14px; }
+  .change-btn { color: #006b44; font-weight: bold; font-size: 14px; cursor: pointer; }
+
+  .title-section { padding: 20px; }
+  .title-section h1 { margin: 0; font-size: 22px; color: #111; font-weight: 700; }
+  .title-section p { margin: 5px 0 15px 0; color: #666; font-size: 14px; }
+
+  /* Search Bar */
+  .search-box { margin: 0 20px 15px 20px; padding: 12px 15px; border-radius: 10px; border: 1px solid #ccc; display: flex; align-items: center; }
+  .search-box input { border: none; outline: none; width: 100%; font-size: 15px; margin-left: 10px; }
+  .search-box span { color: #888; }
+
+  /* Model List */
+  .list-container { padding: 0 20px; }
+  .list-item { padding: 15px; border-bottom: 1px solid #eee; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 15px; color: #333; }
+  .list-item:last-child { border-bottom: none; }
+  .list-item.selected { background: #f2fcf7; font-weight: bold; border-radius: 8px; border: 1px solid #006b44; padding: 14px; }
+  .arrow { color: #aaa; font-size: 18px; }
+  .check-icon { color: #006b44; font-weight: bold; font-size: 16px; }
+
+  .bottom-bar { position: fixed; bottom: 0; width: 100%; max-width: 414px; background: #fff; padding: 15px 20px; box-sizing: border-box; display: flex; gap: 15px; border-top: 1px solid #eee; }
+  .btn-back { background: white; color: #d32f2f; border: 1px solid #d32f2f; padding: 15px; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; flex: 1; text-align: center; }
+  .btn-next { background: #006b44; color: white; border: none; padding: 15px; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; flex: 1; text-align: center; }
+</style>
+</head>
+<body>
+<div class="app-container">
+  <div class="header">
+    <a href="coverseries.html" style="font-size: 20px;text-decoration:none;color:inherit;">&#8592;</a><h2>Find Your Product</h2>
+  </div>
+
+  <div class="progress-bar">
+    <div class="step completed"><div class="circle">&#10003;</div>Brand</div>
+    <div class="step completed"><div class="circle">&#10003;</div>Series</div>
+    <div class="step active"><div class="circle">3</div>Model</div>
+    <div class="step"><div class="circle">4</div>Category</div>
+  </div>
+
+  <div class="selection-box">
+    <div class="brand-info" id="breadcrumbInfo"></div>
+    <a href="coverseries.html" class="change-btn" style="text-decoration:none;">Change</a>
+  </div>
+
+  <div class="title-section">
+    <h1>Select your model</h1>
+    <p>Choose the exact model of your device.</p>
+  </div>
+
+  <div class="search-box">
+    <span>&#128269;</span>
+    <input type="text" id="modelSearch" placeholder="Search your model">
+  </div>
+
+  <div class="list-container" id="modelList"></div>
+
+  <div class="bottom-bar">
+    <a href="coverseries.html" class="btn-back" style="text-decoration:none;text-align:center;">&larr; Back</a>
+    <button class="btn-next" id="nextBtn">Next &rarr;</button>
+  </div>
+</div>
+
+<script>
+  const MODEL_SUGGESTIONS = {
+    "Galaxy S Series": ["Galaxy S24 Ultra 5G", "Galaxy S24+ 5G", "Galaxy S24 5G", "Galaxy S23 Ultra 5G", "Galaxy S23+ 5G", "Galaxy S23 5G"],
+    "Galaxy A Series": ["Galaxy A55 5G", "Galaxy A35 5G", "Galaxy A25 5G", "Galaxy A15 5G", "Galaxy A54 5G", "Galaxy A14 5G"],
+    "Galaxy M Series": ["Galaxy M35 5G", "Galaxy M15 5G", "Galaxy M14 5G", "Galaxy M31"],
+    "Galaxy F Series": ["Galaxy F55", "Galaxy F15 5G"],
+    "iPhone": ["iPhone 15 Pro Max", "iPhone 15 Pro", "iPhone 15", "iPhone 14", "iPhone 13", "iPhone SE"],
+    "Redmi Note": ["Redmi Note 13 Pro+", "Redmi Note 13 Pro", "Redmi Note 13", "Redmi Note 12 Pro"],
+    "Redmi": ["Redmi 13C", "Redmi 12"],
+    "Poco": ["Poco X6 Pro", "Poco M6 Pro"],
+    "Vivo Y Series": ["Vivo Y200e", "Vivo Y28", "Vivo Y17s"],
+    "Vivo V Series": ["Vivo V30", "Vivo V29"],
+    "Vivo T Series": ["Vivo T3x", "Vivo T2"],
+    "Oppo A Series": ["Oppo A79", "Oppo A59"],
+    "Oppo F Series": ["Oppo F25 Pro"],
+    "Oppo Reno Series": ["Oppo Reno 11", "Oppo Reno 10"],
+    "Realme Narzo": ["Realme Narzo 70", "Realme Narzo N65"],
+    "Realme C Series": ["Realme C67", "Realme C55"],
+    "Realme Number Series": ["Realme 12 Pro+", "Realme 12"]
+  };
+
+  const brand = sessionStorage.getItem("cover_brand");
+  const series = sessionStorage.getItem("cover_series");
+  if (!brand || !series) window.location.href = "coverbrand.html";
+
+  document.getElementById("breadcrumbInfo").textContent = `${brand} \u203A ${series}`;
+
+  let selectedModel = sessionStorage.getItem("cover_model") || null;
+  const allModels = MODEL_SUGGESTIONS[series] || [];
+
+  function renderList(filterText) {
+    const q = (filterText || "").toLowerCase().trim();
+    const filtered = q ? allModels.filter(m => m.toLowerCase().includes(q)) : allModels;
+    const list = document.getElementById("modelList");
+
+    let html = filtered.map(m => `
+      <div class="list-item ${selectedModel === m ? "selected" : ""}" data-model="${m}">
+        <span>${m}</span>
+        <div class="${selectedModel === m ? "check-icon" : "arrow"}">${selectedModel === m ? "&#10003;" : "&rsaquo;"}</div>
+      </div>
+    `).join("");
+
+    if (q && !filtered.some(m => m.toLowerCase() === q)) {
+      html += `
+        <div class="list-item ${selectedModel === filterText ? "selected" : ""}" data-model="${filterText}">
+          <span>Use "${filterText}"</span>
+          <div class="${selectedModel === filterText ? "check-icon" : "arrow"}">${selectedModel === filterText ? "&#10003;" : "&rsaquo;"}</div>
+        </div>
+      `;
+    }
+
+    if (!allModels.length) {
+      html = `<p style="color:#666;font-size:13px;padding:10px 0;">No suggestions for this series — just type your exact model above and tap it to select.</p>` + html;
+    }
+
+    list.innerHTML = html;
+  }
+  renderList(document.getElementById("modelSearch").value);
+
+  document.getElementById("modelSearch").addEventListener("input", (e) => {
+    renderList(e.target.value);
+  });
+
+  document.getElementById("modelList").addEventListener("click", (e) => {
+    const item = e.target.closest(".list-item");
+    if (!item) return;
+    selectedModel = item.dataset.model;
+    renderList(document.getElementById("modelSearch").value);
+  });
+
+  document.getElementById("nextBtn").addEventListener("click", () => {
+    if (!selectedModel) {
+      alert("Please choose your model");
+      return;
+    }
+    sessionStorage.setItem("cover_model", selectedModel);
+    sessionStorage.removeItem("cover_category");
+    sessionStorage.removeItem("cover_type");
+    sessionStorage.removeItem("cover_product_id");
+    window.location.href = "covercategory.html";
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Rewards - Bestify Mobile</title>
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="design-system.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="bottom-nav.css">
+  <style>
+    .reward-list{ display:flex; flex-direction:column; gap:12px; padding:4px 0 20px; }
+
+    .reward-card{
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px;
+      box-shadow: var(--shadow-sm);
+    }
+    .reward-card-top{ display:flex; justify-content:space-between; align-items:flex-start; gap:8px; margin-bottom:8px; }
+    .reward-order-label{ font-size:11px; color:var(--ink-soft); font-weight:600; }
+    .reward-order-id{ font-size:13px; font-weight:800; color:var(--ink); }
+
+    .reward-pill{
+      font-size:10px; font-weight:800; padding:4px 9px; border-radius:20px; white-space:nowrap;
+    }
+    .reward-pill.pending{ background:#FFF6E6; color:#D98925; }
+    .reward-pill.credited{ background:var(--leaf-bg,#E7F3EC); color:var(--leaf,#2F7A4F); }
+    .reward-pill.used{ background:#eee; color:#888; }
+    .reward-pill.unused{ background:#F3E8FF; color:#7E22CE; }
+
+    .reward-body{ display:flex; align-items:center; gap:12px; }
+    .reward-icon{
+      width:44px; height:44px; border-radius:12px; flex-shrink:0;
+      display:flex; align-items:center; justify-content:center; font-size:20px;
+    }
+    .reward-icon.cash{ background:var(--leaf-bg,#E7F3EC); color:var(--leaf,#2F7A4F); }
+    .reward-icon.coupon{ background:#F3E8FF; color:#7E22CE; }
+
+    .reward-title{ font-size:14px; font-weight:800; color:var(--ink); }
+    .reward-sub{ font-size:11.5px; color:var(--ink-soft); margin-top:2px; }
+
+    .reward-empty{ text-align:center; padding:60px 20px; color:var(--ink-soft); }
+    .reward-empty .icon{ font-size:38px; margin-bottom:10px; }
+
+    .reward-loading{ text-align:center; padding:60px 20px; color:var(--ink-soft); font-size:13px; }
+  </style>
+</head>
+<body class="bf-has-nav">
+
+<div class="container">
+
+  <h1>My Rewards 🎁</h1>
+  <p style="font-size:12.5px; color:var(--ink-soft); margin:-6px 0 14px;">
+    Cash rewards and coupons Bestify Mobile has given you on your orders.
+  </p>
+
+  <div id="rewardsList">
+    <div class="reward-loading">Loading your rewards…</div>
+  </div>
+
+</div>
+
+<nav class="bottom-nav">
+  <a href="home.html" class="nav-item" id="nav-home">
+    <i class="fa-solid fa-store"></i>
+    <span>Home</span>
+  </a>
+  <a href="wishlist.html" class="nav-item" id="nav-liked">
+    <i class="fa-regular fa-thumbs-up"></i>
+    <span>Liked</span>
+  </a>
+  <a href="orders.html" class="nav-item" id="nav-orders">
+    <i class="fa-solid fa-box"></i>
+    <span>Orders</span>
+  </a>
+  <a href="profile.html" class="nav-item" id="nav-account">
+    <i class="fa-regular fa-file-lines"></i>
+    <span>My Account</span>
+  </a>
+</nav>
+
+<script type="module" src="cashback.js"></script>
+<script type="module" src="profile-menu.js"></script>
+<script src="bottom-nav.js"></script>
+
+</body>
+</html>

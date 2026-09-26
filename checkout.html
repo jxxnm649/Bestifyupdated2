@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light only">
+<title>Checkout & Payment</title>
+<style>
+  * { box-sizing: border-box; }
+  body { font-family: 'Segoe UI', Roboto, sans-serif; margin: 0; padding: 0; background-color: #f4f6f8; display: flex; justify-content: center; color-scheme: light only; }
+  .app-container { width: 100%; max-width: 414px; background: #f4f6f8; min-height: 100vh; position: relative; padding-bottom: 100px; }
+
+  .header { display: flex; align-items: center; justify-content: space-between; padding: 18px 20px; background: #fff; border-bottom: 1px solid #eee; }
+  .header-left { display: flex; align-items: center; gap: 14px; }
+  .header h2 { margin: 0; font-size: 15px; font-weight: 800; letter-spacing: .04em; color: #111; }
+  .step-pill { font-size: 11px; font-weight: 700; color: #6b21a8; border: 1.5px solid #6b21a8; border-radius: 999px; padding: 4px 12px; }
+
+  .section-box { margin: 14px 16px 0; padding: 16px; background: #fff; border-radius: 14px; border: 1px solid #eee; }
+  .section-title { margin: 0 0 12px; font-size: 13px; font-weight: 800; color: #111; text-transform: uppercase; letter-spacing: .03em; }
+
+  .order-summary img, .placeholder-img { width: 54px; height: 54px; background: #222; color: #fff; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; object-fit: cover; }
+
+  .summary-row{ display:flex; justify-content:space-between; font-size:13px; color:#555; margin-bottom:6px; }
+  .summary-total{ font-weight:bold; color:#111; font-size:15px; border-top:1px dashed #ddd; padding-top:8px; margin-top:8px; }
+  .no-results{ color:#888; font-size:14px; text-align:center; padding:20px 0; }
+
+  /* Delivery method (Meesho-style option cards) */
+  .option-card { display: flex; align-items: center; gap: 12px; border: 1.5px solid #eee; border-radius: 12px; padding: 12px; margin-bottom: 10px; cursor: pointer; }
+  .option-card:last-child { margin-bottom: 0; }
+  .option-card.selected { border-color: #6b21a8; background: #faf5ff; }
+  .option-card input { accent-color: #6b21a8; width: 18px; height: 18px; flex-shrink: 0; }
+  .option-icon { font-size: 20px; width: 30px; text-align: center; flex-shrink: 0; }
+  .option-text strong { display: block; font-size: 13.5px; color: #111; }
+  .option-text span { font-size: 11.5px; color: #666; }
+
+  .pickup-address-box { margin-top: 10px; background: #faf5ff; border: 1px dashed #6b21a8; border-radius: 10px; padding: 12px; font-size: 12.5px; color: #444; line-height: 1.5; display: none; }
+  .pickup-address-box.show { display: block; }
+
+  label{ display:block; font-size:12px; font-weight:700; color:#333; margin:12px 0 4px; }
+  label:first-of-type { margin-top: 0; }
+  input[type="text"], input[type="tel"], textarea{
+    width:100%; padding:12px; border:1px solid #ddd; border-radius:8px; font-size:14px;
+    box-sizing:border-box; font-family:inherit;
+  }
+  textarea{ min-height:70px; resize:vertical; }
+  input:disabled, textarea:disabled { background: #f4f6f8; color: #888; }
+
+  .payment-option { display: flex; align-items: center; padding: 12px; border: 1.5px solid #eee; border-radius: 12px; cursor: pointer; margin-bottom: 10px; gap: 12px; }
+  .payment-option:last-child { margin-bottom: 0; }
+  .payment-option.selected { border-color: #6b21a8; background: #faf5ff; }
+  .payment-option input { margin: 0; accent-color: #6b21a8; width: 18px; height: 18px; flex-shrink: 0; }
+  .payment-icon { font-size: 20px; width: 30px; text-align: center; flex-shrink: 0; }
+
+  .bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; margin: 0 auto; width: 100%; max-width: 414px; background: #fff; padding: 12px 16px; box-sizing: border-box; border-top: 1px solid #eee; box-shadow: 0 -4px 14px rgba(0,0,0,0.06); display: flex; align-items: center; gap: 12px; z-index: 20; }
+  .bottom-price { flex-shrink: 0; }
+  .bottom-price .amount { font-size: 17px; font-weight: 800; color: #111; display: block; }
+  .bottom-price .label { font-size: 10px; color: #888; }
+  .btn-place-order { background: #6b21a8; color: white; border: none; padding: 14px; border-radius: 10px; font-size: 14px; font-weight: bold; cursor: pointer; flex: 1; display: flex; justify-content: center; align-items: center; gap: 8px; }
+</style>
+</head>
+<body>
+<div class="app-container">
+
+  <div class="header">
+    <div class="header-left">
+      <a href="coverproducts.html" style="font-size: 20px;text-decoration:none;color:inherit;">&#8592;</a>
+      <h2>CHECKOUT</h2>
+    </div>
+    <span class="step-pill">Review &amp; Pay</span>
+  </div>
+
+  <!-- Order Item Summary (auto-filled with real order data by checkout.js) -->
+  <div class="section-box">
+    <h3 class="section-title">Your Order</h3>
+    <div id="orderSummary"></div>
+  </div>
+
+  <form id="checkoutForm">
+
+    <!-- Delivery Method -->
+    <div class="section-box">
+      <h3 class="section-title">Delivery Method</h3>
+
+      <label class="option-card selected" id="homeDeliveryCard">
+        <input type="radio" name="deliveryMethod" value="home" checked>
+        <span class="option-icon">🚚</span>
+        <span class="option-text"><strong>Home Delivery</strong><span>Delivered to your address</span></span>
+      </label>
+
+      <label class="option-card" id="storePickupCard">
+        <input type="radio" name="deliveryMethod" value="pickup">
+        <span class="option-icon">🏬</span>
+        <span class="option-text"><strong>Store Pickup</strong><span>Collect from Bestify Mobile, Kolavi</span></span>
+      </label>
+
+      <div class="pickup-address-box" id="pickupAddressBox">
+        📍 <b>Bestify Mobile Shop</b><br>
+        Primary School Gate Opposite, Kolavi, Gokak, Karnataka<br>
+        📞 9110690727
+      </div>
+    </div>
+
+    <!-- Delivery / Contact Details -->
+    <div class="section-box">
+      <h3 class="section-title" id="deliverToTitle">Deliver To</h3>
+
+      <label for="customerName">Full Name</label>
+      <input type="text" id="customerName" placeholder="Your full name" required>
+
+      <label for="mobile">Mobile Number</label>
+      <input type="tel" id="mobile" placeholder="10-digit mobile number" required>
+
+      <label for="address" id="addressLabel">Delivery Address</label>
+      <textarea id="address" placeholder="House no, street, area, city" required></textarea>
+      <label for="pincode" id="pincodeLabel">Pincode</label>
+      <input type="text" id="pincode" inputmode="numeric" maxlength="6" pattern="[0-9]{6}" placeholder="6-digit pincode">
+    </div>
+
+    <!-- Payment Methods -->
+    <div class="section-box">
+      <h3 class="section-title">Payment Method</h3>
+
+      <label class="payment-option selected">
+        <input type="radio" name="paymentMethod" value="online" checked>
+        <span class="payment-icon">💳</span>
+        <span class="option-text"><strong>Pay Online (UPI / Card)</strong><span>Fast &amp; secure via Razorpay</span></span>
+      </label>
+
+      <label class="payment-option">
+        <input type="radio" name="paymentMethod" value="cod">
+        <span class="payment-icon">💵</span>
+        <span class="option-text"><strong>Cash on Delivery (COD)</strong><span>Pay when you receive</span></span>
+      </label>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-price">
+        <span class="amount" id="bottomPriceAmount">—</span>
+        <span class="label">Total</span>
+      </div>
+      <button type="submit" id="placeOrderBtn" class="btn-place-order">
+        <span>⚡ Place Order</span>
+      </button>
+    </div>
+
+  </form>
+</div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script type="module" src="checkout.js"></script>
+
+<script>
+  // ---- Presentation-only helpers (no order/payment logic here —
+  // all of that stays in checkout.js, unchanged) ----
+
+  const SHOP_ADDRESS = "Bestify Mobile Shop, Primary School Gate Opposite, Kolavi, Gokak, Karnataka";
+
+  const homeCard = document.getElementById("homeDeliveryCard");
+  const pickupCard = document.getElementById("storePickupCard");
+  const pickupBox = document.getElementById("pickupAddressBox");
+  const addressField = document.getElementById("address");
+  const addressLabel = document.getElementById("addressLabel");
+  const deliverToTitle = document.getElementById("deliverToTitle");
+  const pincodeField = document.getElementById("pincode");
+  const pincodeLabel = document.getElementById("pincodeLabel");
+
+  let addressBeforePickup = "";
+
+  function setDeliveryMethod(method) {
+    homeCard.classList.toggle("selected", method === "home");
+    pickupCard.classList.toggle("selected", method === "pickup");
+    pickupBox.classList.toggle("show", method === "pickup");
+
+    // Store pickup needs no delivery pincode.
+    const needsPincode = method !== "pickup";
+    if (pincodeField) pincodeField.style.display = needsPincode ? "" : "none";
+    if (pincodeLabel) pincodeLabel.style.display = needsPincode ? "" : "none";
+
+    if (method === "pickup") {
+      addressBeforePickup = addressField.value;
+      addressField.value = SHOP_ADDRESS;
+      addressField.disabled = true;
+      addressLabel.textContent = "Pickup Location";
+      deliverToTitle.textContent = "Your Contact Details";
+    } else {
+      addressField.disabled = false;
+      addressField.value = addressBeforePickup;
+      addressLabel.textContent = "Delivery Address";
+      deliverToTitle.textContent = "Deliver To";
+    }
+  }
+
+  document.querySelectorAll('input[name="deliveryMethod"]').forEach(radio => {
+    radio.addEventListener("change", () => setDeliveryMethod(radio.value));
+  });
+
+  document.querySelectorAll('input[name="paymentMethod"]').forEach(radio => {
+    radio.addEventListener("change", () => {
+      document.querySelectorAll(".payment-option").forEach(opt => {
+        opt.classList.toggle("selected", opt.querySelector("input").checked);
+      });
+    });
+  });
+
+  // Mirror the real order total (rendered by checkout.js into
+  // #orderSummary) into the sticky bottom bar.
+  const orderSummaryEl = document.getElementById("orderSummary");
+  const bottomPriceEl = document.getElementById("bottomPriceAmount");
+
+  const syncBottomPrice = () => {
+    const totalEl = orderSummaryEl.querySelector(".summary-total");
+    if (totalEl) bottomPriceEl.textContent = totalEl.textContent.replace(/^Total\s*/i, "").trim() || totalEl.textContent;
+  };
+
+  new MutationObserver(syncBottomPrice).observe(orderSummaryEl, { childList: true, subtree: true });
+  syncBottomPrice();
+</script>
+
+</body>
+</html>

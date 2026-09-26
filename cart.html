@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="kn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light only">
+
+  <title>MY CART - Bestify</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+
+    body {
+      background-color: #f8fafc;
+      color: #1e293b;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .font-outfit { font-family: 'Outfit', sans-serif; }
+
+    .order-card {
+      background: #ffffff;
+      border-bottom: 1px solid #f1f5f9;
+      padding-top: 16px;
+      padding-bottom: 16px;
+    }
+
+    .btn-pay-now-list {
+      background-color: #a20073;
+      color: #ffffff;
+      font-weight: 700;
+      border-radius: 8px;
+      padding: 8px 18px;
+      font-size: 14px;
+      transition: all 0.2s ease;
+    }
+    .btn-pay-now-list:hover { background-color: #80005b; transform: translateY(-1px); }
+    .btn-pay-now-list:disabled { opacity: .6; pointer-events: none; }
+
+    .btn-pay-now-arrow {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: #ffffff;
+      font-weight: 800;
+      font-family: 'Outfit', sans-serif;
+      padding: 10px 24px 10px 18px;
+      clip-path: polygon(0% 0%, 88% 0%, 100% 50%, 88% 100%, 0% 100%);
+      transition: all 0.25s ease;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4);
+    }
+    .btn-pay-now-arrow:hover {
+      background: linear-gradient(135deg, #059669 0%, #047857 100%);
+      transform: translateX(3px) scale(1.02);
+      box-shadow: 0 6px 18px rgba(5, 150, 105, 0.5);
+    }
+
+    .modal-backdrop { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(5px); }
+
+    .qty-btn {
+      width: 28px; height: 28px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 7px;
+      background: #f1f5f9; color: #334155;
+      font-weight: 800; font-size: 14px;
+      transition: 0.2s;
+    }
+    .qty-btn:hover { background: #e2e8f0; }
+    .qty-btn:disabled { opacity: .5; pointer-events: none; }
+
+    .remove-btn { color: #ef4444; font-size: 11px; font-weight: 700; }
+
+  </style>
+
+</head>
+<body class="antialiased pb-24">
+
+  <main class="max-w-md mx-auto px-4 pt-4">
+
+    <div class="flex items-center justify-between mb-4">
+      <div class="flex items-center gap-3">
+        <a href="home.html" class="text-slate-500"><i class="fa-solid fa-arrow-left"></i></a>
+        <h1 class="text-lg font-extrabold text-slate-800 tracking-wider uppercase">MY CART</h1>
+      </div>
+      <div class="text-purple-800 font-extrabold text-sm">
+        <i class="fa-solid fa-cart-shopping"></i>
+        <span id="cart-count">0</span>
+      </div>
+    </div>
+
+    <div class="text-xs font-bold text-slate-500 mb-4">
+      <span id="item-count">0</span> Items in your cart
+    </div>
+
+    <div id="loading-state" class="text-center py-12 text-slate-400 text-sm">Loading your cart…</div>
+
+    <div id="cart-list" class="space-y-4 hidden"></div>
+
+    <div id="empty-cart" class="hidden text-center py-12">
+      <div class="text-slate-300 text-5xl mb-4"><i class="fa-solid fa-cart-shopping"></i></div>
+      <h2 class="text-base font-extrabold text-slate-700">Your Cart is Empty</h2>
+      <p class="text-xs text-slate-400 mt-1">Add products to your cart and shop now.</p>
+      <button onclick="continueShopping()" class="mt-5 px-5 py-2.5 rounded-xl bg-purple-700 text-white text-xs font-bold">Continue Shopping</button>
+    </div>
+
+    <div id="price-section" class="hidden mt-6 bg-white rounded-2xl border border-slate-100 p-4 shadow-sm">
+
+      <h2 class="text-sm font-black text-slate-800 mb-4">PRICE DETAILS</h2>
+
+      <div class="flex justify-between text-xs mb-3">
+        <span class="text-slate-500">Product Total</span>
+        <span id="product-total" class="font-bold text-slate-700">₹0</span>
+      </div>
+
+      <div class="flex justify-between text-xs mb-3">
+        <span class="text-slate-500">Discount</span>
+        <span id="discount-total" class="font-bold text-emerald-600">- ₹0</span>
+      </div>
+
+      <div class="flex justify-between text-xs mb-3">
+        <span class="text-slate-500">Delivery</span>
+        <span class="font-bold text-emerald-600">FREE</span>
+      </div>
+
+      <div class="border-t border-slate-100 my-3"></div>
+
+      <div class="flex justify-between">
+        <span class="text-sm font-black text-slate-800">Total Amount</span>
+        <span id="grand-total" class="text-lg font-black text-emerald-600 font-outfit">₹0</span>
+      </div>
+
+    </div>
+
+  </main>
+
+  <div id="bottom-checkout" class="hidden fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 shadow-2xl z-40">
+    <div class="max-w-md mx-auto px-4 py-3 flex items-center justify-between gap-3">
+      <div>
+        <p class="text-[10px] font-semibold text-slate-400 uppercase">Total Amount</p>
+        <p id="bottom-total" class="text-lg font-black text-slate-900 font-outfit">₹0</p>
+      </div>
+      <button onclick="placeOrder()" class="bg-purple-700 hover:bg-purple-800 text-white rounded-xl px-5 py-3 text-xs font-black transition">
+        <i class="fa-solid fa-bag-shopping mr-1"></i> PLACE ORDER NOW
+      </button>
+    </div>
+  </div>
+
+  <!-- Product Details Modal -->
+  <div id="order-modal" class="fixed inset-0 z-50 modal-backdrop hidden flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-white w-full max-w-sm rounded-3xl p-5 shadow-2xl relative border border-slate-100 my-auto">
+
+      <button onclick="closeModal()" class="absolute top-4 right-4 z-20 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center font-bold text-sm transition">✕</button>
+
+      <div class="w-full h-44 bg-slate-50 rounded-2xl p-3 border border-slate-200/80 relative flex items-center justify-center mb-4">
+        <span id="modal-discount" class="absolute top-3 left-3 bg-rose-600 text-white text-[10px] font-black px-2.5 py-1 rounded-full uppercase shadow-xs tracking-wider hidden"></span>
+        <img id="modal-img" src="" alt="Product Detail" class="max-h-full max-w-full object-contain">
+      </div>
+
+      <span id="modal-category" class="text-[10px] font-bold text-emerald-800 bg-emerald-100/80 px-2.5 py-1 rounded-md inline-block uppercase tracking-wider mb-2"></span>
+
+      <h3 id="modal-title" class="text-base font-black text-slate-900 leading-tight mb-3 font-outfit"></h3>
+
+      <div class="flex items-center gap-2 mb-3 flex-wrap">
+        <span id="modal-price" class="text-2xl font-black text-emerald-600 font-outfit"></span>
+        <span id="modal-mrp" class="text-xs text-slate-400 line-through font-bold"></span>
+        <span id="modal-savings-tag" class="text-[11px] font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded-md border border-emerald-200 hidden"></span>
+      </div>
+
+      <p id="modal-desc" class="text-xs text-slate-600 leading-relaxed mb-4 border-t border-slate-100 pt-3"></p>
+
+      <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+        <button onclick="closeModal()" class="px-5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition">Close</button>
+        <button id="modal-arrow-pay-btn" class="btn-pay-now-arrow text-sm"></button>
+      </div>
+
+    </div>
+  </div>
+
+  <script type="module" src="cart.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bestify Store</title>
+
+    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="home.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="bottom-nav.css">
+</head>
+
+<body class="bf-has-nav">
+
+    <div class="container">
+
+        <!-- Search -->
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="🔍 Search Products">
+        </div>
+
+        <div class="top-header">
+            <span class="brand-name"><span class="brand-name-bestify">Bestify</span> <span class="brand-name-mobile">Mobile</span></span>
+            <a href="coverindex.html" class="find-fit-btn" aria-label="Find phone accessories">
+                <i class="fa-solid fa-camera"></i> FIND FIT
+            </a>
+        </div>
+
+        <!-- Delivery pincode line (edit is just a display label — not a real serviceability check) -->
+        <div class="delivery-line">
+            <span>📍 Delivering to <strong id="deliveryPincode">591344</strong> — within 3 days</span>
+            <button type="button" id="editPincodeBtn">Edit</button>
+        </div>
+
+        <!-- Real promo banner carousel (admin-managed, auto-scrolls) -->
+        <div class="shop-photo-box">
+            <div class="home-banner-carousel" id="homeBannerCarousel">
+                <img id="homeBannerImg" src="promo-banner.png" alt="Bestify Mobile Kolavi — Your Mobile, Our Priority">
+            </div>
+        </div>
+
+        <!-- Bestify social bar — auto-scrolling ticker of real business links -->
+        <section id="bestify-social">
+            <div class="social-window">
+                <div class="social-track">
+
+                    <a href="https://wa.me/919110690727" class="social-item whatsapp" target="_blank" rel="noopener">
+                        <i class="fa-brands fa-whatsapp"></i>
+                        <span>WhatsApp</span>
+                    </a>
+
+                    <a href="https://www.instagram.com/bestify_mobile_kolavi" class="social-item instagram" target="_blank" rel="noopener">
+                        <i class="fa-brands fa-instagram"></i>
+                        <span>Instagram</span>
+                    </a>
+
+                    <a href="https://www.facebook.com/bestifymobilekolavi?mibextid=ZbWKwL" class="social-item facebook" target="_blank" rel="noopener">
+                        <i class="fa-brands fa-facebook-f"></i>
+                        <span>Facebook</span>
+                    </a>
+
+                    <a href="https://youtube.com/@bestifymobilekolavi" class="social-item youtube" target="_blank" rel="noopener">
+                        <i class="fa-brands fa-youtube"></i>
+                        <span>YouTube</span>
+                    </a>
+
+                    <a href="https://maps.app.goo.gl/xfazo8HGgp3R59V37" class="social-item maps" target="_blank" rel="noopener">
+                        <i class="fa-solid fa-location-dot"></i>
+                        <span>Maps</span>
+                    </a>
+
+                    <a href="https://t.me/bestifyMobileKolavi" class="social-item telegram" target="_blank" rel="noopener">
+                        <i class="fa-brands fa-telegram"></i>
+                        <span>Telegram</span>
+                    </a>
+
+                    <a href="https://share.google/cJjueZkwK4Dhj8ieE" class="social-item google-business" target="_blank" rel="noopener">
+                        <i class="fa-solid fa-store"></i>
+                        <span>Google Business</span>
+                    </a>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Categories -->
+        <div class="category-bar" id="categoryBar"></div>
+
+        <!-- Grid / Zoomed view toggle -->
+        <div class="zoom-control">
+            <span>🔎 Size:</span>
+            <input type="range" id="zoomSlider" min="0" max="1" step="1" value="0">
+        </div>
+
+        <!-- Featured / Best Sellers -->
+        <h2 id="featuredTitle" class="section-title" style="display:none;">⭐ Best Sellers</h2>
+        <div id="featuredContainer" class="catalog-grid"></div>
+
+        <!-- Products -->
+        <h2 class="section-title" id="productsSectionTitle">Our Products</h2>
+
+        <div id="displayArea"></div>
+
+        <!-- Contact / Visit Us Footer -->
+        <div class="connect-card">
+            <div class="marquee-banner">
+                <marquee behavior="scroll" direction="left" scrollamount="5">
+                    ✨ <b>Bestify Mobile</b> ಗೆ ಸುಸ್ವಾಗತ! 📞 9110690727 ✨
+                </marquee>
+            </div>
+
+            <h2 class="connect-title">📍 Visit Us / Connect</h2>
+
+            <div class="image-slider-container" id="shopPhotoContainer">
+                <div class="image-slider" id="shopPhotoSlider">
+                    <img src="shop-front.jpg" alt="Bestify Mobile Kolavi shop front">
+                    <img src="shop-street.jpg" alt="Bestify Mobile Kolavi street view">
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <a href="https://maps.app.goo.gl/xfazo8HGgp3R59V37" class="btn btn-directions" target="_blank" rel="noopener">Get Directions</a>
+                <a href="tel:+919110690727" class="btn btn-call">Call Us: 9110690727</a>
+            </div>
+
+            <div class="footer-links">
+                <a href="about.html">About</a>
+                <a href="contact.html">Contact</a>
+                <a href="terms.html">T&amp;C</a>
+                <a href="return-policy.html">Return Policy</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="home.html" class="nav-item" id="nav-home">
+            <i class="fa-solid fa-store"></i>
+            <span>Home</span>
+        </a>
+        <a href="wishlist.html" class="nav-item" id="nav-liked">
+            <i class="fa-regular fa-thumbs-up"></i>
+            <span>Liked</span>
+        </a>
+        <a href="orders.html" class="nav-item" id="nav-orders">
+            <i class="fa-solid fa-box"></i>
+            <span>Orders</span>
+        </a>
+        <a href="profile.html" class="nav-item" id="nav-account">
+            <i class="fa-regular fa-file-lines"></i>
+            <span>My Account</span>
+        </a>
+    </nav>
+
+    <script type="module" src="home.js"></script>
+    <script type="module" src="profile-menu.js"></script>
+    <script src="bottom-nav.js"></script>
+
+</body>
+
+</html>

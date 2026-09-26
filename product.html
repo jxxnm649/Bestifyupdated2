@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="kn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light only">
+    <title>Product Details</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="product.css">
+</head>
+<body>
+
+<div class="top-nav">
+    <a href="home.html" class="top-nav-back" aria-label="Back">←</a>
+    <span class="top-nav-title">Bestify</span>
+    <a href="cart.html" class="top-nav-cart" aria-label="Cart">
+        <i class="fa-solid fa-cart-shopping"></i>
+        <span id="cartBadge" class="cart-badge" style="display:none;">0</span>
+    </a>
+</div>
+
+<div class="container">
+    <div class="product-main" id="productMain">
+        <div class="no-results" style="padding:40px 16px;text-align:center;color:#6b7280;">Loading…</div>
+    </div>
+
+    <div id="relatedSection"></div>
+</div>
+
+<script type="module" src="product.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Feedback</title>
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="design-system.css">
+  <link rel="stylesheet" href="static-page.css">
+</head>
+<body class="bf-has-nav">
+
+  <div class="container sp-container">
+
+    <a href="profile.html" class="sp-back">← Back to Account</a>
+    <h1>Feedback 💬</h1>
+    <p style="margin-bottom:16px;">We'd love to hear your thoughts on how we can improve Bestify.</p>
+
+    <form id="feedbackForm">
+
+      <div class="bf-field">
+        <label class="bf-label">Category</label>
+        <select id="feedbackCategory" class="bf-select">
+          <option value="App Experience">App Experience</option>
+          <option value="Product Quality">Product Quality</option>
+          <option value="Delivery">Delivery</option>
+          <option value="Support">Customer Support</option>
+          <option value="Suggestion">Suggestion / Idea</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+
+      <div class="bf-field">
+        <label class="bf-label">Your Feedback</label>
+        <textarea id="feedbackMessage" class="bf-textarea" rows="5" required placeholder="Tell us what's on your mind..."></textarea>
+      </div>
+
+      <button type="submit" id="feedbackSubmitBtn" class="bf-btn bf-btn-primary bf-btn-block">Submit Feedback</button>
+
+    </form>
+
+  </div>
+
+  <nav class="bottom-nav">
+    <a href="home.html"><span>🏠</span><p>Home</p></a>
+    <a href="wishlist.html"><span>😊</span><p>Liked</p></a>
+    <a href="orders.html"><span>📦</span><p>Orders</p></a>
+    <a href="profile.html"><span>🏪</span><p>My Account</p></a>
+  </nav>
+
+  <script type="module" src="feedback.js"></script>
+  <script type="module" src="profile-menu.js"></script>
+
+</body>
+</html>

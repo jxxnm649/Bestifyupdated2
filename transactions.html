@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Transactions</title>
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="design-system.css">
+  <link rel="stylesheet" href="transactions.css">
+</head>
+<body class="bf-has-nav">
+
+  <div class="container">
+
+    <h1>My Transactions 🧾</h1>
+
+    <!-- Wallet header card -->
+    <div class="wallet-card">
+      <div class="wallet-info">
+        <p>Total Balance</p>
+        <h2 id="currentBalance">₹0</h2>
+        <!-- In/Out counts hidden but still tracked (used elsewhere) -->
+        <div class="wallet-sub" style="display:none;">
+          <span class="txn-in">↓ In: <b id="totalIn">₹0</b></span>
+          <span class="txn-out">↑ Out: <b id="totalOut">₹0</b></span>
+        </div>
+      </div>
+      <a href="withdraw.html" style="text-decoration:none;">
+        <button type="button" class="withdraw-btn">Withdraw</button>
+      </a>
+    </div>
+
+    <!-- Pending cashback — not usable/withdrawable yet -->
+    <div class="txn-balance-card" id="pendingCashbackCard" style="display:none;background:#FFF6E6;border:1px dashed #D98925;">
+      <div class="txn-balance-label">⏳ Pending Cashback</div>
+      <div class="txn-balance-amount" id="pendingCashbackAmount" style="color:#D98925;">₹0</div>
+      <div class="txn-balance-sub" style="opacity:.75;">
+        Moves to your usable balance once those orders are delivered.
+      </div>
+    </div>
+
+    <!-- Search -->
+    <div class="txn-search-box" style="margin-bottom:12px;">
+      <span>🔍</span>
+      <input type="text" id="txnSearch" placeholder="Search by reason...">
+    </div>
+
+    <!-- Filter chips -->
+    <div class="filter-section" id="typeChips">
+      <button type="button" class="filter-chip active" data-type="all">All</button>
+      <button type="button" class="filter-chip" data-type="credit">Credit (In)</button>
+      <button type="button" class="filter-chip" data-type="debit">Debit (Out)</button>
+    </div>
+
+    <!-- Date range (optional, compact) -->
+    <div class="txn-date-row">
+      <div class="txn-field">
+        <label>From</label>
+        <div class="txn-field-input-wrap">
+          <input type="date" id="fromDate">
+        </div>
+      </div>
+      <div class="txn-field">
+        <label>To</label>
+        <div class="txn-field-input-wrap">
+          <input type="date" id="toDate">
+        </div>
+      </div>
+      <button type="button" id="clearFilters" class="txn-clear-btn">Clear</button>
+    </div>
+
+    <!-- List -->
+    <div id="txnList"></div>
+
+  </div>
+
+  <nav class="bottom-nav">
+    <a href="home.html"><span>🏠</span><p>Home</p></a>
+    <a href="wishlist.html"><span>😊</span><p>Liked</p></a>
+    <a href="orders.html"><span>📦</span><p>Orders</p></a>
+    <a href="profile.html"><span>🏪</span><p>My Account</p></a>
+  </nav>
+
+  <script type="module" src="transactions.js"></script>
+  <script type="module" src="profile-menu.js"></script>
+
+</body>
+</html>

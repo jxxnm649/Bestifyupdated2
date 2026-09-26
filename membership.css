@@ -1,0 +1,347 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: #f7f8fa;
+  color: #111;
+  min-height: 100vh;
+}
+
+
+/* Header */
+
+.header {
+  width: 100%;
+  height: 70px;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e5e5;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 6%;
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.home-btn {
+  text-decoration: none;
+  color: #111;
+
+  padding: 10px 18px;
+
+  border: 1px solid #ddd;
+  border-radius: 8px;
+
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.home-btn:hover {
+  background: #f2f2f2;
+}
+
+
+/* Main */
+
+.membership-container {
+  width: 100%;
+  max-width: 1100px;
+
+  margin: auto;
+  padding: 60px 20px;
+}
+
+
+/* Header */
+
+.membership-header {
+  text-align: center;
+  margin-bottom: 35px;
+}
+
+.premium-badge {
+  display: inline-block;
+
+  padding: 7px 14px;
+
+  background: #111;
+  color: #fff;
+
+  border-radius: 20px;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  letter-spacing: 1px;
+}
+
+.membership-header h1 {
+  margin-top: 18px;
+
+  font-size: 42px;
+  line-height: 1.15;
+}
+
+.membership-header p {
+  max-width: 600px;
+
+  margin: 15px auto 0;
+
+  color: #666;
+
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+
+/* Card */
+
+.membership-card {
+  width: 100%;
+  max-width: 480px;
+
+  margin: auto;
+
+  background: #fff;
+
+  border: 1px solid #e2e2e2;
+  border-radius: 20px;
+
+  padding: 32px;
+
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+}
+
+
+/* Card top */
+
+.card-top h2 {
+  font-size: 25px;
+  margin-bottom: 8px;
+}
+
+.plan-description {
+  color: #777;
+  font-size: 14px;
+}
+
+
+/* Price */
+
+.price-section {
+  margin-top: 28px;
+
+  display: flex;
+  align-items: baseline;
+}
+
+.currency {
+  font-size: 25px;
+  font-weight: 700;
+}
+
+.price {
+  font-size: 55px;
+  font-weight: 800;
+
+  margin-left: 4px;
+}
+
+.period {
+  color: #666;
+  font-size: 15px;
+  margin-left: 5px;
+}
+
+
+/* AutoPay */
+
+.autopay-box {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 12px;
+
+  margin-top: 25px;
+
+  padding: 15px;
+
+  background: #f4f7f5;
+
+  border-radius: 12px;
+}
+
+.check-icon {
+  width: 24px;
+  height: 24px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #111;
+  color: #fff;
+
+  border-radius: 50%;
+
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.autopay-box strong {
+  font-size: 14px;
+}
+
+.autopay-box p {
+  margin-top: 4px;
+
+  color: #666;
+
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+
+/* Benefits */
+
+.benefits {
+  margin-top: 28px;
+}
+
+.benefits h3 {
+  font-size: 16px;
+  margin-bottom: 15px;
+}
+
+.benefit {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  margin-bottom: 13px;
+}
+
+.benefit span {
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.benefit p {
+  color: #444;
+  font-size: 14px;
+}
+
+
+/* Subscribe */
+
+.subscribe-btn {
+  width: 100%;
+
+  margin-top: 25px;
+
+  padding: 16px;
+
+  border: none;
+  border-radius: 10px;
+
+  background: #111;
+  color: #fff;
+
+  font-size: 16px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+.subscribe-btn:hover {
+  background: #333;
+  transform: translateY(-1px);
+}
+
+.subscribe-btn:active {
+  transform: scale(0.98);
+}
+
+
+/* Security */
+
+.secure-text {
+  text-align: center;
+
+  margin-top: 15px;
+
+  color: #555;
+
+  font-size: 12px;
+}
+
+.cancel-text {
+  text-align: center;
+
+  margin-top: 10px;
+
+  color: #888;
+
+  font-size: 11px;
+
+  line-height: 1.5;
+}
+
+
+/* Footer */
+
+.footer {
+  text-align: center;
+
+  padding: 30px 20px;
+
+  color: #888;
+
+  font-size: 12px;
+}
+
+
+/* Mobile */
+
+@media (max-width: 600px) {
+
+  .header {
+    padding: 0 20px;
+  }
+
+  .membership-container {
+    padding: 40px 15px;
+  }
+
+  .membership-header h1 {
+    font-size: 32px;
+  }
+
+  .membership-header p {
+    font-size: 14px;
+  }
+
+  .membership-card {
+    padding: 25px 20px;
+
+    border-radius: 16px;
+  }
+
+  .price {
+    font-size: 48px;
+  }
+
+}

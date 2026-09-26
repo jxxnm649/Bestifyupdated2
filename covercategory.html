@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Select Category</title>
+<style>
+  body { font-family: 'Segoe UI', Roboto, sans-serif; margin: 0; padding: 0; background-color: #f4f6f8; display: flex; justify-content: center; }
+  .app-container { width: 100%; max-width: 414px; background: #ffffff; min-height: 100vh; position: relative; padding-bottom: 80px; }
+
+  .header { display: flex; align-items: center; padding: 20px; }
+  .header h2 { margin: 0; font-size: 18px; margin-left: 20px; font-weight: 600; }
+  .progress-bar { display: flex; justify-content: space-between; padding: 10px 20px 20px 20px; font-size: 12px; color: #888; }
+  .step { display: flex; flex-direction: column; align-items: center; }
+  .step .circle { width: 24px; height: 24px; border-radius: 50%; background: #f0f0f0; display: flex; align-items: center; justify-content: center; margin-bottom: 5px; font-weight: bold; }
+  .step.completed .circle { background: #006b44; color: white; }
+  .step.completed { color: #006b44; font-weight: bold; }
+  .step.active .circle { background: white; border: 2px solid #006b44; color: #006b44; }
+  .step.active { color: #006b44; font-weight: bold; }
+
+  .selection-box { margin: 0 20px; padding: 15px; border-radius: 10px; border: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+  .selection-box .brand-info { display: flex; align-items: center; gap: 10px; font-weight: bold; color: #111; font-size: 14px; }
+  .change-btn { color: #006b44; font-weight: bold; font-size: 14px; cursor: pointer; }
+
+  .title-section { padding: 20px; }
+  .title-section h1 { margin: 0; font-size: 22px; color: #111; font-weight: 700; }
+  .title-section p { margin: 5px 0 0 0; color: #666; font-size: 14px; }
+
+  /* Category Grid */
+  .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; padding: 10px 20px; }
+  .cat-card { border: 1.5px solid #eee; border-radius: 12px; overflow: hidden; cursor: pointer; transition: 0.2s; text-align: center; }
+  .cat-card.selected { border-color: #006b44; background: #f2fcf7; }
+  .cat-img { width: 100%; height: 84px; object-fit: cover; background: #f0f0f0; display: block; }
+  .cat-icon { width: 100%; height: 84px; display: flex; align-items: center; justify-content: center; font-size: 32px; background: #f0f0f0; }
+  .cat-label { padding: 10px 6px; font-size: 13px; font-weight: 700; color: #111; }
+  .cat-count { font-size: 11px; color: #666; padding: 0 6px 8px; }
+
+  .bottom-bar { position: fixed; bottom: 0; width: 100%; max-width: 414px; background: #fff; padding: 15px 20px; box-sizing: border-box; display: flex; gap: 15px; border-top: 1px solid #eee; }
+  .btn-back { background: white; color: #d32f2f; border: 1px solid #d32f2f; padding: 15px; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; flex: 1; text-align: center; }
+  .btn-next { background: #006b44; color: white; border: none; padding: 15px; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; flex: 1; text-align: center; }
+</style>
+</head>
+<body>
+<div class="app-container">
+  <div class="header">
+    <a href="covermodel.html" style="font-size: 20px;text-decoration:none;color:inherit;">&#8592;</a><h2>Find Your Product</h2>
+  </div>
+
+  <div class="progress-bar">
+    <div class="step completed"><div class="circle">&#10003;</div>Brand</div>
+    <div class="step completed"><div class="circle">&#10003;</div>Series</div>
+    <div class="step completed"><div class="circle">&#10003;</div>Model</div>
+    <div class="step active"><div class="circle">4</div>Category</div>
+    <div class="step"><div class="circle">5</div>Type</div>
+  </div>
+
+  <div class="selection-box">
+    <div class="brand-info" id="breadcrumbInfo"></div>
+    <a href="covermodel.html" class="change-btn" style="text-decoration:none;">Change</a>
+  </div>
+
+  <div class="title-section">
+    <h1>What do you need?</h1>
+    <p id="phoneSub"></p>
+  </div>
+
+  <div class="grid" id="categoryGrid">
+    <p style="grid-column:1/-1;color:#666;font-size:13px;">Loading…</p>
+  </div>
+
+  <div class="bottom-bar">
+    <a href="covermodel.html" class="btn-back" style="text-decoration:none;">&larr; Back</a>
+    <button class="btn-next" id="nextBtn">Next &rarr;</button>
+  </div>
+</div>
+
+<script type="module">
+  import { db } from "./firebase.js";
+  import { collection, getDocs } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
+
+  const brand = sessionStorage.getItem("cover_brand");
+  const series = sessionStorage.getItem("cover_series");
+  const model = sessionStorage.getItem("cover_model");
+  if (!brand || !series || !model) window.location.href = "coverbrand.html";
+
+  document.getElementById("breadcrumbInfo").textContent = `${brand} \u203A ${series}`;
+  document.getElementById("phoneSub").textContent = `For your ${brand} ${model}`;
+
+  const CATEGORIES = [
+    { label: "Covers",           icon: "📱", keywords: ["cover", "case"] },
+    { label: "Tempered Glass",   icon: "🛡️", keywords: ["tempered", "screen guard", "screen protector"] },
+    { label: "Camera Glass",     icon: "📷", keywords: ["camera glass", "camera lens", "camera protector"] },
+    { label: "Unique Products",  icon: "✨", keywords: ["unique"] },
+    { label: "Mobile Battery",   icon: "🔋", keywords: ["battery"] },
+    { label: "Customized Cover", icon: "🎨", keywords: ["customized", "custom cover", "customised"] }
+  ];
+
+  let selectedCategory = sessionStorage.getItem("cover_category") || null;
+  let allProducts = [];
+
+  function countFor(cat) {
+    return allProducts.filter(p => {
+      const c = (p.category || "").toLowerCase();
+      return cat.keywords.some(k => c.includes(k));
+    }).length;
+  }
+
+  function sampleImageFor(cat) {
+    const match = allProducts.find(p => {
+      const c = (p.category || "").toLowerCase();
+      return cat.keywords.some(k => c.includes(k)) && p.image;
+    });
+    return match?.image;
+  }
+
+  function render() {
+    const grid = document.getElementById("categoryGrid");
+    grid.innerHTML = CATEGORIES.map(cat => {
+      const img = sampleImageFor(cat);
+      const count = countFor(cat);
+      return `
+        <div class="cat-card ${selectedCategory === cat.label ? "selected" : ""}" data-category="${cat.label}">
+          ${img ? `<img class="cat-img" src="${img}">` : `<div class="cat-icon">${cat.icon}</div>`}
+          <div class="cat-label">${cat.label}</div>
+          <div class="cat-count">${count} product${count === 1 ? "" : "s"}</div>
+        </div>
+      `;
+    }).join("");
+  }
+
+  async function load() {
+    try {
+      const snap = await getDocs(collection(db, "products"));
+      allProducts = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    } catch (error) {
+      console.error(error);
+    }
+    render();
+  }
+  load();
+
+  document.getElementById("categoryGrid").addEventListener("click", (e) => {
+    const card = e.target.closest(".cat-card");
+    if (!card) return;
+    selectedCategory = card.dataset.category;
+    render();
+  });
+
+  document.getElementById("nextBtn").addEventListener("click", () => {
+    if (!selectedCategory) {
+      alert("Please choose a category");
+      return;
+    }
+    sessionStorage.setItem("cover_category", selectedCategory);
+    sessionStorage.removeItem("cover_type");
+    sessionStorage.removeItem("cover_product_id");
+
+    // "Covers" has a further Type step (Back Cover / Flip Cover /
+    // etc). Every other category goes straight to the product list.
+    if (selectedCategory === "Covers") {
+      window.location.href = "covertype.html";
+    } else {
+      window.location.href = "coverproducts.html";
+    }
+  });
+</script>
+</body>
+</html>

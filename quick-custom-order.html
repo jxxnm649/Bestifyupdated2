@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light only">
+  <title>Cover - Progressive Order</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background-color: #f8fafc; color: #111827; min-height: 100vh; display: flex; justify-content: center; color-scheme: light only; }
+    .page-container { width: 100%; max-width: 420px; padding: 20px 16px; display: flex; flex-direction: column; gap: 16px; background: #ffffff; min-height: 100vh; padding-bottom: 40px; }
+
+    .top-bar { display: flex; align-items: center; gap: 10px; }
+    .top-bar a { color: #475569; font-size: 18px; text-decoration: none; }
+
+    .logo { font-size: 30px; font-weight: 800; color: #005c36; display: flex; align-items: center; letter-spacing: -1px; }
+    .logo .check-icon { color: #00a859; margin: 0 1px; font-size: 24px; }
+
+    .stepper-container { display: flex; justify-content: space-between; position: relative; margin: 8px 0 12px 0; }
+    .stepper-container::before { content: ''; position: absolute; top: 50%; left: 0; right: 0; height: 3px; background: #e2e8f0; z-index: 1; transform: translateY(-50%); }
+    .step-indicator { width: 34px; height: 34px; border-radius: 50%; background: #e2e8f0; color: #64748b; font-weight: 800; font-size: 13px; display: flex; align-items: center; justify-content: center; z-index: 2; position: relative; transition: all 0.3s ease; }
+    .step-indicator.active { background: #005c36; color: #ffffff; box-shadow: 0 0 0 3px #dcfce7; }
+    .step-indicator.completed { background: #00a859; color: #ffffff; }
+
+    .step-block {
+      display: none; flex-direction: column; gap: 12px; padding: 14px;
+      border: 1.5px solid #e2e8f0; border-radius: 12px; background: #ffffff;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+    .step-block.visible { display: flex; }
+    .step-block.completed { border-color: #00a859; background: #fafafa; }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+    .step-title { font-size: 15px; font-weight: 800; color: #0f172a; display: flex; align-items: center; justify-content: space-between; }
+    .step-badge { background: #f0fdf4; color: #005c36; padding: 2px 8px; border-radius: 6px; font-size: 12px; font-weight: 700; }
+
+    .photo-upload-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+    .camera-trigger-box {
+      width: 75px; height: 75px; border: 2px dashed #00a859; background: #f0fdf4;
+      border-radius: 12px; display: flex; flex-direction: column; justify-content: center;
+      align-items: center; cursor: pointer; color: #005c36; font-size: 11px; font-weight: 700; text-align: center; padding: 4px;
+    }
+    .camera-trigger-box i { font-size: 20px; margin-bottom: 2px; }
+    .image-preview-card { position: relative; width: 75px; height: 75px; border-radius: 12px; overflow: hidden; border: 1px solid #00a859; }
+    .image-preview-card img { width: 100%; height: 100%; object-fit: cover; }
+    .image-preview-card.uploading .upload-pct-overlay {
+      position: absolute; inset: 0; background: rgba(255,255,255,.75);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700; color: #005c36;
+    }
+    .remove-img-btn { position: absolute; top: 2px; right: 2px; background: rgba(220,38,38,.9); color: white; border: none; border-radius: 50%; width: 20px; height: 20px; font-size: 11px; cursor: pointer; }
+
+    .product-side-scroll {
+      display: flex; gap: 14px; overflow-x: auto; scroll-behavior: smooth;
+      padding-bottom: 10px; scroll-snap-type: x mandatory;
+    }
+    .product-side-scroll::-webkit-scrollbar { height: 5px; }
+    .product-side-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+
+    .product-card {
+      flex: 0 0 150px; height: 230px; border: 2px solid #e2e8f0; border-radius: 14px;
+      overflow: hidden; background: #ffffff; position: relative; cursor: pointer;
+      transition: all 0.2s ease; display: flex; flex-direction: column; scroll-snap-align: start;
+    }
+    .product-card.selected { border-color: #00a859; box-shadow: 0 4px 12px rgba(0,168,89,0.2); }
+    .product-card input[type="checkbox"] {
+      position: absolute; top: 8px; right: 8px; width: 20px; height: 20px;
+      accent-color: #005c36; z-index: 2; cursor: pointer;
+    }
+    .product-card img { width: 100%; height: 170px; object-fit: cover; display: block; background: #f0fdf4; }
+    .product-info-box {
+      flex: 1; padding: 6px; text-align: center; background: #f8fafc;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+    }
+    .product-card.selected .product-info-box { background: #f0fdf4; }
+    .product-title { font-size: 12.5px; font-weight: 700; color: #1e293b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; }
+    .product-price { font-size: 13.5px; font-weight: 800; color: #005c36; margin-top: 1px; }
+
+    .input-box { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 14px; outline: none; margin-bottom: 8px; box-sizing: border-box; }
+    .inbox-textarea { width: 100%; border: 1px solid #cbd5e1; border-radius: 10px; padding: 10px; font-size: 14px; outline: none; resize: vertical; box-sizing: border-box; }
+
+    .summary-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+    .summary-item { display: flex; justify-content: space-between; font-size: 13px; color: #475569; }
+    .summary-item strong { color: #0f172a; text-align: right; max-width: 60%; }
+    .summary-divider { height: 1px; background: #e2e8f0; margin: 2px 0; }
+    .summary-total { display: flex; justify-content: space-between; font-size: 15px; font-weight: 800; color: #005c36; }
+
+    .btn-step-next {
+      width: 100%; background-color: #005c36; color: #ffffff; border: none; padding: 12px;
+      border-radius: 30px; font-size: 14px; font-weight: 700; cursor: pointer;
+      display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 4px;
+    }
+    .btn-step-next:disabled { opacity: .6; cursor: default; }
+
+    .history-section { margin-top: 6px; }
+    .history-link { display: block; text-align: center; font-size: 13px; font-weight: 700; color: #005c36; text-decoration: none; padding: 10px; }
+
+    .payment-modal, .success-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); justify-content: center; align-items: center; z-index: 1000; }
+    .modal-content { background: #fff; width: 100%; max-width: 420px; border-top-left-radius: 20px; border-top-right-radius: 20px; padding: 24px 20px; animation: slideUp 0.3s ease; }
+
+    .success-card { background: #ffffff; width: 90%; max-width: 380px; border-radius: 16px; padding: 20px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+    .success-icon { font-size: 45px; color: #00a859; margin-bottom: 8px; }
+
+    @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
+    .pay-card { border: 1px solid #cbd5e1; border-radius: 10px; padding: 12px; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 14px; font-weight: 700; }
+
+    #directCameraInput, #galleryFileInput { display: none; }
+  </style>
+</head>
+<body>
+
+  <div class="page-container">
+
+    <div class="top-bar">
+      <a href="coverindex.html"><i class="fa-solid fa-arrow-left"></i></a>
+      <div class="logo">Co<i class="fa-solid fa-check check-icon"></i>er</div>
+    </div>
+
+    <div class="stepper-container">
+      <div class="step-indicator active" id="stepInd1">1</div>
+      <div class="step-indicator" id="stepInd2">2</div>
+      <div class="step-indicator" id="stepInd3">3</div>
+      <div class="step-indicator" id="stepInd4">4</div>
+    </div>
+
+    <div class="step-block visible" id="step1">
+      <div class="step-title">
+        <span>Step 1: Upload Photos</span>
+        <span class="step-badge">Max 6</span>
+      </div>
+      <p style="font-size:12px;color:#64748b;">Show us your phone (and any design you like) so we get your order right.</p>
+
+      <div class="photo-upload-row" id="photoRow">
+        <div class="camera-trigger-box" id="cameraTriggerBtn">
+          <i class="fa-solid fa-camera"></i>
+          <span>Take Photo</span>
+        </div>
+        <div class="camera-trigger-box" style="border-color:#3b82f6; background:#eff6ff; color:#1d4ed8;" id="galleryTriggerBtn">
+          <i class="fa-solid fa-images"></i>
+          <span>Gallery</span>
+        </div>
+      </div>
+
+      <input type="file" id="directCameraInput" accept="image/*" capture="environment">
+      <input type="file" id="galleryFileInput" accept="image/*" multiple>
+
+      <textarea id="userInbox" class="inbox-textarea" rows="2" placeholder="Phone Model or Custom Note..."></textarea>
+
+      <button class="btn-step-next" id="btnStep1">
+        Proceed to Choose Items <i class="fa-solid fa-chevron-down"></i>
+      </button>
+    </div>
+
+    <div class="step-block" id="step2">
+      <div class="step-title">
+        <span>Step 2: Choose Accessories</span>
+        <span class="step-badge">Slide 👉</span>
+      </div>
+
+      <div class="product-side-scroll" id="productScroll">
+        <p style="font-size:13px;color:#64748b;padding:10px;">Loading products…</p>
+      </div>
+
+      <button class="btn-step-next" id="btnStep2">
+        Continue to Address <i class="fa-solid fa-chevron-down"></i>
+      </button>
+    </div>
+
+    <div class="step-block" id="step3">
+      <div class="step-title">Step 3: Address Details</div>
+
+      <input type="text" id="custName" class="input-box" placeholder="Your Full Name *" required>
+      <input type="tel" id="custPhone" class="input-box" placeholder="Phone Number *" required>
+      <input type="text" id="custAddress" class="input-box" placeholder="Full Delivery Address *" required>
+      <input type="number" id="custPincode" class="input-box" placeholder="Pincode *" required>
+
+      <button class="btn-step-next" id="btnStep3">
+        Generate Summary <i class="fa-solid fa-chevron-down"></i>
+      </button>
+    </div>
+
+    <div class="step-block" id="step4">
+      <div class="step-title">Step 4: Order Summary</div>
+
+      <div class="summary-card">
+        <div class="summary-item"><span>Name:</span><strong id="sumName">-</strong></div>
+        <div class="summary-item"><span>Contact:</span><strong id="sumContact">-</strong></div>
+        <div class="summary-item"><span>Photos:</span><strong id="sumPhotos">0 Photo(s)</strong></div>
+        <div class="summary-item"><span>Items:</span><strong id="sumItems">-</strong></div>
+        <div class="summary-divider"></div>
+        <div class="summary-total"><span>Total:</span><span id="sumTotal">₹0</span></div>
+      </div>
+
+      <button class="btn-step-next" id="btnOpenPayment" style="background:#005c36; margin-top:8px;">
+        Payment Now <i class="fa-solid fa-credit-card"></i>
+      </button>
+    </div>
+
+    <div class="history-section">
+      <a href="orders.html" class="history-link"><i class="fa-solid fa-clock-rotate-left"></i> View My Order History</a>
+    </div>
+
+  </div>
+
+  <div class="success-modal" id="successModal">
+    <div class="success-card">
+      <i class="fa-solid fa-circle-check success-icon"></i>
+      <h3 style="font-size:18px; font-weight:800; color:#0f172a;">Ordered Successfully!</h3>
+      <p style="font-size:13px; color:#475569; margin-top:6px;">
+        <strong id="popCustName">...</strong>, nimma order confirm agide.
+      </p>
+
+      <div id="popImgPreview" style="margin: 12px 0; display:flex; justify-content:center; gap:6px; flex-wrap:wrap;"></div>
+
+      <div style="background:#f0fdf4; border:1px solid #bbf7d0; padding:10px; border-radius:10px; margin-top:10px;">
+        <p style="font-size:13px; font-weight:700; color:#005c36;">
+          🚚 2-4 business days olage delivery agutte!
+        </p>
+      </div>
+
+      <a href="orders.html" style="text-decoration:none;">
+        <button class="btn-step-next" style="margin-top:16px;">
+          OK / View Orders
+        </button>
+      </a>
+    </div>
+  </div>
+
+  <div class="payment-modal" id="paymentModal">
+    <div class="modal-content">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+        <h3 style="font-size:17px; font-weight:800;">Select Payment Method</h3>
+        <i class="fa-solid fa-xmark" id="closePaymentModalBtn" style="font-size:20px; cursor:pointer;"></i>
+      </div>
+
+      <label class="pay-card">
+        <input type="radio" name="payType" value="cod" checked>
+        <span><i class="fa-solid fa-hand-holding-dollar"></i> Cash on Delivery (COD)</span>
+      </label>
+
+      <label class="pay-card">
+        <input type="radio" name="payType" value="online">
+        <span><i class="fa-solid fa-credit-card"></i> Pay Online (UPI / Card via Razorpay)</span>
+      </label>
+
+      <button class="btn-step-next" id="btnConfirmPayment" style="margin-top:16px;">
+        Confirm Payment <i class="fa-solid fa-arrow-right"></i>
+      </button>
+    </div>
+  </div>
+
+  <script type="module" src="quick-custom-order.js"></script>
+
+</body>
+</html>

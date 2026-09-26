@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Select Series</title>
+<style>
+  body { font-family: 'Segoe UI', Roboto, sans-serif; margin: 0; padding: 0; background-color: #f4f6f8; display: flex; justify-content: center; }
+  .app-container { width: 100%; max-width: 414px; background: #ffffff; min-height: 100vh; position: relative; padding-bottom: 80px; }
+  
+  /* Header & Progress */
+  .header { display: flex; align-items: center; padding: 20px; }
+  .header h2 { margin: 0; font-size: 18px; margin-left: 20px; font-weight: 600; }
+  .progress-bar { display: flex; justify-content: space-between; padding: 10px 20px 20px 20px; font-size: 12px; color: #888; }
+  .step { display: flex; flex-direction: column; align-items: center; }
+  .step .circle { width: 24px; height: 24px; border-radius: 50%; background: #f0f0f0; display: flex; align-items: center; justify-content: center; margin-bottom: 5px; font-weight: bold; }
+  .step.completed .circle { background: #006b44; color: white; }
+  .step.completed { color: #006b44; font-weight: bold; }
+  .step.active .circle { background: white; border: 2px solid #006b44; color: #006b44; }
+  .step.active { color: #006b44; font-weight: bold; }
+
+  /* Current Selection Box */
+  .selection-box { margin: 0 20px; padding: 15px; border-radius: 10px; border: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+  .selection-box .brand-info { display: flex; align-items: center; gap: 10px; font-weight: bold; color: #111; }
+  .brand-icon { width: 30px; height: 30px; background: #1428a0; color: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 14px; }
+  .change-btn { color: #006b44; font-weight: bold; font-size: 14px; cursor: pointer; }
+
+  /* Title */
+  .title-section { padding: 20px; }
+  .title-section h1 { margin: 0; font-size: 22px; color: #111; font-weight: 700; }
+  .title-section p { margin: 5px 0 0 0; color: #666; font-size: 14px; }
+
+  /* Series List */
+  .list-container { padding: 0 20px; }
+  .list-item { padding: 15px; border: 1px solid #eee; border-radius: 10px; margin-bottom: 10px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: 0.2s; }
+  .list-item.selected { border-color: #006b44; background: #f2fcf7; }
+  .item-details h4 { margin: 0; font-size: 16px; color: #111; }
+  .item-details p { margin: 5px 0 0 0; font-size: 12px; color: #666; }
+  .arrow { color: #aaa; }
+  .check-icon { color: #006b44; font-weight: bold; font-size: 18px; }
+
+  /* Bottom Nav */
+  .bottom-bar { position: fixed; bottom: 0; width: 100%; max-width: 414px; background: #fff; padding: 15px 20px; box-sizing: border-box; display: flex; gap: 15px; border-top: 1px solid #eee; }
+  .btn-back { background: white; color: #d32f2f; border: 1px solid #d32f2f; padding: 15px; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; flex: 1; }
+  .btn-next { background: #006b44; color: white; border: none; padding: 15px; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; flex: 1; }
+</style>
+</head>
+<body>
+<div class="app-container">
+  <div class="header">
+    <a href="coverbrand.html" style="font-size: 20px;text-decoration:none;color:inherit;">&#8592;</a><h2>Find Your Product</h2>
+  </div>
+
+  <div class="progress-bar">
+    <div class="step completed"><div class="circle">&#10003;</div>Brand</div>
+    <div class="step active"><div class="circle">2</div>Series</div>
+    <div class="step"><div class="circle">3</div>Model</div>
+    <div class="step"><div class="circle">4</div>Category</div>
+  </div>
+
+  <div class="selection-box">
+    <div class="brand-info" id="brandInfo"></div>
+    <a href="coverbrand.html" class="change-btn" style="text-decoration:none;">Change</a>
+  </div>
+
+  <div class="title-section">
+    <h1>Select your series</h1>
+    <p>Choose the series of your device.</p>
+  </div>
+
+  <div class="list-container" id="seriesList"></div>
+
+  <div class="bottom-bar">
+    <a href="coverbrand.html" class="btn-back" style="text-decoration:none;text-align:center;">&larr; Back</a>
+    <button class="btn-next" id="nextBtn">Next &rarr;</button>
+  </div>
+</div>
+
+<script>
+  const BRAND_LOGO_CLASS = {
+    Samsung: "logo-samsung", Apple: "logo-apple", Xiaomi: "logo-xiaomi",
+    Vivo: "logo-vivo", Oppo: "logo-oppo", Realme: "logo-realme"
+  };
+
+  const SERIES_SUGGESTIONS = {
+    Samsung: [["Galaxy S Series", "Premium flagship experience"], ["Galaxy A Series", "Awesome is for everyone"], ["Galaxy M Series", "Monster performance"], ["Galaxy F Series", "Fun. Fast. Secure."]],
+    Apple:   [["iPhone", "The gold standard"]],
+    Xiaomi:  [["Redmi Note", "Great value, great specs"], ["Redmi", "Everyday reliability"], ["Poco", "Built for speed"]],
+    Vivo:    [["Vivo Y Series", "Style meets performance"], ["Vivo V Series", "Camera-first design"], ["Vivo T Series", "Power for the young"]],
+    Oppo:    [["Oppo A Series", "Affordable everyday"], ["Oppo F Series", "Selfie expert"], ["Oppo Reno Series", "Design-led flagship"]],
+    Realme:  [["Realme Narzo", "Built for gaming"], ["Realme C Series", "Budget essentials"], ["Realme Number Series", "Realme's flagship line"]]
+  };
+
+  const brand = sessionStorage.getItem("cover_brand");
+  if (!brand) {
+    window.location.href = "coverbrand.html";
+  }
+
+  document.getElementById("brandInfo").innerHTML =
+    `<div class="brand-icon ${BRAND_LOGO_CLASS[brand] || "logo-samsung"}">${brand.charAt(0)}</div> ${brand}`;
+
+  let selectedSeries = sessionStorage.getItem("cover_series") || null;
+  const suggestions = SERIES_SUGGESTIONS[brand] || [];
+
+  function renderList() {
+    const container = document.getElementById("seriesList");
+    container.innerHTML = suggestions.map(([name, sub]) => `
+      <div class="list-item ${selectedSeries === name ? "selected" : ""}" data-series="${name}">
+        <div class="item-details"><h4>${name}</h4><p>${sub}</p></div>
+        <div class="${selectedSeries === name ? "check-icon" : "arrow"}">${selectedSeries === name ? "&#10003;" : "&rarr;"}</div>
+      </div>
+    `).join("") + `
+      <div class="list-item ${selectedSeries === "__other__" ? "selected" : ""}" id="otherRow">
+        <div class="item-details"><h4>Not listed?</h4><p>Tap to type your own series</p></div>
+        <div class="${selectedSeries === "__other__" ? "check-icon" : "arrow"}">${selectedSeries === "__other__" ? "&#10003;" : "&rarr;"}</div>
+      </div>
+    `;
+  }
+  renderList();
+
+  document.getElementById("seriesList").addEventListener("click", (e) => {
+    const item = e.target.closest(".list-item");
+    if (!item) return;
+
+    if (item.id === "otherRow") {
+      const typed = prompt("Type your series name:", sessionStorage.getItem("cover_series_custom") || "");
+      if (!typed || !typed.trim()) return;
+      selectedSeries = "__other__";
+      sessionStorage.setItem("cover_series_custom", typed.trim());
+    } else {
+      selectedSeries = item.dataset.series;
+    }
+    renderList();
+  });
+
+  document.getElementById("nextBtn").addEventListener("click", () => {
+    if (!selectedSeries) {
+      alert("Please choose a series");
+      return;
+    }
+    const finalSeries = selectedSeries === "__other__" ? sessionStorage.getItem("cover_series_custom") : selectedSeries;
+    sessionStorage.setItem("cover_series", finalSeries);
+    sessionStorage.removeItem("cover_model");
+    sessionStorage.removeItem("cover_type");
+    sessionStorage.removeItem("cover_product_id");
+    window.location.href = "covermodel.html";
+  });
+</script>
+</body>
+</html>

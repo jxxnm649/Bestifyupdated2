@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Language</title>
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="static-page.css">
+  <style>
+    .lang-option{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px;
+      border: 1.5px solid var(--line);
+      border-radius: var(--radius);
+      margin-bottom: 10px;
+      cursor: pointer;
+      background: var(--card);
+    }
+    .lang-option.selected{
+      border-color: var(--marigold-deep);
+      background: #FFF7E9;
+    }
+    .lang-name{ font-weight: 700; font-size: 16px; }
+    .lang-native{ font-size: 13px; color: var(--ink-soft); margin-top: 2px; }
+    .lang-check{ font-size: 20px; color: var(--marigold-deep); visibility: hidden; }
+    .lang-option.selected .lang-check{ visibility: visible; }
+  </style>
+</head>
+<body class="bf-has-nav">
+
+  <div class="container sp-container">
+
+    <a href="profile.html" class="sp-back">← Back to Account</a>
+    <h1>Language 🌐</h1>
+    <p style="font-size:13px;color:var(--ink-soft);margin-bottom:16px;">
+      Choose your preferred language. This saves to your profile.
+    </p>
+
+    <div id="langOptions">
+
+      <div class="lang-option" data-lang="en">
+        <div>
+          <div class="lang-name">English</div>
+          <div class="lang-native">English</div>
+        </div>
+        <span class="lang-check">✓</span>
+      </div>
+
+      <div class="lang-option" data-lang="kn">
+        <div>
+          <div class="lang-name">Kannada</div>
+          <div class="lang-native">ಕನ್ನಡ</div>
+        </div>
+        <span class="lang-check">✓</span>
+      </div>
+
+      <div class="lang-option" data-lang="hi">
+        <div>
+          <div class="lang-name">Hindi</div>
+          <div class="lang-native">हिंदी</div>
+        </div>
+        <span class="lang-check">✓</span>
+      </div>
+
+      <div class="lang-option" data-lang="te">
+        <div>
+          <div class="lang-name">Telugu</div>
+          <div class="lang-native">తెలుగు</div>
+        </div>
+        <span class="lang-check">✓</span>
+      </div>
+
+    </div>
+
+    <p style="font-size:12px;color:var(--ink-soft);margin-top:16px;">
+      Note: we're rolling out full Kannada, Hindi &amp; Telugu translations across the app in stages — some screens may still show English while this is in progress.
+    </p>
+
+  </div>
+
+  <nav class="bottom-nav">
+    <a href="home.html"><span>🏠</span><p>Home</p></a>
+    <a href="wishlist.html"><span>😊</span><p>Liked</p></a>
+    <a href="orders.html"><span>📦</span><p>Orders</p></a>
+    <a href="profile.html"><span>🏪</span><p>My Account</p></a>
+  </nav>
+
+  <script type="module" src="language.js"></script>
+
+</body>
+</html>

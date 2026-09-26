@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+  <title>Invoice</title>
+
+  <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="invoice.css">
+
+</head>
+<body>
+
+<div id="invoice">
+
+<h1>Bestify Store</h1>
+
+<h2>Invoice</h2>
+
+<p><b>Order ID:</b> <span id="orderId"></span></p>
+
+<p><b>Customer:</b> <span id="customer"></span></p>
+
+<p><b>Mobile:</b> <span id="mobile"></span></p>
+
+<p><b>Address:</b> <span id="address"></span></p>
+
+<hr>
+
+<div id="products"></div>
+
+<hr>
+
+<h2>Total :
+₹<span id="total"></span></h2>
+
+<button onclick="window.print()">
+🖨 Print / Save PDF
+</button>
+
+</div>
+
+<script type="module" src="invoice.js"></script>
+
+</body>
+</html>

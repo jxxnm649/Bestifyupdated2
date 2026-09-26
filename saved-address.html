@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Saved Addresses</title>
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="design-system.css">
+  <link rel="stylesheet" href="static-page.css">
+</head>
+<body class="bf-has-nav">
+
+  <div class="container sp-container">
+
+    <a href="profile.html" class="sp-back">← Back to Account</a>
+    <h1>Saved Addresses 📍</h1>
+
+    <button type="button" id="addAddressBtn" class="bf-btn bf-btn-primary bf-btn-block" style="margin-bottom:18px;">+ Add New Address</button>
+
+    <div id="addressList" style="display:flex;flex-direction:column;gap:12px;"></div>
+
+  </div>
+
+  <!-- Add/Edit Address Modal -->
+  <div id="addressModal" class="bf-modal-overlay">
+    <div class="bf-modal">
+      <button type="button" class="bf-modal-close" id="addressModalCloseBtn" aria-label="Close">✕</button>
+      <h2 class="bf-modal-title" id="addressModalTitle">Add Address</h2>
+
+      <form id="addressForm">
+
+        <div class="bf-field">
+          <label class="bf-label">Label</label>
+          <input type="text" id="addrLabel" class="bf-input" placeholder="Home, Work, etc." required>
+        </div>
+
+        <div class="bf-field">
+          <label class="bf-label">Full Name</label>
+          <input type="text" id="addrName" class="bf-input" required>
+        </div>
+
+        <div class="bf-field">
+          <label class="bf-label">Phone Number</label>
+          <input type="text" id="addrPhone" class="bf-input" required>
+        </div>
+
+        <div class="bf-field">
+          <label class="bf-label">Address</label>
+          <textarea id="addrLine" class="bf-textarea" placeholder="House no, street, area" required></textarea>
+        </div>
+
+        <div class="bf-field">
+          <label class="bf-label">City</label>
+          <input type="text" id="addrCity" class="bf-input" required>
+        </div>
+
+        <div class="bf-field">
+          <label class="bf-label">State</label>
+          <input type="text" id="addrState" class="bf-input" required>
+        </div>
+
+        <div class="bf-field">
+          <label class="bf-label">Pin Code</label>
+          <input type="text" id="addrPincode" class="bf-input" inputmode="numeric" maxlength="6" required>
+        </div>
+
+        <button type="submit" id="addressSubmitBtn" class="bf-btn bf-btn-primary bf-btn-block">Save Address</button>
+
+      </form>
+    </div>
+  </div>
+
+  <nav class="bottom-nav">
+    <a href="home.html"><span>🏠</span><p>Home</p></a>
+    <a href="wishlist.html"><span>😊</span><p>Liked</p></a>
+    <a href="orders.html"><span>📦</span><p>Orders</p></a>
+    <a href="profile.html"><span>🏪</span><p>My Account</p></a>
+  </nav>
+
+  <script type="module" src="saved-address.js"></script>
+  <script type="module" src="profile-menu.js"></script>
+
+</body>
+</html>

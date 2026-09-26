@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bestify Login</title>
+
+    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="auth-page">
+
+    <div class="auth-wrap">
+
+        <div class="auth-hero">
+            <div class="auth-logo">🛍️</div>
+            <h1>Welcome Back</h1>
+            <p>Login to your Bestify Store account</p>
+        </div>
+
+        <form id="loginForm" class="auth-form">
+
+            <label for="email">Email</label>
+            <input type="email" id="email" placeholder="you@example.com" required>
+
+            <label for="password">Password</label>
+            <input type="password" id="password" placeholder="Your password" required>
+
+            <button type="submit">Login</button>
+
+        </form>
+
+        <p class="auth-switch">
+          New here? <a href="index.html">Create an account</a>
+        </p>
+
+    </div>
+
+<script type="module" src="firebase.js"></script>
+<script type="module" src="login.js"></script>
+
+</body>
+</html>

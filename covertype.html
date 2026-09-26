@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Select Product Type</title>
+<style>
+  body { font-family: 'Segoe UI', Roboto, sans-serif; margin: 0; padding: 0; background-color: #f4f6f8; display: flex; justify-content: center; }
+  .app-container { width: 100%; max-width: 414px; background: #ffffff; min-height: 100vh; position: relative; padding-bottom: 80px; }
+  
+  .header { display: flex; align-items: center; padding: 20px; }
+  .header h2 { margin: 0; font-size: 18px; margin-left: 20px; font-weight: 600; }
+  .progress-bar { display: flex; justify-content: space-between; padding: 10px 20px 20px 20px; font-size: 12px; color: #888; }
+  .step { display: flex; flex-direction: column; align-items: center; }
+  .step .circle { width: 24px; height: 24px; border-radius: 50%; background: #f0f0f0; display: flex; align-items: center; justify-content: center; margin-bottom: 5px; font-weight: bold; }
+  .step.completed .circle { background: #006b44; color: white; }
+  .step.completed { color: #006b44; font-weight: bold; }
+  .step.active .circle { background: white; border: 2px solid #006b44; color: #006b44; }
+  .step.active { color: #006b44; font-weight: bold; }
+
+  .title-section { padding: 10px 20px; }
+  .title-section h1 { margin: 0; font-size: 22px; color: #111; font-weight: 700; }
+  .title-section p { margin: 5px 0 15px 0; color: #666; font-size: 14px; }
+
+  /* Product Type List */
+  .list-container { padding: 0 20px; }
+  .list-item { padding: 15px; border: 1.5px solid #eee; border-radius: 12px; margin-bottom: 12px; cursor: pointer; display: flex; align-items: center; transition: 0.2s; }
+  .list-item.selected { border-color: #006b44; background: #f2fcf7; }
+  .item-icon { width: 40px; height: 40px; background: #f9f9f9; border-radius: 8px; display: flex; justify-content: center; align-items: center; font-size: 20px; margin-right: 15px; border: 1px solid #ddd;}
+  .item-details { flex-grow: 1; }
+  .item-details h4 { margin: 0; font-size: 15px; color: #111; }
+  .item-details p { margin: 3px 0 0 0; font-size: 12px; color: #666; }
+  
+  .radio-circle { width: 20px; height: 20px; border-radius: 50%; border: 2px solid #ccc; display: flex; justify-content: center; align-items: center; }
+  .list-item.selected .radio-circle { border-color: #006b44; background: #006b44; }
+  .list-item.selected .radio-circle::after { content: '✓'; color: white; font-size: 14px; font-weight: bold; }
+
+  .bottom-bar { position: fixed; bottom: 0; width: 100%; max-width: 414px; background: #fff; padding: 15px 20px; box-sizing: border-box; display: flex; gap: 15px; border-top: 1px solid #eee; }
+  .btn-back { background: white; color: #d32f2f; border: 1px solid #d32f2f; padding: 15px; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; flex: 1; text-align: center; }
+  .btn-next { background: #006b44; color: white; border: none; padding: 16px; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; flex: 1; display: flex; justify-content: space-between; align-items: center; }
+</style>
+</head>
+<body>
+<div class="app-container">
+  <div class="header">
+    <a href="covercategory.html" style="font-size: 20px;text-decoration:none;color:inherit;">&#8592;</a><h2>Find Your Product</h2>
+  </div>
+
+  <div class="progress-bar">
+    <div class="step completed"><div class="circle">&#10003;</div>Brand</div>
+    <div class="step completed"><div class="circle">&#10003;</div>Series</div>
+    <div class="step completed"><div class="circle">&#10003;</div>Model</div>
+    <div class="step completed"><div class="circle">&#10003;</div>Category</div>
+    <div class="step active"><div class="circle">5</div>Type</div>
+  </div>
+
+  <div class="title-section">
+    <h1>Select product type</h1>
+    <p>What are you looking for?</p>
+  </div>
+
+  <div class="list-container" id="typeList">
+    <p style="color:#666;font-size:13px;">Loading…</p>
+  </div>
+
+  <div class="bottom-bar">
+    <a href="covercategory.html" class="btn-back" style="text-decoration:none;text-align:center;">&larr; Back</a>
+    <button class="btn-next" id="nextBtn"><span>Next</span> <span>&rarr;</span></button>
+  </div>
+</div>
+
+<script type="module">
+  import { db } from "./firebase.js";
+  import { collection, getDocs } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
+
+  const brand = sessionStorage.getItem("cover_brand");
+  const model = sessionStorage.getItem("cover_model");
+  const category = sessionStorage.getItem("cover_category");
+  if (!brand || !model) window.location.href = "coverbrand.html";
+
+  // This Type step only makes sense for Covers — every other
+  // category skips straight to the product list.
+  if (category && category !== "Covers") {
+    window.location.href = "coverproducts.html";
+  }
+
+  const TYPES = [
+    { key: "Back Cover",   icon: "📱", sub: "Protect your phone in style",          keywords: [] },
+    { key: "Flip Cover",   icon: "📘", sub: "Full body protection with front flap", keywords: ["flip"] },
+    { key: "Bumper Case",  icon: "🔲", sub: "Shockproof protection for edges",      keywords: ["bumper"] },
+    { key: "Silicone Case",icon: "🟪", sub: "Soft, smooth & comfortable grip",      keywords: ["silicone"] },
+    { key: "Leather Case", icon: "🟫", sub: "Premium leather, premium look",        keywords: ["leather"] }
+  ];
+
+  const OTHER_KEYWORDS = ["flip", "bumper", "silicone", "leather"];
+
+  let selectedType = sessionStorage.getItem("cover_type") || null;
+  let allCovers = [];
+
+  function countFor(type) {
+    if (type.key === "Back Cover") {
+      // Catch-all: anything not specifically flip/bumper/silicone/leather.
+      return allCovers.filter(p => {
+        const name = (p.productName || "").toLowerCase();
+        return !OTHER_KEYWORDS.some(k => name.includes(k));
+      }).length;
+    }
+    return allCovers.filter(p => {
+      const name = (p.productName || "").toLowerCase();
+      return type.keywords.some(k => name.includes(k));
+    }).length;
+  }
+
+  function render() {
+    const list = document.getElementById("typeList");
+    list.innerHTML = TYPES.map(t => `
+      <div class="list-item ${selectedType === t.key ? "selected" : ""}" data-type="${t.key}">
+        <div class="item-icon">${t.icon}</div>
+        <div class="item-details"><h4>${t.key}</h4><p>${t.sub} — ${countFor(t)} found</p></div>
+        <div class="radio-circle"></div>
+      </div>
+    `).join("");
+  }
+
+  async function loadCovers() {
+    try {
+      const snap = await getDocs(collection(db, "products"));
+      allCovers = snap.docs
+        .map(d => ({ id: d.id, ...d.data() }))
+        .filter(p => (p.category || "").toLowerCase().includes("cover"));
+    } catch (error) {
+      console.error(error);
+      allCovers = [];
+    }
+    render();
+  }
+  loadCovers();
+
+  document.getElementById("typeList").addEventListener("click", (e) => {
+    const item = e.target.closest(".list-item");
+    if (!item) return;
+    selectedType = item.dataset.type;
+    render();
+  });
+
+  document.getElementById("nextBtn").addEventListener("click", () => {
+    if (!selectedType) {
+      alert("Please choose a type");
+      return;
+    }
+    sessionStorage.setItem("cover_type", selectedType);
+    sessionStorage.removeItem("cover_product_id");
+    window.location.href = "coverproducts.html";
+  });
+</script>
+</body>
+</html>

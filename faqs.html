@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FAQs</title>
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="static-page.css">
+  <style>
+    .faq-item{ border-bottom: 1px solid var(--line); padding: 12px 0; }
+    .faq-q{
+      font-weight: 700; font-size: 14px; cursor: pointer;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .faq-a{ font-size: 13px; color: var(--ink-soft); margin-top: 8px; display: none; }
+    .faq-item.open .faq-a{ display: block; }
+    .faq-item.open .faq-q .chev{ transform: rotate(180deg); }
+    .faq-q .chev{ transition: .2s; }
+  </style>
+</head>
+<body class="bf-has-nav">
+
+  <div class="container sp-container">
+
+    <a href="profile.html" class="sp-back">← Back to Account</a>
+    <h1>Frequently Asked Questions ❓</h1>
+
+    <div id="faqList">
+
+      <div class="faq-item">
+        <div class="faq-q">How do I track my order? <span class="chev">▾</span></div>
+        <div class="faq-a">Go to Account → Orders to see live status for every order you've placed.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">What is the return policy? <span class="chev">▾</span></div>
+        <div class="faq-a">Return policy varies by product and is shown on each product's page — look for the "Return Policy" badge.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">How do I withdraw money from my wallet? <span class="chev">▾</span></div>
+        <div class="faq-a">Go to Account → Wallet → Withdraw Funds, enter your UPI ID or bank details, and submit. Our team processes requests within 1–3 business days.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">How do I become a supplier on Bestify? <span class="chev">▾</span></div>
+        <div class="faq-a">Open the "More" menu and tap "Become a Supplier" — fill in your shop details and our team will review your application.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">I need help with something else. <span class="chev">▾</span></div>
+        <div class="faq-a">Use the "Chat with Us" option in the More menu, or call us directly at <a href="tel:+919110690727">9110690727</a>.</div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <nav class="bottom-nav">
+    <a href="home.html"><span>🏠</span><p>Home</p></a>
+    <a href="wishlist.html"><span>😊</span><p>Liked</p></a>
+    <a href="orders.html"><span>📦</span><p>Orders</p></a>
+    <a href="profile.html"><span>🏪</span><p>My Account</p></a>
+  </nav>
+
+  <script>
+    document.getElementById("faqList").addEventListener("click", (e) => {
+      const item = e.target.closest(".faq-item");
+      if (!item) return;
+      item.classList.toggle("open");
+    });
+  </script>
+  <script type="module" src="profile-menu.js"></script>
+
+</body>
+</html>

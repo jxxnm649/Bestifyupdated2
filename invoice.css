@@ -1,0 +1,32 @@
+body{
+    padding: 20px;
+}
+
+#invoice{
+    max-width: 700px;
+    margin: auto;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 28px;
+}
+
+h1, h2{
+    text-align: center;
+}
+
+.product{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0;
+    padding: 10px 0;
+    border-bottom: 1px dashed var(--line);
+}
+
+@media print{
+    button{ display: none; }
+    body{ background: #fff; padding: 0; }
+    #invoice{ box-shadow: none; border: none; }
+}

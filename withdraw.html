@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Withdraw — Bestify</title>
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="design-system.css">
+  <link rel="stylesheet" href="transactions.css">
+  <link rel="stylesheet" href="withdraw.css">
+</head>
+<body class="bf-has-nav">
+
+  <div class="container">
+
+    <a href="profile.html" class="wd-back">← Back to Account</a>
+    <h1>Withdraw Funds 💸</h1>
+
+    <div class="txn-balance-card">
+      <div class="txn-balance-label">Available Balance</div>
+      <div class="txn-balance-amount" id="currentBalance">₹0</div>
+    </div>
+
+    <form id="withdrawForm" class="wd-form">
+
+      <div class="bf-field">
+        <label class="bf-label">Amount (₹)</label>
+        <input type="number" id="wdAmount" class="bf-input" min="1" required>
+      </div>
+
+      <div class="bf-field">
+        <label class="bf-label">Payout Method</label>
+        <select id="wdMethod" class="bf-select">
+          <option value="upi">UPI</option>
+          <option value="bank">Bank Account</option>
+        </select>
+      </div>
+
+      <div id="wdUpiFields" class="bf-field">
+        <label class="bf-label">UPI ID</label>
+        <input type="text" id="wdUpiId" class="bf-input" placeholder="yourname@upi">
+      </div>
+
+      <div id="wdBankFields" style="display:none;">
+        <div class="bf-field">
+          <label class="bf-label">Account Holder Name</label>
+          <input type="text" id="wdBankName" class="bf-input">
+        </div>
+        <div class="bf-field">
+          <label class="bf-label">Account Number</label>
+          <input type="text" id="wdBankAccount" class="bf-input" inputmode="numeric">
+        </div>
+        <div class="bf-field">
+          <label class="bf-label">IFSC Code</label>
+          <input type="text" id="wdBankIFSC" class="bf-input" style="text-transform:uppercase;">
+        </div>
+      </div>
+
+      <button type="submit" id="wdSubmitBtn" class="bf-btn bf-btn-primary bf-btn-block">
+        Request Withdrawal
+      </button>
+
+      <p class="wd-note">Withdrawal requests are reviewed by our team and paid out manually. This usually takes 1–3 business days.</p>
+
+    </form>
+
+    <h2 class="wd-history-title">Request History</h2>
+    <div id="wdHistory"></div>
+
+  </div>
+
+  <nav class="bottom-nav">
+    <a href="home.html"><span>🏠</span><p>Home</p></a>
+    <a href="wishlist.html"><span>😊</span><p>Liked</p></a>
+    <a href="orders.html"><span>📦</span><p>Orders</p></a>
+    <a href="profile.html"><span>🏪</span><p>My Account</p></a>
+  </nav>
+
+  <script type="module" src="withdraw.js"></script>
+  <script type="module" src="profile-menu.js"></script>
+
+</body>
+</html>

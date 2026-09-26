@@ -1,0 +1,293 @@
+/* ============================================================
+   Bestify Design System — Foundation Layer
+   Additive only. Reuses tokens already defined in theme.css
+   (--ink, --marigold, --paper, --card, --line, --radius, --shadow,
+   --font-display, --font-body, --font-mono).
+   Load AFTER theme.css. Every class here is prefixed "bf-" so it
+   never collides with existing unprefixed selectors (button, .card,
+   .btn, form, input) already styled in theme.css / style.css.
+   ============================================================ */
+
+/* ---------- New tokens (only what theme.css doesn't already have) ---------- */
+:root{
+  --bf-info:     #2563EB;
+  --bf-info-bg:  #E8EEFC;
+  --bf-danger:   var(--rust, #C1442D);
+  --bf-danger-bg:var(--rust-bg, #FBEAE6);
+  --bf-success:  var(--leaf, #2F7A4F);
+  --bf-success-bg: var(--leaf-bg, #E7F3EC);
+  --bf-warning:  var(--marigold-deep, #D98925);
+  --bf-warning-bg: #FBF1DD;
+  --bf-neutral:  #8A8578;
+  --bf-neutral-bg: var(--paper-dim, #F2ECE0);
+
+  --bf-shadow-lg: 0 16px 40px rgba(20,33,61,.16);
+  --bf-focus-ring: 0 0 0 3px rgba(217,137,37,.35); /* marigold-deep glow */
+
+  --bf-radius-pill: 999px;
+
+  /* Breakpoints (reference only — CSS can't read these as vars in
+     media queries, kept here as documentation for consistent use) */
+  /* mobile: 0-599px | tablet: 600-1023px | desktop: 1024-1439px | large: 1440px+ */
+}
+
+/* ---------- Accessibility: focus-visible everywhere ---------- */
+.bf-btn:focus-visible,
+.bf-input:focus-visible,
+.bf-select:focus-visible,
+.bf-textarea:focus-visible,
+a.bf-link:focus-visible,
+.bf-card[tabindex]:focus-visible{
+  outline: none;
+  box-shadow: var(--bf-focus-ring);
+}
+
+/* ---------- Layout container (mobile-first) ---------- */
+.bf-container{
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 0 16px;
+  box-sizing: border-box;
+}
+@media (min-width: 1024px){
+  .bf-container{ max-width: 960px; padding: 0 32px; }
+}
+@media (min-width: 1440px){
+  .bf-container{ max-width: 1200px; }
+}
+
+/* ---------- Buttons ---------- */
+.bf-btn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 18px;
+  min-height: 44px; /* touch target */
+  border: none;
+  border-radius: var(--radius-sm, 8px);
+  font-family: var(--font-display, sans-serif);
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  transition: transform .15s, background .15s, opacity .15s;
+  box-sizing: border-box;
+  text-decoration: none;
+}
+.bf-btn:active{ transform: translateY(1px); }
+.bf-btn:disabled{ opacity: .5; cursor: not-allowed; transform: none; }
+
+.bf-btn-primary{ background: var(--marigold, #F2A93B); color: var(--ink, #14213D); }
+.bf-btn-primary:hover:not(:disabled){ background: var(--marigold-deep, #D98925); }
+
+.bf-btn-secondary{ background: var(--ink, #14213D); color: var(--paper, #FBF7F0); }
+.bf-btn-secondary:hover:not(:disabled){ background: var(--ink-soft, #3A4A6B); }
+
+.bf-btn-ghost{ background: transparent; color: var(--ink, #14213D); border: 1.5px solid var(--line, #E4DED2); }
+.bf-btn-ghost:hover:not(:disabled){ background: var(--paper-dim, #F2ECE0); }
+
+.bf-btn-danger{ background: var(--bf-danger); color: #fff; }
+.bf-btn-danger:hover:not(:disabled){ opacity: .9; }
+
+.bf-btn-block{ width: 100%; }
+.bf-btn-sm{ min-height: 36px; padding: 8px 14px; font-size: 13px; }
+
+/* ---------- Inputs ---------- */
+.bf-field{ margin: 10px 0; }
+.bf-label{
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-soft, #3A4A6B);
+  margin-bottom: 6px;
+}
+.bf-input, .bf-select, .bf-textarea{
+  width: 100%;
+  padding: 12px 14px;
+  min-height: 44px;
+  border: 1.5px solid var(--line, #E4DED2);
+  border-radius: var(--radius-sm, 8px);
+  background: var(--paper, #FBF7F0);
+  font-family: var(--font-body, sans-serif);
+  font-size: 15px;
+  color: var(--ink, #14213D);
+  box-sizing: border-box;
+  transition: border-color .15s;
+}
+.bf-textarea{ min-height: 96px; resize: vertical; }
+.bf-input:focus, .bf-select:focus, .bf-textarea:focus{
+  outline: none;
+  border-color: var(--marigold-deep, #D98925);
+}
+.bf-input.bf-input-error{ border-color: var(--bf-danger); }
+.bf-error-text{ font-size: 12px; color: var(--bf-danger); margin-top: 4px; }
+
+/* ---------- Cards ---------- */
+.bf-card{
+  background: var(--card, #fff);
+  border: 1px solid var(--line, #E4DED2);
+  border-radius: var(--radius, 14px);
+  box-shadow: var(--shadow-sm, 0 2px 8px rgba(20,33,61,.06));
+  padding: 16px;
+}
+.bf-card-pad-lg{ padding: 24px; }
+
+/* ---------- Badges ---------- */
+.bf-badge{
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: var(--bf-radius-pill);
+  white-space: nowrap;
+}
+.bf-badge-success{ background: var(--bf-success-bg); color: var(--bf-success); }
+.bf-badge-danger{ background: var(--bf-danger-bg); color: var(--bf-danger); }
+.bf-badge-warning{ background: var(--bf-warning-bg); color: var(--bf-warning); }
+.bf-badge-info{ background: var(--bf-info-bg); color: var(--bf-info); }
+.bf-badge-neutral{ background: var(--bf-neutral-bg); color: var(--bf-neutral); }
+
+/* ---------- Status pill (order/repair/vendor statuses) ---------- */
+.bf-status-pill{
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: var(--bf-radius-pill);
+}
+.bf-status-pending{ background: var(--bf-neutral-bg); color: var(--bf-neutral); }
+.bf-status-progress{ background: var(--bf-info-bg); color: var(--bf-info); }
+.bf-status-success{ background: var(--bf-success-bg); color: var(--bf-success); }
+.bf-status-danger{ background: var(--bf-danger-bg); color: var(--bf-danger); }
+.bf-status-warning{ background: var(--bf-warning-bg); color: var(--bf-warning); }
+
+/* ---------- Modal ---------- */
+.bf-modal-overlay{
+  position: fixed;
+  inset: 0;
+  background: rgba(20,33,61,.45);
+  display: none;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 10000;
+  padding: 0;
+}
+.bf-modal-overlay.bf-open{ display: flex; }
+.bf-modal{
+  background: var(--card, #fff);
+  width: 100%;
+  max-width: 480px;
+  border-radius: var(--radius, 14px) var(--radius, 14px) 0 0;
+  box-shadow: var(--bf-shadow-lg);
+  padding: 24px 20px;
+  box-sizing: border-box;
+  max-height: 85vh;
+  overflow-y: auto;
+  animation: bf-slide-up .2s ease-out;
+  position: relative;
+}
+@media (min-width: 600px){
+  .bf-modal-overlay{ align-items: center; }
+  .bf-modal{ border-radius: var(--radius, 14px); }
+}
+.bf-modal-title{ font-family: var(--font-display); font-size: 18px; margin: 0 0 12px; }
+.bf-modal-close{
+  position: absolute;
+  top: 14px; right: 16px;
+  background: none; border: none;
+  font-size: 20px; line-height: 1;
+  cursor: pointer; color: var(--ink-soft);
+  width: auto; padding: 4px;
+}
+
+@keyframes bf-slide-up{
+  from{ transform: translateY(24px); opacity: 0; }
+  to{ transform: translateY(0); opacity: 1; }
+}
+
+/* ---------- Alert (inline banner) ---------- */
+.bf-alert{
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm, 8px);
+  font-size: 14px;
+  border: 1px solid transparent;
+  margin: 12px 0;
+}
+.bf-alert-success{ background: var(--bf-success-bg); color: var(--bf-success); border-color: var(--bf-success); }
+.bf-alert-danger{ background: var(--bf-danger-bg); color: var(--bf-danger); border-color: var(--bf-danger); }
+.bf-alert-info{ background: var(--bf-info-bg); color: var(--bf-info); border-color: var(--bf-info); }
+.bf-alert-warning{ background: var(--bf-warning-bg); color: var(--bf-warning); border-color: var(--bf-warning); }
+
+/* ---------- Toast (auto-disappearing notification) ---------- */
+.bf-toast-container{
+  position: fixed;
+  bottom: 90px; /* clears bottom-nav (66px) with margin */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10001;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: calc(100% - 32px);
+  max-width: 420px;
+  pointer-events: none;
+}
+.bf-toast{
+  background: var(--ink, #14213D);
+  color: var(--paper, #FBF7F0);
+  padding: 12px 16px;
+  border-radius: var(--radius-sm, 8px);
+  font-size: 14px;
+  box-shadow: var(--bf-shadow-lg);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity .2s, transform .2s;
+  pointer-events: auto;
+}
+.bf-toast.bf-show{ opacity: 1; transform: translateY(0); }
+.bf-toast-success{ background: var(--bf-success); }
+.bf-toast-danger{ background: var(--bf-danger); }
+.bf-toast-info{ background: var(--bf-info); }
+
+/* ---------- Loading skeleton ---------- */
+.bf-skeleton{
+  background: linear-gradient(90deg, var(--paper-dim, #F2ECE0) 25%, var(--line, #E4DED2) 37%, var(--paper-dim, #F2ECE0) 63%);
+  background-size: 400% 100%;
+  animation: bf-shimmer 1.4s ease infinite;
+  border-radius: var(--radius-sm, 8px);
+  display: block;
+}
+.bf-skeleton-text{ height: 14px; margin: 6px 0; width: 100%; }
+.bf-skeleton-title{ height: 20px; margin: 6px 0; width: 60%; }
+.bf-skeleton-card{ height: 170px; width: 100%; border-radius: var(--radius, 14px); }
+.bf-skeleton-circle{ border-radius: 50%; width: 40px; height: 40px; }
+
+@keyframes bf-shimmer{
+  0%{ background-position: 100% 0; }
+  100%{ background-position: -100% 0; }
+}
+
+/* ---------- Empty / Error state ---------- */
+.bf-state{
+  text-align: center;
+  padding: 48px 20px;
+  color: var(--ink-soft, #3A4A6B);
+}
+.bf-state-icon{ font-size: 40px; margin-bottom: 12px; opacity: .7; }
+.bf-state-title{ font-family: var(--font-display); font-size: 16px; color: var(--ink); margin: 0 0 6px; }
+.bf-state-text{ font-size: 13px; margin: 0 0 16px; }
+.bf-state-error .bf-state-icon{ color: var(--bf-danger); }
+
+/* ---------- Utility ---------- */
+.bf-hidden{ display: none !important; }
+.bf-sr-only{
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+  }

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coming Soon — Bestify</title>
+  <link rel="stylesheet" href="theme.css">
+  <style>
+    .cs-wrap{
+      min-height: 70vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 24px;
+    }
+    .cs-icon{ font-size: 54px; margin-bottom: 12px; }
+    .cs-wrap h1{ margin: 0 0 8px; font-family: var(--font-display); }
+    .cs-wrap p{ color: var(--ink-soft); max-width: 320px; margin: 0 auto 18px; }
+    .cs-back{ display: inline-block; color: var(--marigold-deep); text-decoration: none; font-weight: 600; }
+  </style>
+</head>
+<body class="bf-has-nav">
+
+  <div class="cs-wrap">
+    <div>
+      <div class="cs-icon">🛠️</div>
+      <h1 id="csTitle">Coming Soon</h1>
+      <p id="csMessage">We're working on this feature — check back soon!</p>
+      <a href="profile.html" class="cs-back">← Back to Account</a>
+    </div>
+  </div>
+
+  <nav class="bottom-nav">
+    <a href="home.html"><span>🏠</span><p>Home</p></a>
+    <a href="wishlist.html"><span>😊</span><p>Liked</p></a>
+    <a href="orders.html"><span>📦</span><p>Orders</p></a>
+    <a href="profile.html"><span>🏪</span><p>My Account</p></a>
+  </nav>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const feature = params.get("feature");
+    if (feature) {
+      document.getElementById("csTitle").textContent = feature;
+      document.getElementById("csMessage").textContent = `${feature} is coming soon — we're actively working on it!`;
+      document.title = `${feature} — Coming Soon`;
+    }
+  </script>
+  <script type="module" src="profile-menu.js"></script>
+
+</body>
+</html>
