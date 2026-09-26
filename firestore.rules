@@ -1,0 +1,539 @@
+rules_version = '2';
+
+/* ============================================================
+   Bestify — Firestore Security Rules
+   Phase 1 — multi-vendor (Master Order + Sub-orders)
+   STEP 1  — role system (custom-claim roles) + locked
+             privileged fields on users / vendors / products
+
+   ROLE SOURCE OF TRUTH (STEP 1)
+   request.auth.token.role — set ONLY by Cloud Functions
+   (syncMyRole / setUserRole). Values: superAdmin, admin,
+   support, technician. Legacy users/{uid}.isAdmin == true is
+   still accepted as "admin" while accounts migrate; clients can
+   never set isAdmin or role themselves (see /users below).
+   ============================================================ */
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    /* ---------- HELPERS ---------- */
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isSelf(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Role from the custom claim ('' when there is none).
+    function tokenRole() {
+      return request.auth.token.get('role', '');
+    }
+
+    function isSuperAdmin() {
+      return isSignedIn() && tokenRole() == 'superAdmin';
+    }
+
+    // superAdmin / admin by claim first (no document read), then the
+    // legacy claims.admin flag, then the legacy users.isAdmin flag.
+    function isAdmin() {
+      return isSignedIn() && (
+        tokenRole() in ['superAdmin', 'admin'] ||
+        request.auth.token.get('admin', false) == true ||
+        (
+          exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+          get(/databases/$(database)/documents/users/$(request.auth.uid)).data.get('isAdmin', false) == true
+        )
+      );
+    }
+
+    function isOwner(field) {
+      return isSignedIn() && request.auth.uid == resource.data[field];
+    }
+
+    function willBeOwner(field) {
+      return isSignedIn() && request.auth.uid == request.resource.data[field];
+    }
+
+    function isActiveVendor() {
+      return isSignedIn() &&
+        exists(/databases/$(database)/documents/vendors/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/vendors/$(request.auth.uid)).data.status == "Active";
+    }
+
+    function isOwnVendorProduct() {
+      return isSignedIn() && resource.data.vendorId == request.auth.uid;
+    }
+
+    function changedKeys() {
+      return request.resource.data.diff(resource.data).affectedKeys();
+    }
+
+
+    /* ---------- USERS ---------- */
+
+    // Fields only the server / staff may change on a user profile.
+    function userRoleKeys() {
+      return ['isAdmin', 'role', 'roleUpdatedAt', 'roleUpdatedBy'];
+    }
+
+    function userPrivilegedKeys() {
+      return ['isAdmin', 'role', 'roleUpdatedAt', 'roleUpdatedBy',
+              'walletBalance', 'pendingCashbackBalance',
+              'blocked', 'blockedAt', 'blockedBy', 'unblockedAt', 'unblockedBy'];
+    }
+
+    match /users/{userId} {
+
+      // CHANGED (STEP 1): was "any signed-in user" — profiles hold
+      // phone numbers, addresses and bank/UPI details.
+      allow read: if isSelf(userId) || isAdmin();
+
+      // CHANGED (STEP 1): a new customer can't give themselves
+      // admin, a role, a wallet balance, or an unblocked override.
+      allow create: if isSelf(userId) &&
+        request.resource.data.get('isAdmin', false) != true &&
+        !request.resource.data.keys().hasAny(
+          ['role', 'roleUpdatedAt', 'roleUpdatedBy',
+           'walletBalance', 'pendingCashbackBalance',
+           'blocked', 'blockedAt', 'blockedBy', 'unblockedAt', 'unblockedBy']
+        );
+
+      // CHANGED (STEP 1):
+      //  - the customer edits only normal profile fields
+      //  - an admin edits anything except role / isAdmin
+      //  - only a superAdmin (or a Cloud Function) changes roles
+      allow update: if
+        (isSelf(userId) && !changedKeys().hasAny(userPrivilegedKeys())) ||
+        (isAdmin() && !changedKeys().hasAny(userRoleKeys())) ||
+        isSuperAdmin();
+
+      allow delete: if isAdmin();
+
+      match /cart/{itemId} {
+        allow read, write: if isSelf(userId) || isAdmin();
+      }
+
+      match /wishlist/{productId} {
+        allow read, write: if isSelf(userId) || isAdmin();
+      }
+
+      match /addresses/{addressId} {
+        allow read, write: if isSelf(userId) || isAdmin();
+      }
+
+      match /sessions/{sessionId} {
+        allow read, write: if isSelf(userId) || isAdmin();
+      }
+
+    }
+
+
+    /* ---------- PRODUCTS ---------- */
+
+    function isCustomerTogglingLike() {
+      return isSignedIn() &&
+        changedKeys().hasOnly(['likes']) &&
+        (
+          request.resource.data.likes == (resource.data.likes == null ? 0 : resource.data.likes) + 1 ||
+          request.resource.data.likes == (resource.data.likes == null ? 0 : resource.data.likes) - 1
+        );
+    }
+
+    // CHANGED (STEP 1): a vendor's new listing always starts as
+    // "Pending" (admin approves it), and can't carry commission data.
+    function isVendorCreatingProduct() {
+      return isActiveVendor() &&
+        willBeOwner('vendorId') &&
+        request.resource.data.get('approvalStatus', '') == 'Pending' &&
+        !request.resource.data.keys().hasAny(['commissionRate', 'commissionAmount', 'likes']);
+    }
+
+    // CHANGED (STEP 1): a vendor edits only their own product, can't
+    // move it to another vendor, and can't approve it themselves —
+    // approvalStatus may stay as it is or go back to "Pending".
+    function isVendorEditingOwnProduct() {
+      return isActiveVendor() &&
+        isOwnVendorProduct() &&
+        request.resource.data.vendorId == resource.data.vendorId &&
+        (
+          !changedKeys().hasAny(['approvalStatus']) ||
+          request.resource.data.approvalStatus == 'Pending'
+        ) &&
+        (
+          !changedKeys().hasAny(['rejectionReason']) ||
+          request.resource.data.rejectionReason == ''
+        ) &&
+        !changedKeys().hasAny(['commissionRate', 'commissionAmount', 'likes']);
+    }
+
+    match /products/{productId} {
+
+      allow read: if true;
+
+      allow create: if isAdmin() || isVendorCreatingProduct();
+
+      allow update: if isAdmin() ||
+        isVendorEditingOwnProduct() ||
+        isCustomerTogglingLike();
+
+      allow delete: if isAdmin() ||
+        (isActiveVendor() && isOwnVendorProduct());
+
+    }
+
+
+    /* ---------- VENDORS ---------- */
+
+    // Shop-detail fields a vendor may edit themselves (vendor/profile.js).
+    function vendorProfileKeys() {
+      return ['shopName', 'ownerName', 'phone', 'email', 'category', 'address', 'updatedAt'];
+    }
+
+    match /vendors/{vendorId} {
+
+      // CHANGED (STEP 1): was "any signed-in user".
+      allow read: if isSelf(vendorId) || isAdmin();
+
+      // CHANGED (STEP 1): an application can't set its own commission
+      // (only the default 10% the apply form uses) or wallet balance.
+      allow create: if isAdmin() ||
+        (isSelf(vendorId) &&
+          request.resource.data.userId == request.auth.uid &&
+          request.resource.data.status == "Pending" &&
+          request.resource.data.get('commissionRate', 10) == 10 &&
+          !request.resource.data.keys().hasAny(['walletBalance']));
+
+      // CHANGED (STEP 1): a vendor edits shop details only — status,
+      // commission and wallet balance stay admin/server controlled.
+      allow update: if isAdmin() ||
+        (isSelf(vendorId) && changedKeys().hasOnly(vendorProfileKeys()));
+
+      allow delete: if isAdmin();
+
+    }
+
+
+    /* ---------- ORDERS ---------- */
+
+    function isOrderVendor() {
+      return isSignedIn() &&
+        'vendorIds' in resource.data &&
+        request.auth.uid in resource.data.vendorIds;
+    }
+
+    function isVendorAllowedOrderStatusChange() {
+      return isOrderVendor() &&
+        changedKeys().hasOnly(['status']) &&
+        (
+          (resource.data.status in ['Pending', 'Confirmed'] && request.resource.data.status == 'Packed') ||
+          (resource.data.status == 'Packed' && request.resource.data.status == 'Shipped')
+        );
+    }
+
+    function isCustomerCancellingOwnOrder() {
+      return isOwner('userId') &&
+        changedKeys().hasOnly(['status', 'cancelledAt']) &&
+        resource.data.status in ['Pending', 'Confirmed', 'Ordered', 'Packed'] &&
+        request.resource.data.status == 'Cancelled';
+    }
+
+    function isCustomerRatingOwnDeliveredOrder() {
+      return isOwner('userId') &&
+        changedKeys().hasOnly(['rating', 'ratedAt']) &&
+        resource.data.status == 'Delivered' &&
+        !('rating' in resource.data) &&
+        request.resource.data.rating is int &&
+        request.resource.data.rating >= 1 &&
+        request.resource.data.rating <= 5;
+    }
+
+    function isCustomerRevealingOwnScratchCard() {
+      return isOwner('userId') &&
+        changedKeys().hasOnly(['scratchRevealed']) &&
+        request.resource.data.scratchRevealed == true;
+    }
+
+    // Phase 1 — a client may still create its own order
+    // (quick-custom-order.js legitimately does this), but it may not
+    // forge the trusted fields. Anything money-, vendor- or
+    // marketplace-related must come from the Cloud Function, which
+    // uses the Admin SDK and bypasses these rules.
+    function isSafeClientOrderCreate() {
+      return willBeOwner('userId') &&
+        !request.resource.data.keys().hasAny([
+          'subOrderIds', 'schemaVersion', 'isMultiVendor',
+          'commissionRate', 'commissionAmount', 'vendorPayable',
+          'paymentId', 'razorpayOrderId'
+        ]) &&
+        (!('paymentStatus' in request.resource.data) ||
+           request.resource.data.paymentStatus == 'pending') &&
+        (!('cashbackAmount' in request.resource.data) ||
+           request.resource.data.cashbackAmount == 0);
+    }
+
+    match /orders/{orderId} {
+
+      allow read: if isOwner('userId') || isAdmin() || isOrderVendor();
+
+      allow create: if isSafeClientOrderCreate();
+
+      allow update: if isAdmin()
+        || isVendorAllowedOrderStatusChange()
+        || isCustomerCancellingOwnOrder()
+        || isCustomerRatingOwnDeliveredOrder()
+        || isCustomerRevealingOwnScratchCard();
+
+      allow delete: if false;
+
+    }
+
+
+    /* ---------- SUB ORDERS (Phase 1) ---------- */
+
+    function isSubOrderVendor() {
+      return isSignedIn() && resource.data.vendorId == request.auth.uid;
+    }
+
+    function isVendorAdvancingSubOrder() {
+      return isSubOrderVendor() &&
+        changedKeys().hasOnly(['status', 'statusHistory', 'updatedAt']) &&
+        (
+          (resource.data.status == 'PLACED' && request.resource.data.status == 'CONFIRMED') ||
+          (resource.data.status == 'CONFIRMED' && request.resource.data.status == 'PROCESSING') ||
+          (resource.data.status == 'PROCESSING' && request.resource.data.status == 'PACKED') ||
+          (resource.data.status == 'PACKED' && request.resource.data.status == 'SHIPPED') ||
+          (resource.data.status == 'SHIPPED' && request.resource.data.status == 'DELIVERED')
+        );
+    }
+
+    match /subOrders/{subOrderId} {
+
+      allow read: if isAdmin()
+        || isOwner('userId')
+        || isSubOrderVendor();
+
+      allow create: if false;
+
+      allow update: if isAdmin() || isVendorAdvancingSubOrder();
+
+      allow delete: if false;
+
+    }
+
+
+    /* ---------- ORDER REQUESTS (idempotency) ---------- */
+
+    match /orderRequests/{requestId} {
+
+      allow read: if isAdmin();
+      allow write: if false;
+
+    }
+
+
+    /* ---------- PAYMENTS ---------- */
+
+    match /payments/{paymentId} {
+
+      allow read: if isOwner('userId') || isAdmin();
+      allow write: if false;
+
+    }
+
+
+    /* ---------- REFUNDS ---------- */
+
+    match /refunds/{refundId} {
+
+      allow read: if isOwner('userId') || isAdmin();
+      allow write: if isAdmin();
+
+    }
+
+
+    /* ---------- WALLETS / WALLET TRANSACTIONS ---------- */
+
+    match /walletTransactions/{txId} {
+
+      allow read: if isOwner('userId') || isAdmin();
+      allow write: if isAdmin();
+
+    }
+
+    match /wallets/{walletId} {
+
+      allow read: if isOwner('userId') || isSelf(walletId) || isAdmin();
+      allow write: if isAdmin();
+
+    }
+
+
+    /* ---------- VENDOR WALLET TRANSACTIONS ---------- */
+
+    match /vendorWalletTransactions/{txId} {
+
+      allow read: if isAdmin() || (isSignedIn() && resource.data.vendorId == request.auth.uid);
+      allow write: if isAdmin();
+
+    }
+
+
+    /* ---------- COUNTERS ---------- */
+
+    match /counters/{counterId} {
+
+      allow read: if isSignedIn();
+      allow create: if isSignedIn();
+      allow update: if isSignedIn() &&
+        request.resource.data.count == resource.data.count + 1;
+
+    }
+
+
+    /* ---------- WITHDRAWAL REQUESTS ---------- */
+
+    match /withdrawalRequests/{requestId} {
+
+      allow read: if isAdmin() || (isSignedIn() && resource.data.requesterId == request.auth.uid);
+      allow write: if false;
+
+    }
+
+
+    /* ---------- COMMISSIONS ---------- */
+
+    match /commissions/{commissionId} {
+
+      allow read: if isAdmin() || (isSignedIn() && resource.data.vendorId == request.auth.uid);
+      allow write: if false;
+
+    }
+
+
+    /* ---------- CASHBACK ---------- */
+
+    match /cashback/{entryId} {
+
+      allow read: if isOwner('userId') || isAdmin();
+      allow write: if isAdmin();
+
+    }
+
+
+    /* ---------- COUPONS ---------- */
+
+    match /coupons/{couponId} {
+
+      allow read: if isOwner('userId') || isAdmin();
+
+      allow create: if isAdmin();
+
+      allow update: if isAdmin() ||
+        (isOwner('userId') &&
+          changedKeys().hasOnly(['used', 'usedOrderId', 'usedAt']) &&
+          request.resource.data.used == true);
+
+      allow delete: if isAdmin();
+
+    }
+
+
+    /* ---------- REFERRALS ---------- */
+
+    match /referrals/{referralId} {
+
+      allow read: if isOwner('referrerId') || isAdmin();
+      allow write: if isAdmin();
+
+    }
+
+
+    /* ---------- REPAIRS ---------- */
+
+    match /repairs/{repairId} {
+
+      allow read, write: if isAdmin();
+
+    }
+
+
+    /* ---------- CHATS ---------- */
+
+    match /chats/{userId} {
+
+      allow read, write: if isSelf(userId) || isAdmin();
+
+      match /messages/{messageId} {
+        allow read, write: if isSelf(userId) || isAdmin();
+      }
+
+    }
+
+
+    /* ---------- NOTIFICATIONS ---------- */
+
+    match /notifications/{notificationId} {
+
+      allow read: if isAdmin() ||
+        (isSignedIn() && (
+          resource.data.target == "all" ||
+          (resource.data.target == "user" && resource.data.userId == request.auth.uid)
+        ));
+
+      allow write: if isAdmin();
+
+    }
+
+
+    /* ---------- AUDIT LOG ---------- */
+
+    match /auditLogs/{logId} {
+
+      allow read: if isAdmin();
+      allow create: if isAdmin();
+      allow update, delete: if false;
+
+    }
+
+
+    /* ---------- SETTINGS ---------- */
+
+    match /settings/{docId} {
+
+      allow read: if true;
+      allow write: if isAdmin();
+
+    }
+
+
+    /* ---------- ADMIN ALERTS ---------- */
+
+    match /adminAlerts/{alertId} {
+
+      allow create: if isSignedIn();
+      allow read, update, delete: if isAdmin();
+
+    }
+
+
+    /* ---------- FEEDBACK ---------- */
+
+    match /feedback/{feedbackId} {
+
+      allow create: if willBeOwner('userId');
+      allow read, update, delete: if isAdmin();
+
+    }
+
+
+    /* ---------- DEFAULT DENY ---------- */
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+  }
+}
